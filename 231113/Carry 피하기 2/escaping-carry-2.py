@@ -27,4 +27,4 @@ for i in range(n):
                 answer = max(answer, nums[i]+nums[j]+nums[k])
 
 
-print(answer)
+print(answer if answer > 0 else -1)
