@@ -8,10 +8,11 @@
 
 |총 문제수|획득 경험치|연속 학습|
 |---:|---:|---|
-1|100xp|1일째🔥|
+2|100xp|1일째🔥|
 
 |교재|이름|난이도|상태|최근 제출 코드|
 |---|---|:---:|:---:|---|
+|[Kakao / 완전탐색 / 자리 수 단위로 완전탐색](https://www.codetree.ai/missions?missionId=16)|[[연습]Carry 피하기 2](https://www.codetree.ai/missions/16/problems/escaping-carry-2)|![어려움][hard]|![Passed][passed]|[링크](https://github.com/jiyoungzero/codetree-TILs/blob/main/231113/Carry%20%ED%94%BC%ED%95%98%EA%B8%B0%202/escaping-carry-2.py)|
 |[Kakao / 완전탐색 / 자리 수 단위로 완전탐색](https://www.codetree.ai/missions?missionId=16)|[[연습]오목](https://www.codetree.ai/missions/16/problems/O-mok)|![보통][medium]|![Passed][passed]|[링크](https://github.com/jiyoungzero/codetree-TILs/blob/main/231113/%EC%98%A4%EB%AA%A9/O-mok.py)|
 
 
