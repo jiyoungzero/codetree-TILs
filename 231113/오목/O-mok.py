@@ -24,7 +24,7 @@ def check_horiz(i, j):
         x, y = h
         if not in_range(i+x, j+y):
             return False
-        elif start != arr[i+x][j+y]:
+        if start != arr[i+x][j+y]:
             return False
     return True
 
@@ -34,17 +34,18 @@ def check_verti(i, j):
         x, y = v
         if not in_range(i+x, j+y):
             return False
-        elif start != arr[i+x][j+y]:
+        if start != arr[i+x][j+y]:
             return False
     return True
 
 def check_left_diag (i, j):
     start = arr[i][j]
+
     for ld in left_diag :
         x, y = ld
         if not in_range(i+x, j+y):
             return False
-        elif start != arr[i+x][j+y]:
+        if start != arr[i+x][j+y]:
             return False
     return True
 
@@ -54,7 +55,7 @@ def check_right_diag (i, j):
         x, y = rd
         if not in_range(i+x, j+y):
             return False
-        elif start != arr[i+x][j+y]:
+        if start != arr[i+x][j+y]:
             return False
     return True
                     
@@ -63,7 +64,7 @@ def check_right_diag (i, j):
 for i in range(19):
     for j in range(19):
         if arr[i][j] != 0:
-            if check_horiz or check_verti or check_left_diag or check_right_diag:
+            if check_horiz(i,j) or check_verti(i,j) or check_left_diag(i,j) or check_right_diag(i,j):
                 if arr[i][j] == 1:
                     answer = [1, (i,j)]
                 else:
@@ -72,6 +73,6 @@ for i in range(19):
 
 if answer != 0:
     print(answer[0])
-    print(answer[1][0], answer[1][1])
+    print(answer[1][0]+1, answer[1][1]+1)
 else:
     print(0)
