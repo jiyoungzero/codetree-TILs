@@ -11,7 +11,11 @@ for i in range(n):
 setNum = list(set(arr))
 
 for i in range(len(setNum)):
-    if k-setNum[i] in numDict.keys():
-        answer += ((numDict[setNum[i]])*numDict[k-setNum[i]])
+    if (setNum[i] == (k-setNum[i])) and setNum[i] in numDict.keys():
+        answer += ((numDict[setNum[i]]*(numDict[setNum[i]]-1))//2)
+    else:
+        if k-setNum[i] in numDict.keys():
+            answer += ((numDict[setNum[i]])*numDict[k-setNum[i]]//2)
+    #print(answer,((numDict[setNum[i]]*(numDict[setNum[i]]-1))//2))
 
-print(answer//2)
+print(answer)
