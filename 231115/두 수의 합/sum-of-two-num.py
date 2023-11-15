@@ -12,10 +12,10 @@ setNum = list(set(arr))
 
 for i in range(len(setNum)):
     if (setNum[i] == (k-setNum[i])) and setNum[i] in numDict.keys():
-        answer += ((numDict[setNum[i]]*(numDict[setNum[i]]-1))//2)
+        answer += ((numDict[setNum[i]]*(numDict[setNum[i]]-1)))
     else:
         if k-setNum[i] in numDict.keys():
-            answer += ((numDict[setNum[i]])*numDict[k-setNum[i]]//2)
+            answer += ((numDict[setNum[i]])*numDict[k-setNum[i]])
     #print(answer,((numDict[setNum[i]]*(numDict[setNum[i]]-1))//2))
 
-print(answer)
+print(answer//2)
