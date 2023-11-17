@@ -3,18 +3,15 @@ arr = list(map(int, input().split()))
 answer = 0
 dic = dict()
 
+for i in range(n):
+    dic[arr[i]] = arr.count(arr[i])
+
 
 for i in range(n):
-    for j in range(i+1, n):
-        ele = arr[i] + arr[j]
-
-        diff = k-ele
+    dic[arr[i]] -= 1
+    for j in range(i):
+        diff = k - (arr[i]+arr[j])
         if diff in dic:
             answer += dic[diff]
-        
-    if arr[i] in dic:
-        dic[arr[i]] += 1
-    else:
-        dic[arr[i]] = 1
 
 print(answer)
