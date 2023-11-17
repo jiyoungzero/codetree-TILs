@@ -9,12 +9,12 @@ for i in range(n):
         ele = arr[i] + arr[j]
 
         diff = k-ele
-        if diff in dic.keys():
+        if diff in dic:
             answer += dic[diff]
         
-    if ele in dic.keys():
-        dic[ele] += 1
+    if arr[i] in dic:
+        dic[arr[i]] += 1
     else:
-        dic[ele] = 1
+        dic[arr[i]] = 1
 
 print(answer)
