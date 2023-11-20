@@ -5,11 +5,11 @@ input = sys.stdin.readline
 
 
 n = int(input())
-lines = [0]*101
+lines = [0]*200
 
 for _ in range(n):
     s, e = map(int, input().split())
-    for i in range(s, e):
+    for i in range(s+100, e+100):
         lines[i] += 1
 
 print(max(lines))
