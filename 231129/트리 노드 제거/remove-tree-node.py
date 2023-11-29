@@ -17,15 +17,37 @@ for child, p in enumerate(parent):
 
 
 
-# 삭제하고자 하는 본인노드 자식 지우기
-del tree[del_node]
+# 삭제하고자 하는 본인노드 자식 + 그의 자식까지 지우기
+# del tree[del_node]
+del_lst = [del_node] # 삭제해야 할 노드들
+delAll = False 
 
+while not delAll:
+    tmp = []
+    delAll = True 
+    for node in del_lst:
+        if len(tree[node]) != 0:
+            delAll = False
+    if delAll:
+        break
+    
+    while del_lst:
+        node = del_lst.pop()
+        tmp = tree[node]
+        for t in tree:
+            if node in t:
+                t.remove(node)
+        if tree[node] : 
+            tree[node] = [] 
+    del_lst = tmp
+
+
+    
 
 answer = 0
-# 삭제하고자 하는 본인노드 지우기
 for t in tree:
-    if del_node in t:
-        answer += (len(t) - 1)
-    elif len(t) > 0:
-        answer += (len(t))
+    answer += (len(t))
+
+
+
 print(answer)
