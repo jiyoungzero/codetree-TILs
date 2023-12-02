@@ -4,7 +4,7 @@ input =sys.stdin.readline
 
 m = int(input())
 graph = [[] for _ in range(10001)]
-flag1, flag2, flag3 = False, False, True
+flag1, flag2, flag3 = True, True, True
 root = -1
 nodes = set()
 
@@ -15,7 +15,7 @@ for _ in range(m):
     nodes.add(b)
 
 # 진입차수 세기
-in_node =[0] *(m+2)
+in_node =[0] *(100002)
 
 for g in graph:
     for node in g:
@@ -23,17 +23,20 @@ for g in graph:
 
 in_node[0] = -1 # 루트노드로 잡히지 않게.
 # 진입차수가 0인 것이 하나만 있는지 체크
-if in_node.count(0) == 1:
-    flag1 = True
-    root = in_node.index(0)
-# 루트 노드가 없는 경우, 
-if root == -1:
+rootnode_cnt = 0
+innode_cnt = 0
+for node in nodes:
+    if in_node[node] == 0:
+        rootnode_cnt += 1
+    elif in_node[node] == 1:
+        innode_cnt += 1
+
+# 조건1, 조건2
+if rootnode_cnt != 1:
     flag1 = False
+if innode_cnt != m :
+    flag2 = False
 
-
-# 조건2
-if in_node.count(1) == m:
-    flag2 = True
 
 # 조건3
 visited = [False]*int(100001)
@@ -48,6 +51,7 @@ dfs(root)
 for node in nodes:
     if not root and not visited[node]:
         flag3 = False
+
 
 
 if flag1 and flag2 and flag3:
