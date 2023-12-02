@@ -5,7 +5,7 @@ input =sys.stdin.readline
 m = int(input())
 graph = [[] for _ in range(10001)]
 flag1, flag2, flag3 = False, False, True
-root = 0
+root = -1
 nodes = set()
 
 for _ in range(m):
@@ -27,7 +27,7 @@ if in_node.count(0) == 1:
     flag1 = True
     root = in_node.index(0)
 # 루트 노드가 없는 경우, 
-if root == 0:
+if root == -1:
     flag1 = False
 
 
