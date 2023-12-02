@@ -26,6 +26,9 @@ in_node[0] = -1 # 루트노드로 잡히지 않게.
 if in_node.count(0) == 1:
     flag1 = True
     root = in_node.index(0)
+# 루트 노드가 없는 경우, 
+if root == 0:
+    flag1 = False
 
 
 # 조건2
