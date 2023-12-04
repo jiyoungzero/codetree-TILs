@@ -1,39 +1,44 @@
-import sys
-input =sys.stdin.readline
+# 변수 선언 및 입력:
+n, m = tuple(map(int, input().split()))
+edges = [[] for _ in range(n + 1)]
+visited = [False] * (n + 1)
+dist = [
+    [0] * (n + 1)
+    for _ in range(n + 1)
+]
+
+# n - 1개의 간선 정보를 입력받습니다.
+for _ in range(n - 1):
+    x, y, d = tuple(map(int, input().split()))
+
+    # 간선 정보를 인접리스트에 넣어줍니다.
+    edges[x].append((y, d))
+    edges[y].append((x, d))
 
 
-n, m = map(int, input().split())
-graph = [[] for _ in range(n+1)]
-answer = []
+# DFS를 통해 st로부터 모든 정점까지의 거리를 탐색합니다.
+def dfs(st, x):
+    for y, d in edges[x]:
+        # 이미 방문한 노드는 스킵합니다.
+        if visited[y]: 
+            continue
+        
+        visited[y] = True
 
-for _ in range(n-1):
-    a, b, c = map(int, input().split())
-    graph[a].append((b, c)) # to, len
-    graph[b].append((a, c))
+        # st로부터의 거리를 갱신합니다.
+        dist[st][y] = dist[st][x] + d
+        dfs(st, y)
 
 
+# 각 n개의 정점에 대해, 모든 노드간의 거리를 DFS로 갱신해줍니다.
+for i in range(1, n + 1):
+    for j in range(1, n + 1): 
+        visited[j] = False
+    
+    visited[i] = True
+    dfs(i, i) # start, now_node
 
+# m개의 노드 쌍을 입력받고, 두 노드 쌍 간의 거리를 바로 출력해줍니다.
 for _ in range(m):
-    visited = [False]*1001
-
-    def getDistance(from_, to_, dist): 
-        global answer
-        if from_ == to_:
-            answer.append(dist)
-            return 
-        for leaf in graph[from_]:
-            if not visited[leaf[0]]:
-                dist += leaf[1]
-                visited[leaf[0]] = True
-
-                getDistance(leaf[0], to_, dist)
-
-                dist -= leaf[1]
-
-
-    a, b = map(int, input().split())
-    visited[a] = True
-    getDistance(a,b,0)
-
-for i in range(m):
-    print(answer[i])
+    x, y = tuple(map(int, input().split()))
+    print(dist[x][y])
