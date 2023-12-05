@@ -11,7 +11,9 @@ for i in range(n):
     tmp = 0
     for j in range(i+2,n):
         tmp = arr[i] + arr[j]
-    answer = max(answer, tmp)
+        answer = max(answer, tmp)
+
+    
 
 
 print(answer)
