@@ -26,7 +26,7 @@ def in_range(x, y):
 def search(lst):
     global checked
     global answer
-    for jump in horiz:
+    for jump in lst:
         tmp = ''
         tmp_check = []
         for ji,jj in jump:
@@ -37,7 +37,7 @@ def search(lst):
             if len(tmp) == 3 and tmp_check not in checked and (tmp == 'LEE' or tmp == 'EEL'):
                 answer += 1
                 checked.append(tmp_check)
-                print(tmp, tmp_check)
+
 
 for i in range(n):
     for j in range(m):
