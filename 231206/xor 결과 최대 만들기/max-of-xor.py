@@ -8,7 +8,7 @@ answer = 0
 
 
 def do_xor(lst):
-    result = 1
+    result = lst[0]
     if len(lst) > 1:
         for ele in lst[1:]:
             result ^= ele
@@ -16,7 +16,7 @@ def do_xor(lst):
 
 def backtracking(selected, depth):
     global answer
-    if depth == m:
+    if len(selected) == m:
         answer = max(answer, do_xor(selected))
         return
     for i in range(depth, n):
