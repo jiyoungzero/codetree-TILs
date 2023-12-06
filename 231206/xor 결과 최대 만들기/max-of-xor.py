@@ -5,28 +5,34 @@ input = sys.stdin.readline
 n, m = map(int, input().split())
 arr = list(map(int, input().split()))
 answer = 0
+visited = [False]*(n+1)
 
 
-def do_xor(lst):
-    result = lst[0]
-    if len(lst) > 1:
-        for ele in lst[1:]:
-            result ^= ele
+def do_xor():
+    result = 0
+    for i in range(n):
+        if visited[i]:
+            result ^= arr[i]
     return result
 
-def backtracking(selected, depth):
+def backtracking(depth, cnt):
     global answer
-    if len(selected) == m:
-        answer = max(answer, do_xor(selected))
+    if cnt == m:
+        answer = max(answer, do_xor())
         return
     
     if depth == n:
         return 
-    for i in range(depth, n):
-        selected.append(arr[i])
-        backtracking(selected, depth+1)
-        selected.pop()
+    
+
+    visited[depth] = True
+    backtracking(depth+1, cnt+1)
+    visited[depth] = False
+
+    backtracking(depth + 1,cnt)
+        
 
 
-backtracking([], 0)
+
+backtracking(0,0)
 print(answer)
