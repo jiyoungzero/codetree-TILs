@@ -24,7 +24,6 @@ def backtracking(selected, depth):
         backtracking(selected, depth+1)
         selected.pop()
 
-        backtracking(selected, depth+1)
 
 backtracking([], 0)
 print(answer)
