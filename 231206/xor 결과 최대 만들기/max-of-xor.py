@@ -19,6 +19,9 @@ def backtracking(selected, depth):
     if len(selected) == m:
         answer = max(answer, do_xor(selected))
         return
+    
+    if depth == n:
+        return 
     for i in range(depth, n):
         selected.append(arr[i])
         backtracking(selected, depth+1)
