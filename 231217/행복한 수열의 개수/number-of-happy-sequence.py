@@ -1,6 +1,6 @@
 import sys
 input = sys.stdin.readline
-from collections import Counter, defaultdict 
+
 
 
 
@@ -10,17 +10,29 @@ answer = 0
 
 # 행 
 for i in range(n):
-    for key, value in dict(Counter(arr[i])).items():
-        if value == m:
-            answer += 1
-            break
+    start = arr[i][0]
+    tmp = 0
+    for j in range(1, n):
+        if start == arr[i][j]:
+            tmp += 1
+        else:
+            tmp = 0
+        start = arr[i][j]
+    if tmp >= m:
+        answer += 1
+
+
+            
 # 열
 for j in range(n):
-    tmp_dict = defaultdict(int)
-    for i in range(n):
-        tmp_dict[arr[i][j]] += 1
-    for key, value in tmp_dict.items():
-        if value == m:
-            answer += 1
-            break
+    start = arr[0][j]
+    tmp = 0
+    for i in range(1, n):
+        if start == arr[i][j]:
+            tmp += 1
+        else:
+            tmp = 0
+        start = arr[i][j]
+    if tmp >= m:
+        answer += 1
 print(answer)
