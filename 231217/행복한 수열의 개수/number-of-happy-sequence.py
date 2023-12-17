@@ -37,4 +37,5 @@ for j in range(n):
         start = arr[i][j]
         if tmp >= m:
             answer += 1
+            break
 print(answer)
