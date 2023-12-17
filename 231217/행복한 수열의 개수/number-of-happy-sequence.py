@@ -18,8 +18,10 @@ for i in range(n):
         else:
             tmp = 1
         start = arr[i][j]
-    if tmp >= m:
-        answer += 1
+        if tmp >= m:
+            answer += 1
+            break
+
 
 
             
@@ -33,6 +35,6 @@ for j in range(n):
         else:
             tmp = 1
         start = arr[i][j]
-    if tmp >= m:
-        answer += 1
+        if tmp >= m:
+            answer += 1
 print(answer)
