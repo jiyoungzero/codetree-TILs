@@ -11,9 +11,7 @@ nums_cnt.sort(key=lambda x:(x[0]))
 answer = 0
 i, j = 0, m-1
 
-while 1:
-    if i >= m//2:break
-
+while i <= j:
     t = min(nums_cnt[i][1], nums_cnt[j][1])
     if i == j:
         t //= 2
