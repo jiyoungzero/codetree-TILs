@@ -15,6 +15,7 @@ i, j = 0, m-1
 while 1:
     if all(visited):
         break
+
     t = min(nums_cnt[i][1], nums_cnt[j][1])
     if i == j:
         t //= 2
@@ -22,9 +23,13 @@ while 1:
     nums_cnt[i][1] -= t
     nums_cnt[j][1] -= t
     if nums_cnt[i][1] <= 0:
-        i += 1
         visited[i] = True
+        i += 1
+        i = min(m, i)
+        
     if nums_cnt[j][1] <= 0:
-        j -= 1
         visited[j] = True
+        j -= 1
+        j = max(0, j)
+
 print(answer)
