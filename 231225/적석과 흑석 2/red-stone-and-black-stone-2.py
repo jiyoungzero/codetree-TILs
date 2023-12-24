@@ -17,9 +17,8 @@ black_stones.sort()
 for j in range(n):
     e, s = black_stones[j]
     t_idx = red_stones.bisect_left(s)
-    if t_idx != c:
-        if red_stones[t_idx] <= e:
-            answer += 1
-            red_stones.remove(red_stones[t_idx])
+    if t_idx < len(red_stones) and red_stones[t_idx] <= e:
+        answer += 1
+        red_stones.remove(red_stones[t_idx])
 
 print(answer)
