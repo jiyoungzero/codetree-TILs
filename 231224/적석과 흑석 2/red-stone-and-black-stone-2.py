@@ -8,13 +8,13 @@ answer = 0
 
 red_stones.sort()
 black_stones.sort()
-
+visited = [False]*len(black_stones)
 for r in red_stones:
-    for c in black_stones:
+    for j, c in enumerate(black_stones):
         a, b = c
-        if a <= r <= b:
+        if a <= r <= b and not visited[j]:
             answer += 1
-            black_stones.remove(c)
+            visited[j] = True
             break
 
 print(answer)
