@@ -12,6 +12,7 @@ visited = [False]*len(black_stones)
 for r in red_stones:
     for j, c in enumerate(black_stones):
         a, b = c
+        if r < a or b < r:continue
         if a <= r <= b and not visited[j]:
             answer += 1
             visited[j] = True
