@@ -11,24 +11,11 @@ arr = list(map(int, input().split()))
 answer = 0
 
 while success(arr) == False:
-    f_gap, s_gap = abs(arr[0]-arr[1]), abs(arr[1]-arr[2])
-    if f_gap == 2 or s_gap ==2 :
+    if arr[0] + 2 == arr[1]:
         answer += 1
         break
-    if f_gap >= s_gap:
-        if s_gap % 2 == 0:
-            jump = s_gap//2
-        else:
-            jump = s_gap//2 +1
-        arr[0] = arr[1] + jump
-    else:
-        if f_gap % 2 == 0:
-            jump = f_gap//2
-        else:
-            jump = f_gap//2 +1
-        arr[2] = arr[0] + jump
-    arr.sort()
-    answer += 1
+    arr[2] = arr[0] + 2
+    answer +=1
 
     
 
