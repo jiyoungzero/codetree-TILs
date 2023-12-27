@@ -11,6 +11,9 @@ arr = list(map(int, input().split()))
 answer = 0
 
 while success(arr) == False:
+    if arr[1] + 2 == arr[2]:
+        answer += 1
+        break
     if arr[0] + 2 == arr[1]:
         answer += 1
         break
