@@ -1,28 +1,25 @@
 import sys
 input = sys.stdin.readline
+# import functools
 
 n, m = map(int, input().split())
 arr = list(map(int, input().split()))
 answer = 0
 
-# xor : ^
-def backtracking(depth, selected):
+def find_max_xor(cur_idx, cnt, cur_val):
     global answer
-
-    if len(selected) == m:
-        result = selected[0]
-        for i in range(1, m):
-            result ^= selected[i]
-        answer = max(answer, result)
+    if cnt == m:
+        answer = max(answer, cur_val)
         return 
-    if depth == n:
-        return
-    
-    selected.append(arr[depth])
-    backtracking(depth+1, selected)
-    selected.pop()
 
-    backtracking(depth+1, selected)
-backtracking(0, [])
+    if cur_idx == n:
+        return 
 
+    # 선택하는 경우
+    find_max_xor(cur_idx+1, cnt+1, cur_val^arr[cur_idx])
+
+    # 선택 안하는 경우
+    find_max_xor(cur_idx+1, cnt, cur_val)
+
+find_max_xor(0,0,1)
 print(answer)
