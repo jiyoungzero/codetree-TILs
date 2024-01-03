@@ -21,5 +21,5 @@ def find_max_xor(cur_idx, cnt, cur_val):
     # 선택 안하는 경우
     find_max_xor(cur_idx+1, cnt, cur_val)
 
-find_max_xor(0,0,1)
+find_max_xor(0,0,0)
 print(answer)
