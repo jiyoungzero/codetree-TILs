@@ -31,8 +31,7 @@ def bfs(cur_x, cur_y):
 
     while que:
         x, y = que.popleft()
-        if arr[x][y] == -1:
-            continue
+
         if (x, y) == (n-1, m-1):
             answer = 1
             return 
@@ -40,6 +39,7 @@ def bfs(cur_x, cur_y):
             nx, ny = x+dxs[k], y +dys[k]
             if can_go(nx, ny):
                 que.append((nx, ny))
+                arr[nx][ny] = VISITED
 
 bfs(0 ,0)
 print(answer)
