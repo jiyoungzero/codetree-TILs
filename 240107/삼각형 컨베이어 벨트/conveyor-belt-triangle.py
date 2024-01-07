@@ -19,5 +19,5 @@ while t:
 
 for i in range(3*n):
     print(que.popleft(), end=' ')
-    if i%3 == 2:
+    if i%n == (n-1):
         print()
