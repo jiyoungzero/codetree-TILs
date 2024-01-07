@@ -41,16 +41,8 @@ def bfs(copy_arr, visited):
 
 # 백트래킹으로 돌을 적절히 제거한 arr를 리턴하여 bfs를 실행한다. 
 def remove_stone(depth, tmp_arr, cnt):
-    global answer
     if cnt == m:
-        result = 0
-        visited = [[False]*n for _ in range(n)]
-        for start in starts:
-            sx, sy = start
-            que.append((sx-1, sy-1))
-            visited[sx-1][sy-1] = True
-            result += bfs(tmp_arr, visited)
-        answer = max(answer, result+1)
+        find_max(tmp_arr)
         return 
 
     if depth == len(stones):
@@ -64,6 +56,19 @@ def remove_stone(depth, tmp_arr, cnt):
 
     # 제거안하기
     remove_stone(depth+1, tmp_arr, cnt)
+
+
+def find_max(tmp_arr):
+    global answer
+    result = 0
+    visited = [[False]*n for _ in range(n)]
+    for start in starts:
+        sx, sy = start
+        que.append((sx-1, sy-1))
+        visited[sx-1][sy-1] = True
+        result += bfs(tmp_arr, visited)
+    answer = max(answer, result+1)
+    return 
     
 tmp_arr = [a[:] for a in arr]
 remove_stone(0, tmp_arr, 0)
