@@ -15,7 +15,7 @@ for _ in range(n):
         elif tmp[0] == 'top':
             print(-heap[0])
         else:
-            if len(tmp) == 0:
+            if len(heap) == 0:
                 print(1)
             else:
                 print(0)
