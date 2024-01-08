@@ -18,21 +18,27 @@ def in_range(x, y):
     return True
     
 
-def move(pos, nxtcnt_arr):
-    global cnt_arr
+def move(nxtcnt_arr):
+    global cnt_arr, pos
+    nxt_pos = []
     for r, c in pos:
         fr, fc = -1, -1
         for k in range(4):
             nr, nc = r+dxs[k], c+dys[k]
+            if not in_range(nr, nc):continue
+
             if in_range(nr, nc):
                 if (fr, fc) == (-1, -1):
                     fr, fc = nr, nc
-                elif arr[fr][fc] < arr[nc][nc]:
+                elif arr[fr][fc] < arr[nr][nc]:
                     fr, fc = nr, nc
                 else:
                     continue
         nxtcnt_arr[fr][fc] += 1
+        nxt_pos.append((fr, fc))
+
     cnt_arr = [row[:] for row in nxtcnt_arr]
+    pos = nxt_pos
     return 
 
 
@@ -49,10 +55,11 @@ for _ in range(t):
     # 이동할 수 있는 곳 찾기
     # nxtcnt_arr에 이동한 곳에 구슬 개수 넣기   
     nxtcnt_arr = [[0]*n for _ in range(n)]
-    move(pos, nxtcnt_arr) 
+    move(nxtcnt_arr) 
 
     # cnt_arr에서 1이상인 곳 0으로 만들기
     find_collision()
+
 
 answer = 0
 for i in range(n):
