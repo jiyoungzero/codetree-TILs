@@ -16,6 +16,8 @@ def down_bar():
         for row in range(n-1, -1, -1):
             if arr[row][col] == BLOCK:
                 stop_row = min(stop_row, row-1)
+                if stop_row == -1:
+                    stop_row = 0
 
 
 def print_finish_arr(stop_row):
