@@ -6,21 +6,16 @@ BLOCK = 1
 
 n, m, k = map(int, input().split())
 arr = [list(map(int, input().split())) for _ in range(n)]
-tmp_arr = [row[:] for row in arr]
-stop_row = int(1e9)
 
 # (k-1)~(k+m-2)
 def down_bar():
-    global stop_row
-    for col in range(k-1, k+m-1):
-        for row in range(n-1, -1, -1):
-            if arr[row][col] == BLOCK:
-                stop_row = min(stop_row, row-1)
-                if stop_row == -1:
-                    stop_row = 0
+    for row in range(n):
+        if 1 in arr[row][k-1:k+m-1]:
+            return row - 1
+    return 0
 
-
-def print_finish_arr(stop_row):
+def print_finish_arr():
+    stop_row = down_bar()
     answer = [row[:] for row in arr]
     for col in range(k-1, k+m-1):
         answer[stop_row][col] = 1
@@ -31,4 +26,4 @@ def print_finish_arr(stop_row):
         print()
 
 down_bar()
-print_finish_arr(stop_row)
+print_finish_arr()
