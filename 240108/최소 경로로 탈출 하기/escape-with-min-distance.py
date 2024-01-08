@@ -20,6 +20,9 @@ def bfs():
         x, y = que.popleft()
         for k in range(4):
             nx, ny = x+dxs[k], y+dys[k]
+            if (nx, ny) == (n-1, m-1):
+                return arr[x][y]
+
             if not in_range(nx, ny):
                 continue
             if visited[nx][ny]:
@@ -29,7 +32,7 @@ def bfs():
                 visited[nx][ny] = True
                 arr[nx][ny] = arr[x][y]+1
                 que.append((nx, ny))
+    return -1
 
 
-bfs()
-print(arr[-1][-1]-1)
+print(bfs())
