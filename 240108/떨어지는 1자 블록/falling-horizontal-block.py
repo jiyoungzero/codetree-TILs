@@ -12,7 +12,7 @@ def down_bar():
     for row in range(n):
         if 1 in arr[row][k-1:k+m-1]:
             return row - 1
-    return 0
+    return n-1
 
 def print_finish_arr():
     stop_row = down_bar()
