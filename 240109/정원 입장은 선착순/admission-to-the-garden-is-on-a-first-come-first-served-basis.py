@@ -8,10 +8,11 @@ people = []
 for i in range(n):
     a, t = tuple(map(int, input().split()))
     people.append((a, i+1, t))
-people.sort()
+
 exit_time = 0
 people.append((int(1e9), n+1, 0))
 
+people.sort()
 for a, num, t in people:
     # 웨이팅도 있고, 이제 내가 들어갈 수 있을 때,
     while exit_time <= a and waiting:
