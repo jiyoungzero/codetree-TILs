@@ -17,7 +17,9 @@ for _ in range(t):
 
         if i%2 == 0:
             # 중앙값 구하기
-            if len(small) > len(big):
+            if len(small) == len(big):
+                pass
+            elif len(small) > len(big):
                 tmp = -heapq.heappop(small)
                 if middle > tmp:
                     heapq.heappush(big, middle)
