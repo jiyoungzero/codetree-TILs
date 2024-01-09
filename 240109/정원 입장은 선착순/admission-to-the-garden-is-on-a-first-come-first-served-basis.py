@@ -10,7 +10,7 @@ for i in range(n):
     people.append((a, i+1, t))
 people.sort()
 exit_time = 0
-people.append((int(1e9), int(1e9), 0))
+people.append((int(1e9), n+1, 0))
 
 for a, num, t in people:
     # 웨이팅도 있고, 이제 내가 들어갈 수 있을 때,
