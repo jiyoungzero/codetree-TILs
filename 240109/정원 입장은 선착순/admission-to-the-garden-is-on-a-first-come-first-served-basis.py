@@ -16,12 +16,12 @@ people.sort()
 for a, num, t in people:
     # 웨이팅도 있고, 이제 내가 들어갈 수 있을 때,
     while exit_time <= a and waiting:
-            (_, na, nt) = heapq.heappop(waiting)
-            answer  = max(answer, exit_time-na)
-            exit_time += nt
+        (_, na, nt) = heapq.heappop(waiting)
+        answer  = max(answer, exit_time-na)
+        exit_time += nt
 
     # 웨이팅도 없고 내가 들어갈 수 있을때
-    if a > exit_time:
+    if a >= exit_time:
         exit_time += (a+t)
     # 웨이팅은 없으나 내가 들어갈 수 없을 때
     else:
