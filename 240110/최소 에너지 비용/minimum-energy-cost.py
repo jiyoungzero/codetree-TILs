@@ -17,9 +17,18 @@ answer = 0
 # 아니라면 충전안함
 # 대신 첫 위치에서 cost가 다음 cost보다 크더라도 충전
 for i in range(n-1):
-    print(dp)
-    plus = (dp[i]-dp[i+1])
-    answer += (cost[i]*plus)
-    if plus >= dp[i+1]:
-        break
+    if cost[i] < cost[i+1]:
+        nxt = i+1
+        while nxt < len(cost) and cost[i] < cost[nxt]:
+            nxt += 1
+        nxt = min(len(cost)-1, nxt)
+        answer += (dp[i]-dp[nxt])*cost[i]
+    else:
+        if i == 0:
+            answer += (dp[i]-dp[i+1])*cost[i]
+    
+    # plus = (dp[i]-dp[i+1])
+    # answer += (cost[i]*plus)
+    # if plus >= dp[i+1]:
+    #     break
 print(answer)
