@@ -11,9 +11,8 @@ for idx, val in enumerate(bomb):
     bomb_pos[val].append(idx)
 
 for key, val in bomb_pos.items():
-    
     for i in range(len(val)-1):
-        if val[i]+k <= val[i+1]:
+        if val[i]+k >= val[i+1]:
             answer = max(answer, key)
             break
 print(answer)
