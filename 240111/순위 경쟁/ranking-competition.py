@@ -7,11 +7,11 @@ a, b, c = 0, 0, 0
 answer = 0
 
 def get_score(aa, bb, cc):
-    if aa > bb > cc or aa > cc > bb:
+    if aa > bb > cc or aa > cc > bb or aa > cc == bb:
         return 0
-    elif bb > aa> cc or bb > cc > aa:
+    elif bb > aa> cc or bb > cc > aa or bb > cc == aa:
         return 1
-    elif cc > aa> bb or cc>bb>aa:
+    elif cc > aa> bb or cc>bb>aa or cc > bb == aa:
         return 2
     elif aa == bb > cc:
         return 3
