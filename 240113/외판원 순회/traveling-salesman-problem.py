@@ -12,7 +12,7 @@ def choose(selected):
         answer = min(get_min_route(selected+[0]), answer)
         return 
     for i in range(1, n):
-        if visited[i]:continue
+        if visited[i] or arr[selected[-1]][i] == 0:continue
         selected.append(i)
         visited[i] = True
 
@@ -30,7 +30,7 @@ def get_min_route(sel):
         from_ = to_
         i += 1
         to_ = sel[i]
-    result += arr[sel[-2]][sel[-1]]
+    result += arr[from_][to_]
         
     return result
         
