@@ -9,6 +9,8 @@ answer = int(1e9)
 def choose(selected):
     global answer
     if len(selected) == n:
+        if arr[selected[-2]][-1] == 0:
+            return
         answer = min(get_min_route(selected+[0]), answer)
         return 
     for i in range(1, n):
