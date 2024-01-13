@@ -11,7 +11,7 @@ def choose(selected):
     global answer
     if len(selected) == n:
         tmp = 0
-        for i, j in zip(selected, [0,1,2]):
+        for i, j in zip(selected, [i for i in range(n)]):
             tmp += arr[i][j]
 
         answer = max(answer, tmp)
