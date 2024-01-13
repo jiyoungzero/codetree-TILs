@@ -9,12 +9,14 @@ answer = int(1e9)
 def choose(selected):
     global answer
     if len(selected) == n:
-        if arr[selected[-2]][-1] == 0:
+        selected = selected + [0]
+        if arr[selected[-2]][selected[-1]] == 0:
             return
-        answer = min(get_min_route(selected+[0]), answer)
+        else:
+            answer = min(get_min_route(selected), answer)
         return 
     for i in range(1, n):
-        if visited[i] or arr[selected[-1]][i] == 0:continue
+        if visited[i] or arr[selected[-1]][i] == 0: continue
         selected.append(i)
         visited[i] = True
 
