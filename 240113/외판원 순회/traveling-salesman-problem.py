@@ -1,44 +1,44 @@
 import sys
-input = sys.stdin.readline
+INT_MAX = sys.maxsize
 
 n = int(input())
-arr = [list(map(int, input().split())) for _ in range(n)]
+cost = [list(map(int, input().split()))for _ in range(n)]
 visited = [False]*n
-answer = int(1e9)
+picked = []
+answer = INT_MAX
 
-def choose(selected):
+
+def find_min(cnt):
     global answer
-    if len(selected) == n:
-        selected = selected + [0]
-        if arr[selected[-2]][selected[-1]] == 0:
-            return
-        else:
-            answer = min(get_min_route(selected), answer)
+    # 모든 지점을 선택했을 시,
+    # 최소 비용 계산
+    if cnt == n:
+        total_cost = 0
+        for i in range(n-1):
+            cur_cost = cost[picked[i]][picked[i+1]]
+            if cur_cost == 0:
+                return
+            total_cost += cur_cost
+        final_cost = cost[picked[-1]][0]
+        if final_cost == 0:return
+
+        total_cost += final_cost
+        answer = min(answer, total_cost)
         return 
-    for i in range(1, n):
-        if visited[i] or arr[selected[-1]][i] == 0: continue
-        selected.append(i)
+
+
+    # 방문할 지점 선택
+    for i in range(n):
+        if visited[i]:
+            continue
         visited[i] = True
+        picked.append(i)
 
-        choose(selected)
+        find_min(cnt+1)
 
-        selected.pop()
         visited[i] = False
-
-def get_min_route(sel):
-    i = 1
-    from_, to_ = sel[0], sel[i]
-    result = 0
-    while to_ != sel[-1]:
-        result += arr[from_][to_]
-        from_ = to_
-        i += 1
-        to_ = sel[i]
-    result += arr[from_][to_]
-        
-    return result
-        
-
-
-choose([0])
+        picked.pop()
+visited[0] = True
+picked = [0]
+find_min(1)
 print(answer)
