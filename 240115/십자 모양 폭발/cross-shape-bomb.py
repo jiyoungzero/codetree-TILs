@@ -1,56 +1,43 @@
-import sys
-input = sys.stdin.readline
-
-
 n = int(input())
-arr = [list(map(int, input().split())) for _ in range(n)]
-r, c = map(int, input().split())
-r -= 1
-c -= 1
+grid = [
+    list(map(int, input().split()))
+    for _ in range(n)
+]
+next_grid = [
+    [0 for _ in range(n)]
+    for _ in range(n)
+]
 
-dxs, dys = [0,0,1,-1],[1,-1,0,0]
+def in_range(x, y, center_x, center_y, bomb_range):
+    return (x == center_x or y == center_y) and \
+    abs(x-center_x)+abs(y-center_y) < bomb_range
 
-def in_range(x, y):
-    return 0 <= x < n and 0 <= y < n
+def bomb(center_x, center_y):
+    global grid, next_grid
+    bomb_range= grid[center_x][center_y]
 
-# 터뜨리기
-def bomb(x, y):
-    times = arr[x][y] - 1
-    arr[x][y] = 0 
-    for k in range(4):
-        tmp = times
-        tmp_x, tmp_y = x, y 
-        while tmp > 0: 
-            tmp -= 1
-            nx, ny = tmp_x + dxs[k], tmp_y + dys[k]
-            # 범위 내에 있는지
-            if not in_range(nx, ny):
-                break
-            arr[nx][ny] = 0
-            tmp_x, tmp_y = nx, ny
-            
-# 내리기
-def down():
-    global arr
-    tmp_arr = [[0]*n for _ in range(n)]
-    for col in range(n):
-        t_row = n-1
-        for row in range(n-1, -1, -1):
-            if arr[row][col] > 0:
-                tmp_arr[t_row][col] = arr[row][col]
-                t_row -= 1
-            else:
-                continue
+    # step1. 폭탄이 터진 곳은 0으로 채우기
+    for i in range(n):
+        for j in range(n):
+            if in_range(i, j, center_x, center_y, bomb_range):
+                grid[i][j] = 0
 
-    arr = [row[:] for row in tmp_arr]
-    return
-                
+    # step2. 터진 이후의 결과는 next_grid에 옮기기
+    for j in range(n):
+        next_row = n-1
+        for i in range(n-1, -1, -1):
+            if grid[i][j]:
+                next_grid[next_row][j] = grid[i][j]
+                next_row -= 1 
 
+    # step3. 원래의 grid로 다시 옮기기
+    grid = [row[:] for row in next_grid]
+    return 
 
+r, c = tuple(map(int, input().split()))
+bomb(r - 1, c - 1)
 
-bomb(r, c)
-down()
-for row in arr:
-    for ele in row:
-        print(ele, end =' ')
+for i in range(n):
+    for j in range(n):
+        print(grid[i][j], end=" ")
     print()
