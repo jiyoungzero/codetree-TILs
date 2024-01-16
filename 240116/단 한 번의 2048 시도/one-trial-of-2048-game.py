@@ -3,7 +3,7 @@ input = sys.stdin.readline
 
 arr = [list(map(int, input().split())) for _ in range(4)]
 direction = {'L':3, 'R':1, "U":2, "D":4}
-cur_dir = input()
+cur_dir = input().rstrip()
 
 
 # 시계방향 90도 회전 
