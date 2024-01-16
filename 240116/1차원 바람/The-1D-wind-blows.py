@@ -11,21 +11,10 @@ for _ in range(q):
     commands.append((int(r)-1, d))
 
 def shift_arr(cur_dir, row):
-    tmp_arr = [[0]*m for _ in range(n)]
     if cur_dir == 'L':
-        for col in range(m):
-            if col == (m-1):
-                tmp_arr[row][0] = arr[row][col]
-            else:
-                tmp_arr[row][col+1] = arr[row][col]
+        arr[row].insert(0, arr[row].pop())
     else:
-        for col in range(m):
-            if col == 0:
-                tmp_arr[row][m-1] = arr[row][col]
-            else:
-                tmp_arr[row][col-1] = arr[row][col]
-    for col in range(m): # 원본으로 옮기기
-        arr[row][col] = tmp_arr[row][col]
+        arr[row].insert(m-1, arr[row].pop(0))
 
 
 def can_affect(cmd, row):
