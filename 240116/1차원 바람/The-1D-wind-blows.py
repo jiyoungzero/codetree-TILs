@@ -17,19 +17,18 @@ def shift_arr(cur_dir, row):
         arr[row].insert(m-1, arr[row].pop(0))
 
 
-def can_affect(cmd, row):
-    if cmd == 'up':
-        up = row-1
-        if up >= 0:
-            for col in range(m):
-                if arr[up][col] == arr[row][col]:
-                    return True
-    else:
-        down = row + 1
-        if down < n:
-            for col in range(m):
-                if arr[down][col] == arr[row][col]:
-                    return True
+def have_same_number(cmd, row):
+    if cmd == 'up' and row-1 >= 0:
+        return any(
+            arr[row-1][col] == arr[row][col]
+            for col in range(m)
+        )
+    elif cmd == 'down' and row+1 < n:
+        return any(
+            arr[row+1][col] == arr[row][col]
+            for col in range(m)
+        )
+
     return False
 
 def wind(cur_row, target_row, cur_dir):
@@ -50,8 +49,8 @@ for command in commands:
     r, d = command
     
     shift_arr(d, r) # 중심부 밀고
-    up_flag = can_affect('up',r) # 전파가능한지
-    down_flag = can_affect('down', r)
+    up_flag = have_same_number('up',r) # 전파가능한지
+    down_flag = have_same_number('down', r)
     up, down, cur_dir = r, r, direction.index(d)
     # 주변 전파
     while up_flag or down_flag:
@@ -60,12 +59,12 @@ for command in commands:
             up -= 1
             if up >= 0:
                 wind(up, r, cur_dir)
-                up_flag = can_affect('up', up)
+                up_flag = have_same_number('up', up)
         if down_flag:
             down += 1
             if down < n:
                 wind(down, r, cur_dir)
-                down_flag = can_affect('down',down)
+                down_flag = have_same_number('down',down)
                 # print('now_down_row=', down, 'down_can_affect=', down_flag, 'dir=', direction[cur_dir])
 
 print_arr(arr)
