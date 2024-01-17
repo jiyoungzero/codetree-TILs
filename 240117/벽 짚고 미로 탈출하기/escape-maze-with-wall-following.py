@@ -10,8 +10,9 @@ cur_x, cur_y = tuple(map(int, input().split()))
 arr = [[0]*(n+1) for _ in range(n+1)] 
 for i in range(1, n+1):
     given_row = input().rstrip()
-    for j, ele in enumerate(given_row):
-        arr[i][j+1] = ele
+    for j, ele in enumerate(given_row, start = 1):
+        arr[i][j] = ele
+
 
 visited = [[[False]*DIR_NUM for _ in range(n+1)] for _ in range(n+1)] # 탈출 가능 여부
 answer = 0
@@ -19,7 +20,7 @@ dxs, dys = [0, 1, 0, -1], [1, 0, -1, 0] # 시계방향
 cur_dir = 0
 
 def in_range(x, y):
-    return 1 <= x < n and 1<= y < n  
+    return 1 <= x <= n and 1<= y <= n  
 
 def wall_exist(x, y):
     return in_range(x, y) and arr[x][y] == WALL
