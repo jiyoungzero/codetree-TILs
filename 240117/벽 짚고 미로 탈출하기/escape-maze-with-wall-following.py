@@ -22,7 +22,7 @@ def simulate(sx, sy):
     global check_dir, cur_dir, answer
     que = deque()
     que.append((sx, sy))
-    if arr[1][0] == BLANK:return -1
+    if arr[sx-1][sy] == BLANK:return -1
     while que:
         x, y = que.popleft()
         nx, ny = x+dxs[cur_dir], y+dys[cur_dir]
