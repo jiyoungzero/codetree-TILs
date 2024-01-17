@@ -29,21 +29,21 @@ def simulate(sx, sy):
         dx, dy = x+dxs[check_dir], y+dys[check_dir] # 벽짚은 곳
 
         # print("현재 위치=(",x, y,") 아랫위치 = (", dx, dy,") 직진위치 = (", nx, ny, ")" )
+        if (arr[dx][dy] == WALL and not in_range(nx, ny)): # 탈출
+            return answer
+
 
         if arr[dx][dy] == WALL and arr[nx][ny] == WALL:# 반시계 전환 
             check_dir = (check_dir+3)%4
             cur_dir = (cur_dir+3)%4
-            nx, ny = x+dxs[cur_dir], y+dys[cur_dir]
-            dx, dy = x+dxs[check_dir], y+dys[check_dir]
-        if (arr[dx][dy] == BLANK and not in_range(nx, ny)) \
-        or ( arr[dx][dy] == BLANK and arr[nx][ny] == BLANK): # 시계 전환
+            print("반시계")
+            que.append((x, y))
+        elif arr[dx][dy] == BLANK: # 시계 전환
             check_dir = (check_dir+1)%4
             cur_dir = (cur_dir+1)%4
-            nx, ny = x+dxs[cur_dir], y+dys[cur_dir]
-            dx, dy = nx+dxs[check_dir], ny+dys[check_dir]
+            que.append((x+dxs[cur_dir], y+dys[cur_dir]))
+            answer += 1
 
-        if (arr[dx][dy] == WALL and not in_range(nx, ny)): # 탈출
-            return answer
 
         elif arr[dx][dy] == WALL and arr[nx][ny] == BLANK: # 직진
             que.append((nx, ny))
