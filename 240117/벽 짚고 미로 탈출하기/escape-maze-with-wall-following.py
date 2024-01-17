@@ -36,7 +36,6 @@ def simulate(sx, sy):
         if arr[dx][dy] == WALL and arr[nx][ny] == WALL:# 반시계 전환 
             check_dir = (check_dir+3)%4
             cur_dir = (cur_dir+3)%4
-            print("반시계")
             que.append((x, y))
         elif arr[dx][dy] == BLANK: # 시계 전환
             check_dir = (check_dir+1)%4
