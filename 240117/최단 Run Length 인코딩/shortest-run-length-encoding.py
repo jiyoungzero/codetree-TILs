@@ -11,13 +11,14 @@ def run_length_encoding(arr):
     result = 0
     idx, nxt_idx = 0, 1
     while 1: 
+        cnt = 1
         if idx >= m:
             break       
         while nxt_idx < m and arr[nxt_idx] == arr[idx]:
             idx += 1
+            cnt += 1
             nxt_idx = idx + 1
-
-        result += 2
+        result += (len(str(cnt))+ 1)
         idx = nxt_idx
         nxt_idx = idx + 1
         
