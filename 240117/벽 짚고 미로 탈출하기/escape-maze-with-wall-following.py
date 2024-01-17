@@ -22,13 +22,12 @@ def simulate(sx, sy):
     global check_dir, cur_dir, answer
     que = deque()
     que.append((sx, sy))
-    if arr[sx-1][sy] == BLANK:return -1
+    if arr[sx+1][sy] == BLANK:return -1
     while que:
         x, y = que.popleft()
         nx, ny = x+dxs[cur_dir], y+dys[cur_dir]
         dx, dy = x+dxs[check_dir], y+dys[check_dir] # 벽짚은 곳
 
-        # print("현재 위치=(",x, y,") 아랫위치 = (", dx, dy,") 직진위치 = (", nx, ny, ")" )
         if (arr[dx][dy] == WALL and not in_range(nx, ny)): # 탈출
             return answer
 
