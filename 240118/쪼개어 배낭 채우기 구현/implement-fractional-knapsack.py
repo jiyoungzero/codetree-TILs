@@ -28,4 +28,4 @@ for target in info:
         break
 
 
-print(format(round(answer, 3), '.3f'))
+print(format(answer,'.3f'))
