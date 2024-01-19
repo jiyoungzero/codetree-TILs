@@ -24,9 +24,7 @@ snake_pos.append((cur_x, cur_y)) # 뱀의 몸 위치 정보
 def in_range(x, y):
     return 0 <= x < n and 0 <= y < n
 
-def end_game(x, y, nxt_pos):
-    if  not in_range(x, y): # 범위에 벗어나거나
-        return True
+def dup_snake_pos(x, y, nxt_pos):
     if nxt_pos == APPLE and (x, y) in snake_pos:
         return True
     if nxt_pos == 0 and (x, y) in list(snake_pos)[1:]:
@@ -48,9 +46,15 @@ for command in commands:
     n_dir = direction[d]
     for i in range(p):
         nx, ny = cur_x+n_dir[0], cur_y+n_dir[1]
-        if end_game(nx, ny, arr[nx][ny]): # 게임이 끝나는 경우, 사과가 잇는 곳일 경우 끝에 포함에서 검사, 아닐 경우 끝은 제외하고 검사
+        
+        if not in_range(nx, ny): # 게임이 끝나는 경우, 사과가 잇는 곳일 경우 끝에 포함에서 검사, 아닐 경우 끝은 제외하고 검사
             print(answer+1)
             sys.exit(0)
+        if dup_snake_pos(nx, ny, arr[nx][ny]):
+            print(answer+1)
+            sys.exit(0)
+
+
         else:
             if arr[nx][ny] == APPLE:
                 update_snake_pos(nx, ny, True)
