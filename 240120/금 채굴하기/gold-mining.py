@@ -35,7 +35,7 @@ def get_gold_value(k, i, j):
 
 for i in range(n):
     for j in range(n):
-        for size in range(n):
+        for size in range(n+1):
             gold_value = get_gold_value(size, i, j) 
             if gold_value >= get_find_cost(size):
                 answer = max(answer, gold_value//m)
