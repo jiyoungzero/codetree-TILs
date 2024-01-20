@@ -24,7 +24,7 @@ def get_value(x, y, up_down_side, left_right_side):
         for _ in range(left_right_side):
             nx, ny = x + left_right[i][0], y+left_right[i][1]
             if not in_range(nx, ny):
-                return False
+                return 0
             result += arr[nx][ny]
             x, y = nx, ny
     return result-arr[x][y]
@@ -34,8 +34,6 @@ for i in range(2, n):
     for j in range(1, n-1):
         for up_down_side in range(1, n): 
             for left_right_side in range(1, n):
-                value = get_value(i, j, up_down_side, left_right_side)
-                if value != False :
-                    answer = max(answer,value)
+                answer = max(answer,get_value(i, j, up_down_side, left_right_side))
 
 print(answer)
