@@ -26,7 +26,7 @@ def get_gold_for_k(k, x, y):
     # k == 0인 경우
     if k == 0:return gold_value
         
-    time = get_findcost(k)
+    time = get_findcost(k-1)
     for _ in range(time):
         cur_x, cur_y = que.popleft()
 
@@ -37,6 +37,10 @@ def get_gold_for_k(k, x, y):
                     gold_value += m 
                 visited[nx][ny] = True
             que.append((nx, ny))
+    # if k > 2:
+    #     print("k=", k)
+    #     for row in visited:
+    #         print(*row)
  
     return gold_value
         
@@ -47,7 +51,7 @@ def get_findcost(k):
 
 for i in range(n):
     for j in range(n):
-        for size in range(n+1):
+        for size in range(n+2):
             gold_value = get_gold_for_k(size, i, j)
             gold_cnt = gold_value//m
             if answer < gold_cnt and get_findcost(size) <= gold_value:
