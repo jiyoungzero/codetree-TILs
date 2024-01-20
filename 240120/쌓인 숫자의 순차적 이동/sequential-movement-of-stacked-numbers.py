@@ -23,7 +23,7 @@ def find_ij_idx(num):
 
 def get_max_ij(x, y):
     tmp_max = 0
-    result = (0, 0)
+    result = (x, y)
     for k in range(8):
         nx, ny = x+dxs[k], y+dys[k]
         if not in_range(nx, ny):continue
@@ -43,8 +43,10 @@ for command in commands:
 
     # 8방향에서 최댓값, index찾기 
     mi,mj = get_max_ij(i, j)
+    # 주변이 모두 0이면 움직이지 않는다
+    if (mi, mj) == (i,j):continue
 
-    # stack_arr 위치에 append
+    # 이동 : stack_arr 위치에 합치기
     stack_arr[mi][mj] += stack_arr[i][j][move_idx:]
     del stack_arr[i][j][move_idx:]
 
