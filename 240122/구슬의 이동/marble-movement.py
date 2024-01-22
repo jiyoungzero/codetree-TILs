@@ -1,70 +1,78 @@
-import sys
-input = sys.stdin.readline 
+# 변수 선언 및 입력:
 
-n, m, t, k = map(int, input().split())
-balls = []
-mapper_str_to_num = {"U": 0, "R": 1, "D": 2, "L": 3}
-mapper_num_to_str = {0: 'U', 1: "R", 2:"D", 3:'L'}
-direction = {0:(-1, 0), 1:(0, 1), 2:(1, 0), 3:(0, -1)}
-result_arr = []
+dir_mapper = {
+    "U": 0,
+    "R": 1,
+    "L": 2,
+    "D": 3
+}
 
-for idx in range(m):
-    r, c, d, v = map(str, input().split())
-    r = int(r)-1
-    c = int(c)-1
-    balls.append([True, idx, r, c, d, int(v)])
+n, m, t, k = tuple(map(int, input().split()))
+grid = [[[] for _ in range(n)] for _ in range(n)]
+next_grid = [[[] for _ in range(n)] for _ in range(n)]
+for i in range(m):
+
+    r, c, d, v = tuple(input().split())
+    r, c, v = tuple(map(int, [r, c, v]))
+
+    # 살아남는 구슬의 우선순위가 더 빠른 속도, 더 큰 번호 이므로
+    # (속도, 방향, 번호) 순서를 유지합니다.
+    grid[r - 1][c - 1].append((v, i + 1, dir_mapper[d]))
+
 
 def in_range(x, y):
-    return 0 <= x < n and 0 <= y < n
+    return 0 <= x and x < n and 0 <= y and y < n
 
-def count_balls():
-    result = 0
-    for ball in balls:
-        if ball[0]:
-            result += 1
-    return result
-
-def move(target):
-    flag, idx, r, c, d, v = target
-    if not flag:
-        return
-    cur_dir = mapper_str_to_num[d]
+def next_pos(x, y, v, move_dir):
+    dxs, dys = [-1, 0, 0, 1], [0, 1, -1, 0]
     for _ in range(v):
-        nr, nc = r+direction[cur_dir][0], c + direction[cur_dir][1]
-        if not in_range(nr, nc):
-            cur_dir = (cur_dir+2)%4
-            nr, nc = r + direction[cur_dir][0], c + direction[cur_dir][1]
-        r, c = nr, nc
-    # 위치 업데이트
-    balls[idx] = [True, idx, r, c, mapper_num_to_str[cur_dir], v] 
-    
+        nx, ny = x+ dxs[move_dir], y + dys[move_dir]
+        if not in_range(nx, ny):
+            move_dir = (3-move_dir)
+            nx, ny = x + dxs[move_dir], y + dys[move_dir]
+        x, y = nx, ny
+    return (x, y, move_dir)
+
+
+
+def move():
+    for x in range(n):
+        for y in range(n):
+            for v, num, move_dir in grid[x][y]:
+                nx, ny, ndir = next_pos(x, y, v, move_dir)
+                next_grid[nx][ny].append((v, num, ndir))
 
 def bomb():
-    cnt_arr = [[[] for _ in range(n)] for _ in range(n)]
-    for ball in balls:
-        flag, idx, r, c, d, v = ball
-        if flag:cnt_arr[r][c].append((v, idx))
-    
-    for r in range(n):
-        for c in range(n):
-            length = len(cnt_arr[r][c])
-            if length > k:
-                cnt_arr[r][c].sort(key=lambda x:(-x[0], -x[1]))
-                # 폭발된 것 -> false
-                for i in range(k, length):
-                    del_v, del_idx = cnt_arr[r][c][i]
-                    balls[del_idx][0] = False
-    return
-            
-            
+    for i in range(n):
+        for j in range(n):
+            if len(next_grid[i][j]) >= k:
+                next_grid[i][j].sort(lambda x: (-x[0], -x[1]))
+                while len(next_grid[i][j]) > k:
+                    next_grid[i][j].pop()
+
 def simulate():
-    for ball in balls:
-        move(ball)
-    # print(balls)
+    # next_grid 초기화
+    for i in range(n):
+        for j in range(n):
+            next_grid[i][j] = []
+    # 1) 구슬 전부 움직이기
+    move()
+
+    # 2) k개 이상인 곳 bomb
     bomb()
 
-while t > 0:
-    simulate()
-    t -= 1
+    # 3) next_grid값은 grid로 옮기기
+    for i in range(n):
+        for j in range(n):
+            grid[i][j] = next_grid[i][j]
 
-print(count_balls())
+# t초에 걸쳐 시뮬레이션을 반복합니다.
+for _ in range(t):
+    simulate()
+
+ans = sum([
+    len(grid[i][j])
+    for i in range(n)
+    for j in range(n)
+])
+print(ans)
