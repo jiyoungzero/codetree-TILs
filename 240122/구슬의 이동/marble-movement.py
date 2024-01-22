@@ -6,7 +6,7 @@ balls = []
 mapper_str_to_num = {"U": 0, "R": 1, "D": 2, "L": 3}
 mapper_num_to_str = {0: 'U', 1: "R", 2:"D", 3:'L'}
 direction = {0:(-1, 0), 1:(0, 1), 2:(1, 0), 3:(0, -1)}
-cnt_arr = [[[] for _ in range(n)] for _ in range(n)]
+result_arr = []
 
 for idx in range(m):
     r, c, d, v = map(str, input().split())
@@ -19,9 +19,9 @@ def in_range(x, y):
 
 def count_balls():
     result = 0
-    for i in range(n):
-        for j in range(n):
-            result += len(cnt_arr[i][j])
+    for ball in balls:
+        if ball[0]:
+            result += 1
     return result
 
 def move(target):
@@ -40,9 +40,10 @@ def move(target):
     
 
 def bomb():
+    cnt_arr = [[[] for _ in range(n)] for _ in range(n)]
     for ball in balls:
         flag, idx, r, c, d, v = ball
-        cnt_arr[r][c].append((v, idx))
+        if flag:cnt_arr[r][c].append((v, idx))
     
     for r in range(n):
         for c in range(n):
@@ -53,16 +54,14 @@ def bomb():
                 for i in range(k, length):
                     del_v, del_idx = cnt_arr[r][c][i]
                     balls[del_idx][0] = False
-                cnt_arr[r][c] = cnt_arr[r][c][:k]
+    return
             
             
 def simulate():
     for ball in balls:
         move(ball)
+    # print(balls)
     bomb()
-
-
-
 
 while t > 0:
     simulate()
