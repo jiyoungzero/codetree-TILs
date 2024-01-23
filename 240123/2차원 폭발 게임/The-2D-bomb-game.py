@@ -19,6 +19,8 @@ def bomb():
     for col in range(n):
         cnt = 1
         row = 0
+        if cnt == m and len(arr) == 1:
+            erase_info.append((col, 0, 1))
         while row < n:
             target = arr[row][col]
             nxt_row = row+1
