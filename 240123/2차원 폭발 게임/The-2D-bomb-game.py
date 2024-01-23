@@ -14,36 +14,31 @@ def rotate_90():
     arr = [row for row in rotate_grid]
     return
 
+def get_end_idx(col, start_idx, target):
+    for end_idx in range(start_idx+1, n):
+        if arr[end_idx][col] != target:
+            return end_idx - 1
+    return (n-1)
+
 def bomb():
-    erase_info = [] # (열, start_row, end_row)
-    for col in range(n):
-        cnt = 1
-        row = 0
-        if cnt == m and len(arr) == 1:
-            erase_info.append((col, 0, 1))
-        while row < n:
-            target = arr[row][col]
-            nxt_row = row+1
-            while nxt_row < n:
-                if target == arr[nxt_row][col]:
-                    cnt += 1                    
-                    if nxt_row == (n-1) and cnt >= m:
-                        erase_info.append((col, row, nxt_row+1))
-                    nxt_row += 1
-
-                else:
-                    if cnt >= m:
-                        erase_info.append((col, row, nxt_row))
-                    cnt = 1
-                    break
-            row = nxt_row
-            
-
-    for erase in erase_info:
-        col, start_row, end_row = erase
-        for i in range(start_row, end_row):
-            arr[i][col] = 0
-    return
+    
+    while True:
+        flag = False
+        for col in range(n):
+            cnt = 1
+            for cur_row in range(n):
+                target = arr[cur_row][col]
+                if target > 0:
+                    end_idx = get_end_idx(col, cur_row, target)
+                    if end_idx-cur_row+1 >= m:
+                        for i in range(cur_row, end_idx+1):
+                            flag = True
+                            arr[i][col] = 0
+        gravity()
+        if not flag:
+            break
+                        
+    return 
 
 def gravity():
     global arr
@@ -64,11 +59,19 @@ def count_bomb():
                 result += 1
     return result
 
+
+
 while k >= 0:
     bomb()
-    gravity()
     rotate_90()
     gravity()
     k -= 1
+
+
+# while bomb_flag:
+#     bomb_flag = bomb()
+#     gravity()
+#     rotate_90()
+#     gravity()
 
 print(count_bomb())
