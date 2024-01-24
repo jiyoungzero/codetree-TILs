@@ -9,6 +9,7 @@ balls = []
 mapper = {"U":0,"D":2 , "R":1, "L":3}
 direction = { 0 : (-1, 0), 2:(1, 0), 1: (0, 1), 3:(0, -1)}
 new_ball_idx = 0
+
 for idx in range(m):
     r, c, d, w = map(str, input().split())
     r = int(r) - 1
