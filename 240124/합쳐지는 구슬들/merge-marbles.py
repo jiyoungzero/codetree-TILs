@@ -1,93 +1,80 @@
-import sys
-input = sys.stdin.readline
-
-# 충돌시 무게는 합쳐지며 그 중 가장 큰 번호와 해당 번호의 방향을 따름
-
-n, m , t = map(int, input().split())
-arr = [[[] for _ in range(n)] for _ in range(n)]
-balls = []
-mapper = {"U":0,"D":2 , "R":1, "L":3}
-direction = { 0 : (-1, 0), 2:(1, 0), 1: (0, 1), 3:(0, -1)}
-new_ball_idx = 0
+n, m, t = map(int, input().split())
+BLANK = -1
+arr = [[BLANK for _ in range(n)] for _ in range(n)]
+nxt_arr = [[BLANK for _ in range(n)] for _ in range(n)]
+move_dic = {"U":0, "D":1, 'L': 2, "R":3}
 
 for idx in range(m):
-    r, c, d, w = map(str, input().split())
-    r = int(r) - 1
-    c = int(c) - 1
-    balls.append((idx, r, c, mapper[d], int(w)))
-    arr[r][c].append(idx) # 현재 해당 구슬 idx
-    new_ball_idx = idx
+    x, y, d, w = map(str, input().split())
+    x, y, d, w =int(x)-1, int(y)-1, move_dic[d], int(w)
+    arr[x][y] = [(x, y, w, idx, d)]
 
-
-def in_range(x, y):
+def in_range(x,y):
     return 0 <= x < n and 0 <= y < n
 
-def arr_to_ball_index(idx):
-    for i, ball in enumerate(balls):
-        if ball[0] == idx:
-            return i
-
-def move():
-    global arr
-    for i, ball in enumerate(balls):
-        idx, r, c, d, w = ball
-        nr, nc = r+direction[d][0], c + direction[d][1]
-
-        if not in_range(nr, nc):
-            balls[i] = (idx, r, c, (d+2)%4, w)
-            continue
+def move(x, y):
+    global nxt_arr
+    dxs, dys = [-1,1,0,0],[0,0,-1,1]
+    (x, y, w, ball_idx, d) = arr[x][y][0]
+    nx, ny = x +dxs[d], y + dys[d]
+    if not in_range(nx, ny):
+        d ^= 1        
+        # 해당 위치에 구슬이 있는 경우
+        if nxt_arr[x][y] != BLANK:
+            nxt_arr[x][y].append((nx, ny, w, ball_idx, d))
+        # 없는 경우
         else:
-            balls[i] = (idx, nr, nc, d, w)
-            arr[r][c].remove(idx) # 해당 구슬 삭제
-            arr[nr][nc].append(idx)
+            nxt_arr[x][y] = [(nx, ny, w, ball_idx, d)]
+    else:
+        # 해당 위치에 구슬이 있는 경우
+        if nxt_arr[nx][ny] != BLANK:
+            nxt_arr[nx][ny].append((nx, ny, w, ball_idx, d))
+        # 없는 경우
+        else:
+            nxt_arr[nx][ny] = [(nx, ny, w, ball_idx, d)]
 
-    return
 
-def get_sum_weight(x, y):
-    result = 0
-    for idx in arr[x][y]:
-        i = arr_to_ball_index(idx)
-        result += balls[i][-1]
-    return result
-
-def get_max_dir_idx(x, y):
-    max_dir, max_idx = 0, 0
-    for idx in arr[x][y]:
-        max_idx = max(max_idx, idx)
-
-    for ball in balls:
-        if ball[0] == max_idx:
-            max_dir = ball[3]
-            break
-    return (max_dir, max_idx)
+def move_all():
+    for x in range(n):
+        for y in range(n):
+            if arr[x][y] != BLANK:
+                move(x, y)
 
 def collision():
-    global arr, new_ball_idx
-    for r in range(n):
-        for c in range(n):
-            if len(arr[r][c]) > 1:
-                sum_weight = get_sum_weight(r, c)
-                max_dir, max_idx = get_max_dir_idx(r, c)
-                # 충돌한 구슬들 제거
-                for del_idx in arr[r][c]:
-                    for ball in balls:
-                        if ball[0] == del_idx:
-                            balls.remove(ball)
-                arr[r][c] = []
-                # 새롭게 합쳐진 구슬 추가
-                new_ball_idx += 1
-                balls.append((new_ball_idx, r, c, max_dir, sum_weight))
-                arr[r][c].append(new_ball_idx)
-    return 
+    global nxt_arr, arr
+    for x in range(n):
+        for y in range(n):
+            if nxt_arr[x][y] != BLANK and len(nxt_arr[x][y]) > 1:
+                ball_sum, max_ball_idx, max_ball_dir = 0,0,0
+                for _, _, w, ball_idx, d in nxt_arr[x][y]:
+                    ball_sum += w
+                    if max_ball_idx < ball_idx:
+                        max_ball_idx = ball_idx
+                        max_ball_dir = d
+                nxt_arr[x][y] = [(x, y, ball_sum, max_ball_idx, max_ball_dir)]
+
+    # arr에 옮기기
+    for x in range(n):
+        for y in range(n):
+            arr[x][y] = nxt_arr[x][y]
+    
 
 def simulate():
-    move()
+    global nxt_arr 
+    nxt_arr = [[BLANK for _ in range(n)] for _ in range(n)]
+    move_all()
     collision()
 
-while t > 0 :
-    t -= 1
+for _ in range(t+1):
     simulate()
 
 
-balls.sort(key = lambda x:-x[4])
-print(len(balls), balls[0][4])
+# 정답 출력
+max_weight, cnt = 0, 0
+for x in range(n):
+    for y in range(n):
+        if arr[x][y] != BLANK:
+            _, _, w, _, _ = arr[x][y][0]
+            cnt += 1
+            max_weight = max(max_weight,w)
+print(cnt, max_weight)
