@@ -21,10 +21,10 @@ def move(x, y):
         d ^= 1        
         # 해당 위치에 구슬이 있는 경우
         if nxt_arr[x][y] != BLANK:
-            nxt_arr[x][y].append((nx, ny, w, ball_idx, d))
+            nxt_arr[x][y].append((x, y, w, ball_idx, d))
         # 없는 경우
         else:
-            nxt_arr[x][y] = [(nx, ny, w, ball_idx, d)]
+            nxt_arr[x][y] = [(x, y, w, ball_idx, d)]
     else:
         # 해당 위치에 구슬이 있는 경우
         if nxt_arr[nx][ny] != BLANK:
@@ -46,7 +46,7 @@ def collision():
         for y in range(n):
             if nxt_arr[x][y] != BLANK and len(nxt_arr[x][y]) > 1:
                 ball_sum, max_ball_idx, max_ball_dir = 0,0,0
-                for _, _, w, ball_idx, d in nxt_arr[x][y]:
+                for (_, _, w, ball_idx, d) in nxt_arr[x][y]:
                     ball_sum += w
                     if max_ball_idx < ball_idx:
                         max_ball_idx = ball_idx
@@ -65,7 +65,7 @@ def simulate():
     move_all()
     collision()
 
-for _ in range(t+1):
+for _ in range(t):
     simulate()
 
 
