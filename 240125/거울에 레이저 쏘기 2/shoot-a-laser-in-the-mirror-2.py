@@ -5,18 +5,31 @@ n = int(input())
 arr = [ list(input()) for _ in range(n)]
 k = int(input())
 dxs, dys = [1, 0, -1, 0],[0, 1, 0, -1]  # 아래, 오른쪽, 위, 왼쪽
-x, y = (k-1)//n, k%n
-if y == 0:
+x, y, cur_dir = 0, 0, 0
+if k <= n:
+    x = 0
+    y = k-1
+    cur_dir = 0
+elif k > n and k <= 2*n:
+    x = (k-n-1)
     y = n-1
+    cur_dir = 3
+elif k > 2*n and k <= 3*n:
+    x = n-1
+    y = 3*n - k
+    cur_dir = 2
 else:
-    y -= 1
-cur_dir = x
+    x = 4*n - k
+    y = 0
+    cur_dir = 1
+
 answer = 1
 
 def in_range(x, y):
     return 0 <= x < n and 0 <= y < n
 
 while True:
+    # print(x, y, cur_dir)
     if arr[x][y] == '/':
         if cur_dir == 0:
             cur_dir = 3 #
