@@ -3,7 +3,7 @@ input = sys.stdin.readline
 
 n, m = map(int, input().split())
 arr = [list(map(int, input().split())) for _ in range(n)]
-answer = 0
+answer = -1
 
 
 
@@ -21,4 +21,4 @@ for si in range(n):
                 if all_plus(si, sj, ei, ej):
                     answer = max(answer, (ei-si+1)*(ej-sj+1))
     
-print(answer)
+print(answer if answer > 0 else -1)
