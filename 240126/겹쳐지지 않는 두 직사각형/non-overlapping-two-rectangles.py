@@ -23,9 +23,10 @@ def get_sum(idx):
 def duplicate(a, b):
     f_si, f_sj, f_ei, f_ej = cases[a]
     s_si, s_sj, s_ei, s_ej = cases[b]
-    if f_ej >= s_sj:
-        return True
-    return False
+    if not (f_si < s_si < f_ei) and not ( f_si < s_ei < f_ei) \
+    and not (f_sj < s_sj < f_ej) and not (f_sj < s_ej < f_ej):
+        return False
+    return True
 
 
 for i in range(len(cases)):
@@ -36,4 +37,5 @@ for i in range(len(cases)):
             first = get_sum(i)
             second = get_sum(j)
             answer = max(answer, first+second)
+
 print(answer)
