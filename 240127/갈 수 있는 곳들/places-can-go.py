@@ -6,7 +6,7 @@ arr = [list(map(int, input().split())) for _ in range(n)]
 start_spots = deque()
 dxs, dys = [0,0,1,-1],[1,-1,0,0]
 visited = [[False]*n for _ in range(n)]
-answer = k
+answer = 0
 
 for _ in range(k):
     r, c = map(int, input().split())
@@ -25,7 +25,9 @@ while start_spots:
         if not visited[nx][ny] and arr[nx][ny] != WALL:
             visited[nx][ny] = True
             start_spots.append((nx,ny))
-            x, y = nx, ny
-            answer += 1
 
+for i in range(n):
+    for j in range(n):
+        if visited[i][j]:
+            answer += 1
 print(answer)
