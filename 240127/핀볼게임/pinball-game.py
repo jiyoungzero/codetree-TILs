@@ -62,6 +62,7 @@ for k in range(1, 4*n+1):
     time = 1
     while True:
         if arr[x][y] == BLANK:
+            nx, ny = x+dxs[cur_dir], y + dys[cur_dir]           
             x, y = nx, ny
         elif arr[x][y] == UP_SLASH:
             cur_dir = turn(UP_SLASH)
