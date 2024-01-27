@@ -42,18 +42,18 @@ def turn(slash):
         elif cur_dir == 1:
             cur_dir = 2
         elif cur_dir == 2:
-            cur_dir = 0
-        else:
             cur_dir = 1
+        else:
+            cur_dir = 0
     else:
         if cur_dir == 0:
             cur_dir = 2
         elif cur_dir == 1:
             cur_dir = 3
         elif cur_dir == 2:
-            cur_dir = 1
-        else:
             cur_dir = 0
+        else:
+            cur_dir = 1
     return cur_dir
 
 # 모든 경우 다 따져보기
@@ -61,18 +61,20 @@ for k in range(1, 4*n+1):
     x, y, cur_dir = initialize(k)
     time = 1
     while True:
-        nx, ny = x+dxs[cur_dir], y + dys[cur_dir]
-        if not in_range(nx, ny):
+        if arr[x][y] == BLANK:
+            x, y = nx, ny
+        elif arr[x][y] == UP_SLASH:
+            cur_dir = turn(UP_SLASH)
+            nx, ny = x+dxs[cur_dir], y + dys[cur_dir]
+            x, y = nx, ny
+        else:
+            cur_dir = turn(DOWN_SLASH)
+            nx, ny = x+dxs[cur_dir], y + dys[cur_dir]
+            x, y = nx, ny
+        if not in_range(x, y):
             time += 1
             break
-        if arr[nx][ny] == BLANK:
-            x, y = nx, ny
-        elif arr[nx][ny] == UP_SLASH:
-            x, y = nx, ny
-            cur_dir = turn(UP_SLASH)
-        else:
-            x, y = nx, ny
-            cur_dir = turn(DOWN_SLASH)
         time += 1
+    # print("위치 = ", k, "시간 = ", time)
     answer = max(answer, time)
 print(answer)
