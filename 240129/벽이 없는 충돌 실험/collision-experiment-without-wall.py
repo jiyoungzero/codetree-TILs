@@ -5,7 +5,7 @@ n = 0
 marbles = []
 nxt_marbles = []
 dxs, dys = [0, 1, -1, 0], [1, 0, 0, -1]
-arr = [
+nxt_arr = [
     [BLANK for _ in range(4001)]
     for _ in range(4001)
 ]
@@ -24,13 +24,13 @@ def in_range(x, y):
     return 0 <= x < 4001 and 0 <= y < 4001
 
 def move(marble):
-    global last_collision_time, arr
+    global last_collision_time
     x, y, w, d, i = marble 
     nx,ny = x + dxs[d], y+dys[d]
-    return (nx, n, w, d, i)
+    return (nx, ny, w, d, i)
 
 def collide(marble1, marble2):
-    if (marble1[2] > marble2[2] or marble1[2] == marble2[2] and marble1[4] > marble2[4]):
+    if (marble1[2] > marble2[2]) or (marble1[2] == marble2[2] and marble1[4] > marble2[4]):
         return marble1
     else:
         return marble2
@@ -41,26 +41,25 @@ def push_next_marble(marble):
     if not in_range(x, y):
         return 
     
-    original_marble_idx = arr[x][y]
+    original_marble_idx = nxt_arr[x][y]
     if original_marble_idx == BLANK:
         nxt_marbles.append(marble)
-        arr[x][y] = len(nxt_marbles) - 1
+        nxt_arr[x][y] = len(nxt_marbles) - 1
     else:
         nxt_marbles[original_marble_idx] = collide(nxt_marbles[original_marble_idx], marble)
         last_collision_time = cur_time
 
 def simulate():
     global marbles, nxt_marbles
+    nxt_marbles = []
+    for x, y, _, _, _ in nxt_marbles:
+        nxt_arr[x][y] = BLANK
 
     for marble in marbles:
         nxt_marble = move(marble)
         push_next_marble(nxt_marble)
+
     marbles = nxt_marbles[:]
-
-    for x, y, _, _, _ in nxt_marbles:
-        arr[x][y] = BLANK
-    nxt_marbles = []
-
 
 for _ in range(t):
     marbles = []
