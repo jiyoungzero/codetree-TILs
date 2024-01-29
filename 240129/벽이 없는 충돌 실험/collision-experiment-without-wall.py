@@ -48,7 +48,7 @@ def push_nxt_balls(nxt_ball):
         target = collide(nxt_balls[original_ball_idx], nxt_ball)
         tx, ty, tw, td, tidx = target
         nxt_balls[original_ball_idx] = target
-        dup_arr[tx][ty] = tidx
+        # dup_arr[tx][ty] = tidx
         answer = cur_time
 
 
