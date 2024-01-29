@@ -51,15 +51,14 @@ def push_next_marble(marble):
 
 def simulate():
     global marbles, nxt_marbles
-    nxt_marbles = []
-    for x, y, _, _, _ in nxt_marbles:
-        nxt_arr[x][y] = BLANK
-
     for marble in marbles:
         nxt_marble = move(marble)
         push_next_marble(nxt_marble)
 
     marbles = nxt_marbles[:]
+    for x, y, _, _, _ in nxt_marbles:
+        nxt_arr[x][y] = BLANK
+    nxt_marbles = []
 
 for _ in range(t):
     marbles = []
