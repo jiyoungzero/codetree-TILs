@@ -29,6 +29,8 @@ def bfs():
                 visited[nx][ny] = True
                 que.append((nx, ny, cnt + 1))
     return 
-
-bfs()
-print(answer)
+if (r1 == r2) and (c1 == c2):
+    print(0)
+else:
+    bfs()
+    print(answer)
