@@ -51,6 +51,8 @@ def choose_cities(depth, selected):
 
     choose_cities(depth+1, selected)
 
-
-choose_cities(0, [])
-print(answer)
+if n == 1:
+    print(1)
+else:
+    choose_cities(0, [])
+    print(answer)
