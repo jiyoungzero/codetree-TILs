@@ -35,7 +35,7 @@ for k in range(100, 0, -1):
                 visited[i][j] = True
                 dfs(i, j, k)
                 safe_zone += 1
-    if answer_safe_zone < safe_zone:
+    if answer_safe_zone <= safe_zone:
         answer_safe_zone = safe_zone
         answer_k = k
 print(answer_k, answer_safe_zone)
