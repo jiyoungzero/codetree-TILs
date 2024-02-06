@@ -3,9 +3,10 @@ input = sys.stdin.readline
 
 n, m = map(int, input().split())
 arr = list(map(int, input().split()))
+
 def binary_search(target):
     global arr
-    left,right = 0, len(arr)-1
+    left,right = 0, n-1
     while left <= right:
         mid = (left+right)//2
         if arr[mid] == target:
