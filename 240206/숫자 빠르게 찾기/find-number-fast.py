@@ -5,13 +5,13 @@ n, m = map(int, input().split())
 arr = list(map(int, input().split()))
 before = 0
 
-def binary_search(target, before):
+def binary_search(target):
     global arr
-    left,right = before, n-1
+    left,right = 0,n-1
     while left <= right:
         mid = (left+right)//2
         if arr[mid] == target:
-            return mid+1
+            return mid
         if arr[mid] < target:
             left += 1
         else:
@@ -21,6 +21,5 @@ def binary_search(target, before):
 
 for _ in range(m):
     target = int(input())
-    before = binary_search(target,before)
-    print(before)
-    before -= 1
+    index = binary_search(target)
+    print(index+1 if index > -1 else -1)
