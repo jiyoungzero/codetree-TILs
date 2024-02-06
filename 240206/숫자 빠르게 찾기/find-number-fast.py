@@ -3,7 +3,7 @@ input = sys.stdin.readline
 
 n, m = map(int, input().split())
 arr = list(map(int, input().split()))
-before = 0
+
 
 def binary_search(target):
     global arr
@@ -12,10 +12,10 @@ def binary_search(target):
         mid = (left+right)//2
         if arr[mid] == target:
             return mid
-        if arr[mid] < target:
-            left += 1
+        if arr[mid] > target:
+            right = mid - 1
         else:
-            right -= 1
+            left = mid + 1
     return -1
 
 
