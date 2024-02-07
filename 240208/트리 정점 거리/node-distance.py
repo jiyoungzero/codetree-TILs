@@ -24,5 +24,6 @@ for _ in range(m):
     visited = [False]*(n+1)
     a, b = map(int, input().split())
     
+    visited[a] = True
     dfs(a, b, 0)
     print(answer)
