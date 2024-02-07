@@ -33,12 +33,15 @@ for i in range(MAX_VALUE+1):
     if root_cnt > 1:
         is_tree = False
         break
+if root == -1:
+    is_tree = False
     
 for i in range(MAX_VALUE+1):
     if root != i and used[i] and in_node[i] != 1:
         is_tree = False
         break
-
+        
+visited[root] = True
 dfs(root)
 for i in range(MAX_VALUE+1):
     if used[i] and not visited[i]:
