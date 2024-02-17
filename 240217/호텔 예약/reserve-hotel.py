@@ -10,7 +10,8 @@ for i in range(n):
     points.append((s, 1))
     points.append((e, -1))
 
-points.sort()
+points.sort(key = lambda x:(x[0], -x[1]))
+
 tmp = 0
 for x, v in points:
     tmp += v
