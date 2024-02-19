@@ -13,7 +13,7 @@
 |교재|이름|난이도|상태|최근 제출 코드|
 |---|---|:---:|:---:|---|
 |[SK / 트리 / 트리](https://www.codetree.ai/missions?missionId=18)|[[개념]트리의 지름](https://www.codetree.ai/missions/18/problems/diameter-of-tree)|![쉬움][easy]|![Passed][passed]|[링크](https://github.com/jiyoungzero/codetree-TILs/blob/main/240214/%ED%8A%B8%EB%A6%AC%EC%9D%98%20%EC%A7%80%EB%A6%84/diameter-of-tree.py)|
-|[SK / 트리 / 트리](https://www.codetree.ai/missions?missionId=18)|[[연습]트리 사촌](https://www.codetree.ai/missions/18/problems/beard-tree)|![쉬움][easy]|![Failed][failed]|[링크](https://github.com/jiyoungzero/codetree-TILs/blob/main/240214/%ED%8A%B8%EB%A6%AC%20%EC%82%AC%EC%B4%8C/beard-tree.py)|
+|[SK / 트리 / 트리](https://www.codetree.ai/missions?missionId=18)|[[연습]트리 사촌](https://www.codetree.ai/missions/18/problems/beard-tree)|![쉬움][easy]|![Passed][passed]|[링크](https://github.com/jiyoungzero/codetree-TILs/blob/main/240214/%ED%8A%B8%EB%A6%AC%20%EC%82%AC%EC%B4%8C/beard-tree.py)|
 
 
 * 획득 경험치: 해설을 보지 않고 푼 문제에 한해 최초 1회 경험치를 획득하실 수 있습니다.
