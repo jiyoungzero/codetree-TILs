@@ -12,4 +12,6 @@ for i in range(1, n):
     dp[i] = dp[i-1]+arr[i]
 
 answer = -1
+for i in range(k-1, n):
+    answer = max(answer, dp[i]-dp[i-k])
 print(answer)
