@@ -3,7 +3,7 @@ input = sys.stdin.readline
 
 n = int(input())
 schedule = [list(map(int, input().split())) for _ in range(n)]
-schedule.sort(key = lambda x : (x[0], x[1]))
+schedule.sort(key = lambda x : x[1])
 answer = 0
 
 ss, ee = schedule[0][0], schedule[0][1]
