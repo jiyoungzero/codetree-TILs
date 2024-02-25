@@ -15,6 +15,16 @@ for i in range(1, n):
         continue
     else:
         answer += 1
-        ss, ee = schedule[i-2][0], schedule[i-2][1]
+        # ss, ee, = schedule[i-2][0], schedule[i-2][1]
+
 
 print(answer)
+
+# 7
+# 1 2
+# 1 3
+# 1 4
+# 4 5
+# 2 3
+# 6 7
+# 8 10
