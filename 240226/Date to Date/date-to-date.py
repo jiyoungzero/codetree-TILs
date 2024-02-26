@@ -8,7 +8,7 @@ answer = 0
 
 def to_day(m, d):
     result = 0
-    for i in range(1,m-1):
+    for i in range(1,m):
         result += num_of_days[i]
     result += d
     return result
@@ -18,4 +18,4 @@ day2 = to_day(m2, d2)
 if day1 == day2:
     print(1)
 else:
-    print(day2-day1)
+    print(day2-day1+1)
