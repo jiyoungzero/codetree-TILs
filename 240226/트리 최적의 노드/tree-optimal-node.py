@@ -31,9 +31,8 @@ def find_farthest_dist(x):
     visited[x] = True
     dfs(x, 0)
 
-    return max(distance)
+    return max(distance), distance.index(max(distance))
 
-    
-for i in range(1, n+1):
-    farthest_dist[i] = find_farthest_dist(i)
-print(min(farthest_dist[1:]))
+_, farthest_node = find_farthest_dist(1)
+answer, _ = find_farthest_dist(farthest_node)
+print((answer+1) // 2)
