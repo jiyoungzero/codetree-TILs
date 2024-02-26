@@ -15,7 +15,4 @@ def to_day(m, d):
 
 day1 = to_day(m1, d1)
 day2 = to_day(m2, d2)
-if day1 == day2:
-    print(1)
-else:
-    print(day2-day1+1)
+print(day2-day1+1)
