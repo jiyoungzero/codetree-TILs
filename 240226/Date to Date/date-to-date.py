@@ -5,9 +5,17 @@ num_of_days = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 m1, d1, m2, d2 = map(int, input().split())
 answer = 0
-for i in range(m2-1):
-    answer += num_of_days[i]
-for j in range(m1-1):
-    answer -= num_of_days[j]
 
-print(answer + d2 - d1)
+def to_day(m, d):
+    result = 0
+    for i in range(1,m-1):
+        result += num_of_days[i]
+    result += d
+    return result
+
+day1 = to_day(m1, d1)
+day2 = to_day(m2, d2)
+if day1 == day2:
+    print(1)
+else:
+    print(day2-day1)
