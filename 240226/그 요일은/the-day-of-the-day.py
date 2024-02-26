@@ -14,7 +14,6 @@ def to_day(m, d):
 day1 = to_day(m1, d1)
 day2 = to_day(m2, d2)
 target = day1%7
-print(day1, day2, target)
 now = day1
 
 
