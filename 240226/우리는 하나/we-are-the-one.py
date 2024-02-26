@@ -1,6 +1,7 @@
 import sys
 input = sys.stdin.readline 
 from collections import deque
+from itertools import combinations
 
 dxs, dys = [0,0,1,-1],[1,-1,0,0]
 n, k, u, d = map(int, input().split())
@@ -29,25 +30,8 @@ def bfs(selected):
                 que.append((nx, ny)) 
                 cnt += 1
     return cnt 
-
-
-# k개의 도시를 고르기
-def backtracking(depth, selected):
-    global answer
-    if len(selected) == k:
-        # 이동가능한 도시의 수 세기
-        answer = max(answer, bfs(selected))
-        return 
-    if depth >= n*n:
-        return 
-
-
-    for i in range(depth, n*n):
-        x, y = i//n, i%n 
-        selected.append((x, y))
-        backtracking(depth+1, selected)
-        selected.pop()
-
-        backtracking(depth+1, selected)
-backtracking(0, [])
+coords = [(x, y) for x in range(n) for y in range(n)]
+lst = list(combinations(coords, k))
+for ele in lst:
+    answer = max(answer, bfs(ele))
 print(answer)
