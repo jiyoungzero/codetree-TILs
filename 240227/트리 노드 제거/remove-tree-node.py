@@ -23,8 +23,9 @@ def dfs(node):
     
     is_leaf = True
     for leaf in tree[node]:
-        dfs(leaf)
-        is_leaf = False
+        if not is_deleted[leaf]:
+            dfs(leaf)
+            is_leaf = False
 
     if is_leaf:
         answer += 1
