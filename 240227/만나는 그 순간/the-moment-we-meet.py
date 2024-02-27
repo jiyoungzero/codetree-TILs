@@ -32,8 +32,11 @@ for _ in range(M):
             start += 1
             b.append(start)
 
+flag = False
 for i, (a_pos, b_pos) in enumerate(zip(a, b)):
     if a_pos == b_pos:
         print(i+1)
+        flag = True
         break
-print(-1 if answer == -1)
+if not flag:
+    print(-1)
