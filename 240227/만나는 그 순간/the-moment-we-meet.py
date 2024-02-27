@@ -5,7 +5,7 @@ input = sys.stdin.readline
 
 N, M = map(int, input().split())
 a, b = [], []
-answer = 0
+answer = -1
 
 start = 0
 time = 0
@@ -36,3 +36,4 @@ for i, (a_pos, b_pos) in enumerate(zip(a, b)):
     if a_pos == b_pos:
         print(i+1)
         break
+print(-1 if answer == -1)
