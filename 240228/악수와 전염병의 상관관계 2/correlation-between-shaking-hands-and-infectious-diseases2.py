@@ -28,8 +28,9 @@ for t, x, y in handshake:
             answer[x] = 1
         else:
             continue
-    else:
-        continue
+    elif answer[x] == 1 and answer[y] == 1:
+        have_cnt[x] += 1
+        have_cnt[y] += 1
 
 
 # 출력
