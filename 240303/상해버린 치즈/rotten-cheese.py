@@ -7,7 +7,7 @@ sick_info = [list(map(int, input().split())) for _ in range(s)] # p, t
 answer = 0
 
 for i in range(1, m+1): # 하나의 치즈가 상했을 경우를 대비한 최대의 약 개수
-    tmp = 0
+    tmp = set()
     time = [0]*(n+1) # 각 사람이 i번째 치즈를 가장 처음에 먹은 시간 
 
     for eat_p, eat_x, eat_t in data:
@@ -28,7 +28,7 @@ for i in range(1, m+1): # 하나의 치즈가 상했을 경우를 대비한 최�
     if flag:
         for eat_p, eat_x, eat_t in data:
             if i == eat_x:
-                tmp += 1
-    answer = max(answer, tmp)
+                tmp.add(eat_p)
+    answer = max(answer, len(tmp))
 
 print(answer)
