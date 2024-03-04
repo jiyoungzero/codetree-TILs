@@ -21,7 +21,7 @@ def surround_ice(x, y):
         if in_range(nx, ny):
             if arr[nx][ny] == ICE:
                 cnt += 1
-    return True if cnt == 4 else False
+    return True if cnt > 1 else False
 
 def get_outer_ice(): # 겉면의 빙하 저장
     q = deque()
@@ -47,6 +47,7 @@ def all_melt():
 last_ice_size = 0
 while not all_melt():
     que = get_outer_ice()
+    # print(que)
     last_ice_size = len(que)
     for x, y in que:
         arr[x][y] = WATER
