@@ -13,9 +13,11 @@ a_arr.sort()
 
 for b in b_arr:
     for a in a_arr:
+        # print("a=",a, "b=", b)
         if b < a:
             a_arr.remove(a)
             answer += 1
+            break
             # a_arr.sort()
         else:
             continue
