@@ -6,9 +6,10 @@ n = int(input())
 answer = 0
 
 b_arr = [int(input()) for _ in range(n)]
+b_set = set(b_arr)
 a_arr = []
 for i in range(1, 2*n+1):
-    if i not in b_arr:
+    if i not in b_set:
         a_arr.append(i)
 a_arr.sort()
 b_arr.sort()
