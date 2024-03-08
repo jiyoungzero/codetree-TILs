@@ -1,5 +1,6 @@
 import sys
 input = sys.stdin.readline 
+from bisect import bisect_left, bisect_right
 
 n = int(input())
 answer = 0
@@ -10,15 +11,13 @@ for i in range(1, 2*n+1):
     if i not in b_arr:
         a_arr.append(i)
 a_arr.sort()
+b_arr.sort()
 
-for b in b_arr:
-    for a in a_arr:
-        # print("a=",a, "b=", b)
-        if b < a:
-            a_arr.remove(a)
-            answer += 1
-            break
-            # a_arr.sort()
-        else:
-            continue
+
+b_idx = 0
+for a_idx in range(n):
+    if b_idx < n and a_arr[a_idx] > b_arr[b_idx]:
+        b_idx += 1
+        answer += 1
+
 print(answer)
