@@ -3,7 +3,7 @@ input = sys.stdin.readline
 
 cmd = input().rstrip()
 alpToNum = dict()
-answer = 0
+answer = -int(1e9)
 for ele in cmd:
     if ele.isalpha():
         alpToNum[ele] = 0
