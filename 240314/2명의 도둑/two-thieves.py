@@ -12,9 +12,9 @@ def possible(sx1, sy1, sx2, sy2):
         return False
     if sx1 != sx2:
         return True
-
-    if sy1+m-1 >= sy2 or sy2+m-1 >= sy1:
+    if  (sy1+m-1 >= sy2 and sy2+m-1 >= sy1):
         return False
+    
     return True
 
 def find_max_val(cur_idx, cur_weight, cur_val):
