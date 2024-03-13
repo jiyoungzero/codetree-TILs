@@ -16,21 +16,14 @@ def backtracking(cur_num):
         cur_num.pop()
 
 def success(num):
-    cur_num = num[0]
-    cnt = 1
-    if len(num) == 1 and cur_num != 1:
-        return False
-    for i in range(1, n):
-        if num[i] == cur_num:
-            cnt += 1
-        else:
-            if cnt%cur_num != 0:
+    idx = 0
+    while idx < n:
+        if idx + num[idx] - 1 >= n:
+            return False
+        for j in range(idx, idx+num[idx]):
+            if num[j] != num[idx]:
                 return False
-            else:
-                cnt = 1
-                cur_num = num[i]
-    if cnt % cur_num != 0:
-        return False
+            idx = idx+num[idx]
     return True
 
 backtracking([])
