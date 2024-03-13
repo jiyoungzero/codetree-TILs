@@ -23,7 +23,7 @@ def success(num):
         for j in range(idx, idx+num[idx]):
             if num[j] != num[idx]:
                 return False
-            idx = idx+num[idx]
+        idx = idx+num[idx]
     return True
 
 backtracking([])
