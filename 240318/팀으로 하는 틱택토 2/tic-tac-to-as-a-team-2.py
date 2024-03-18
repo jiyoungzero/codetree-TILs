@@ -6,14 +6,14 @@ for i in range(3):
     tmp_set = set()
     for j in range(3):
         tmp_set.add(arr[i][j])
-    if len(tmp_set) == 2 and list(tmp_set) not in win_set:
+    if len(tmp_set) == 2 and tmp_set not in win_set:
         win_set.append(tmp_set)
 # 열 
 for j in range(3):
     tmp_set = set()
     for i in range(3):
         tmp_set.add(arr[i][j])
-    if len(tmp_set) == 2 and list(tmp_set) not in win_set:
+    if len(tmp_set) == 2 and tmp_set not in win_set:
         win_set.append(tmp_set)
 
 # 대각선
@@ -22,4 +22,6 @@ if len(set([arr[0][2], arr[1][1], arr[2][0]])) == 2 and set([arr[0][2], arr[1][1
 if len(set([arr[0][0], arr[1][1], arr[2][2]])) == 2 and set([arr[0][0], arr[1][1], arr[2][2]]) not in win_set:
     win_set.append(set([arr[0][0], arr[1][1], arr[2][2]]))
 
-print(len(win_set))
+
+# print(win_set)
+print(len((win_set)))
