@@ -37,17 +37,15 @@ if lst[::-1][0] != '1':
         else:
             right_dist += 1
 
-# print(max_dist, left_dist, right_dist)
 final_dist = max(max_dist//2, left_dist, right_dist)
 if final_dist == max_dist//2:
-    idx = (b-a)//2
+    idx = a+(b-a)//2
     lst = lst[:idx]+'1'+lst[idx+1:]
 elif final_dist == left_dist:
     lst = '1'+lst[1:]
 else:
     lst = lst[:-1]+'1'
 
-# print(lst)
 # 가장 짧은 거리 구하기
 min_dist = int(1e9)
 for i in range(n):
