@@ -16,15 +16,14 @@ for length in range(1, n):
             if target == string[i:i+length]:
                 repeat += 1
         
-        if repeat == 2:
+        if repeat == 1: # 한번도 반복되지 않은 경우
             answer = length
-        else:
+        else: # 반복된 경우 
             repeat_cnt += 1
-        # print()
 
-    if repeat_cnt == 0:
+    if repeat_cnt == 0: # 한번도 반복되지 않은 문자열의 길이
         answer = length
         break
 
 
-print(answer+1)
+print(answer)
