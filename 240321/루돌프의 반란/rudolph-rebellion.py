@@ -1,185 +1,181 @@
+# (x, y)가 보드 내의 좌표인지 확인하는 함수입니다.
+def is_inrange(x, y):
+    return 1 <= x and x <= n and 1 <= y and y <= n
+
 n, m, p, c, d = map(int, input().split())
 rudolf = tuple(map(int, input().split()))
-arr = [[0]*(n+1) for _ in range(n+1)]
-santa_pos = [(0, 0) for _ in range(p+1)]
+
+points = [0 for _ in range(p + 1)]
+pos = [(0, 0) for _ in range(p + 1)]
+board = [[0 for _ in range(n + 1)] for _ in range(n + 1)]
+is_live = [False for _ in range(p + 1)]
+stun = [0 for _ in range(p + 1)]
+
+dx = [-1, 0, 1, 0]
+dy = [0, 1, 0, -1]
+
+board[rudolf[0]][rudolf[1]] = -1
+
 for _ in range(p):
-    pn, sr, sc = map(int, input().split())
-    arr[sr][sc] = pn
-    pos[pn] = (sr, sc)
-is_alive = [True]*(p+1)
-is_passout = [0]*(p+1)
-santa_score = [0]*(p+1)
+    id, x, y = tuple(map(int, input().split()))
+    pos[id] = (x, y)
+    board[pos[id][0]][pos[id][1]] = id
+    is_live[id] = True
 
-def in_range(x, y):
-    return 1 <= x < n+1 and 1 <= y < n+1
+for t in range(1, m + 1):
+    closestX, closestY, closestIdx = 10000, 10000, 0
 
-def rudolf_move():
-    global rudolf
-    santa_dist = [] # (거리, r, c, move_x, move_y) 
-    for i in range(n+1):
-        for j in range(n+1):
-            move_x, move_y = 0, 0
-            if arr[i][j] > 0:
-                distance = (i-rudolf[0])**2 + (j-rudolf[1])**2
-                if i > rudolf[0]: move_x += 1
-                elif i < rudolf[0]: move_x -= 1
-                
-                if j > rudolf[1]: move_y += 1
-                elif j < rudolf[1]: move_y -= 1
-                santa_dist.append((distance, i, j, move_x, move_y))
-    santa_dist.sort(key = lambda x:(x[0], -x[1], -x[2]))
-    _, _, _, move_x, move_y = santa_dist[0]
-    rudolf = (rudolf[0]+move_x, rudolf[1]+move_y)
+    # 살아있는 포인트 중 루돌프에 가장 가까운 산타를 찾습니다.
+    for i in range(1, p + 1):
+        if not is_live[i]:
+            continue
 
-    # 루돌프의 이동으로 산타와 충돌한 경우 
-    if arr[rudolf[0]][rudolf[1]] > 0:
-        update_flag = True
-        # 루돌프와 충돌한 산타 점수 획득 + c
-        santa_idx = arr[rudolf[0]][rudolf[1]]
-        santa_score[santa_idx] += c
-        
+        currentBest = ((closestX - rudolf[0]) ** 2 + (closestY - rudolf[1]) ** 2, (-closestX, -closestY))
+        currentValue = ((pos[i][0] - rudolf[0]) ** 2 + (pos[i][1] - rudolf[1]) ** 2, (-pos[i][0], -pos[i][1]))
 
-        santa_first_x = rudolf[0] + move_x*c
-        santa_first_y = rudolf[1] + move_y*c
-        print("루돌프 -> 산타", santa_first_x, santa_first_y)
-        # 루돌프 충돌로 범위 밖으로 밀려난 경우
-        if not in_range(santa_first_x, santa_first_y):
-            is_alive[santa_idx] = False
-            arr[rudolf[0]][rudolf[1]] = 0
-            return 
+        if currentValue < currentBest:
+            closestX, closestY = pos[i]
+            closestIdx = i
 
-        santa_last_x, santa_last_y = santa_first_x, santa_first_y
-        # 루돌프에 밀려 이동한 곳에 산타가 있을 경우
-        if arr[santa_first_x][santa_first_y] > 0:
-            while arr[santa_last_x][santa_last_y] > 0:
-                santa_last_x += move_x
-                santa_last_y += move_y
-            # 산타끼리의 상호작용으로 밀려난 곳이 범위 밖인 경우
-            if not in_range(santa_last_x, santa_last_y):
-                is_alive[santa_idx] = False
-                arr[rudolf[0]][rudolf[1]] = 0
-                update_flag = False
+    # 가장 가까운 산타의 방향으로 루돌프가 이동합니다.
+    if closestIdx:
+        prevRudolf = rudolf
+        moveX = 0
+        if closestX > rudolf[0]:
+            moveX = 1
+        elif closestX < rudolf[0]:
+            moveX = -1
 
-        if update_flag: # 최종적으로 밀려난 곳이 범위 안일 경우
-            # 루돌프와 충돌한 산타 위치 업데이트 
-            arr[rudolf[0]][rudolf[1]] = 0
-            arr[santa_last_x][santa_last_y] = santa_idx 
-            # 루돌프와 충돌한 산타 기절 (i판 부터 i-2까지)
-            is_passout[santa_idx] = m-2
+        moveY = 0
+        if closestY > rudolf[1]:
+            moveY = 1
+        elif closestY < rudolf[1]:
+            moveY = -1
 
-    return
+        rudolf = (rudolf[0] + moveX, rudolf[1] + moveY)
+        board[prevRudolf[0]][prevRudolf[1]] = 0
 
-    
-def santa_move(i, j):
-    dxs, dys = [-1, 0, 1, 0], [0, 1, 0, -1]
-    updata_flag = True
-    santa_idx = arr[i][j]
+    # 루돌프의 이동으로 충돌한 경우, 산타를 이동시키고 처리를 합니다.
+    if rudolf[0] == closestX and rudolf[1] == closestY:
+        firstX = closestX + moveX * c
+        firstY = closestY + moveY * c
+        lastX, lastY = firstX, firstY
 
-    min_dist = (rudolf[0]-i)**2 + (rudolf[1]-j)**2
-    move_dir = -1
+        stun[closestIdx] = t + 1
 
-    for dir in range(4):
-        nx, ny = i+dxs[dir], j + dys[dir]
-        if not in_range(nx, ny) or arr[nx][ny] > 0:continue
-        
-        dist = (rudolf[0]-nx)**2 + (rudolf[1]-ny)**2
-        if dist < min_dist:
-            min_dist = dist
-            move_dir = dir
-    if move_dir == -1: # 움직일 수 없다면
-        return
-    else: # 해당 방향으로 움직일 수 있다면
-        nx, ny = i + dxs[move_dir], j + dys[move_dir]
+        # 만약 이동한 위치에 산타가 있을 경우, 연쇄적으로 이동이 일어납니다.
+        while is_inrange(lastX, lastY) and board[lastX][lastY] > 0:
+            lastX += moveX
+            lastY += moveY
 
-        # 위치 업데이트
-        arr[i][j] = 0
-        arr[nx][ny] = santa_idx
+        # 연쇄적으로 충돌이 일어난 가장 마지막 위치에서 시작해,
+        # 순차적으로 보드판에 있는 산타를 한칸씩 이동시킵니다.
+        while not (lastX == firstX and lastY == firstY):
+            beforeX = lastX - moveX
+            beforeY = lastY - moveY
 
-        # 산타의 이동으로 루돌프와 충돌하는 경우
-        if rudolf == (nx, ny):
-            santa_score[santa_idx] += d 
-            # 산타의 반대이동방향        
-            reverse_move_dir = (move_dir+2)%4
-            santa_first_x = nx + dxs[reverse_move_dir]*d
-            santa_first_y = ny + dys[reverse_move_dir]*d 
+            # if not is_inrange(beforeX, beforeY):
+            #     break
 
-            # 밀려난 곳이 바로 범위 밖일 경우
-            if not in_range(santa_first_x, santa_first_y):
-                is_alive[santa_idx] = False
-                arr[nx][ny] = 0
-                return
-                
-            while in_range(santa_last_x, santa_last_y) and arr[santa_last_x][santa_last_y] > 0:
-                santa_last_x += dxs[reverse_move_dir]
-                santa_last_y += dys[reverse_move_dir]
-            
-            # 연쇄 충돌 발생
-            while not (santa_last_x == santa_first_x and santa_last_y == santa_first_y):
-                before_x = santa_last_x - dxs[reverse_move_dir]
-                before_y = santa_last_y - dys[reverse_move_dir]
-                if not in_range(before_x, before_y):break
+            idx = board[beforeX][beforeY]
 
-                idx = arr[before_x][before_y]
-                if not in_range(santa_last_x, santa_last_y):
-                    is_alive[idx] = False
-                else:
-                    arr[santa_last_x][santa_last_y] = arr[before_x][before_y]
-                    po
-
-    return
-
-
-def santa_all_move():
-    santa_move_list = [0]*(p+1) # 1번부터 순서대로 움직이기 위해 
-    for i in range(n+1):
-        for j in range(n+1):
-            if arr[i][j] > 0 and is_passout[arr[i][j]] == 0: 
-                santa_move_list[arr[i][j]] = (i, j)
-    
-    for i in range(len(santa_move_list)):
-        if str(type(santa_move_list[i])) == "<class 'int'>":continue
-        santa_move(santa_move_list[i][0], santa_move_list[i][1])
-
-def give_score():
-    for i, alive in enumerate(is_alive):
-        if alive:santa_score[i] += 1
-
-def is_gameover():
-    if m == 0:return True
-    for alive in is_alive:
-        if alive:return False
-    return True
-
-def awake_santa():
-    for i in range(p+1):
-        if is_passout[i] > 0:
-            if is_passout[i] == m: is_passout[i] = 0
-def print_arr():
-    for i in range(1, n+1):
-        for j in range(1, n+1):
-            if rudolf == (i,j):
-                print(-1, end=" ")
+            if not is_inrange(lastX, lastY):
+                is_live[idx] = False
             else:
-                print(arr[i][j], end=" ")
-        print()
-    print()
+                board[lastX][lastY] = board[beforeX][beforeY]
+                pos[idx] = (lastX, lastY)
 
-while True:
-    # 기절한 사람이 잇다면 시간에 맞춰서 깨우기
-    awake_santa()
-    rudolf_move()
+            lastX, lastY = beforeX, beforeY
 
-    print_arr()
-    
-    santa_all_move()
-    print_arr()
-    m -= 1
-    give_score()
-    # print(*santa_score)
-    # print()
-    if is_gameover():
-        break
-    print(m)
-    
-    
-# print(*santa_score)
+        points[closestIdx] += c
+        pos[closestIdx] = (firstX, firstY)
+        if is_inrange(firstX, firstY):
+            board[firstX][firstY] = closestIdx
+        else:
+            is_live[closestIdx] = False
+
+    board[rudolf[0]][rudolf[1]] = -1;
+
+    # 각 산타들은 루돌프와 가장 가까운 방향으로 한칸 이동합니다.
+    for i in range(1, p+1):
+        if not is_live[i] or stun[i] >= t:
+            continue
+
+        minDist = (pos[i][0] - rudolf[0])**2 + (pos[i][1] - rudolf[1])**2
+        moveDir = -1
+
+        for dir in range(4):
+            nx = pos[i][0] + dx[dir]
+            ny = pos[i][1] + dy[dir]
+
+            if not is_inrange(nx, ny) or board[nx][ny] > 0:
+                continue
+
+            dist = (nx - rudolf[0])**2 + (ny - rudolf[1])**2
+            if dist < minDist:
+                minDist = dist
+                moveDir = dir
+
+        if moveDir != -1:
+            nx = pos[i][0] + dx[moveDir]
+            ny = pos[i][1] + dy[moveDir]
+
+            # 산타의 이동으로 충돌한 경우, 산타를 이동시키고 처리를 합니다.
+            if nx == rudolf[0] and ny == rudolf[1]:
+                stun[i] = t + 1
+
+                moveX = -dx[moveDir]
+                moveY = -dy[moveDir]
+
+                firstX = nx + moveX * d
+                firstY = ny + moveY * d
+                lastX, lastY = firstX, firstY
+
+                if d == 1:
+                    points[i] += d
+                else:
+                    # 만약 이동한 위치에 산타가 있을 경우, 연쇄적으로 이동이 일어납니다.
+                    while is_inrange(lastX, lastY) and board[lastX][lastY] > 0:
+                        lastX += moveX
+                        lastY += moveY
+
+                    # 연쇄적으로 충돌이 일어난 가장 마지막 위치에서 시작해,
+                    # 순차적으로 보드판에 있는 산타를 한칸씩 이동시킵니다.
+                    while lastX != firstX or lastY != firstY:
+                        beforeX = lastX - moveX
+                        beforeY = lastY - moveY
+
+                        # if not is_inrange(beforeX, beforeY):
+                        #     break
+
+                        idx = board[beforeX][beforeY]
+
+                        if not is_inrange(lastX, lastY):
+                            is_live[idx] = False
+                        else:
+                            board[lastX][lastY] = board[beforeX][beforeY]
+                            pos[idx] = (lastX, lastY)
+
+                        lastX, lastY = beforeX, beforeY
+
+                    points[i] += d
+                    board[pos[i][0]][pos[i][1]] = 0
+                    pos[i] = (firstX, firstY)
+                    if is_inrange(firstX, firstY):
+                        board[firstX][firstY] = i
+                    else:
+                        is_live[i] = False
+            else:
+                board[pos[i][0]][pos[i][1]] = 0
+                pos[i] = (nx, ny)
+                board[nx][ny] = i
+
+    # 라운드가 끝나고 탈락하지 않은 산타들의 점수를 1 증가시킵니다.
+    for i in range(1, p+1):
+        if is_live[i]:
+            points[i] += 1
+
+
+# 결과를 출력합니다.
+for i in range(1, p + 1):
+    print(points[i], end=" ")
