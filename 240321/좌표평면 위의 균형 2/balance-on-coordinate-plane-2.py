@@ -2,28 +2,21 @@ import sys
 input = sys.stdin.readline 
 
 n = int(input())
-arr = [[0]*101 for _ in range(101)]
-for _ in range(n):
-    x, y = map(int, input().split())
-    arr[x][y] = 1
+points = [tuple(map(int, input().split())) for _ in range(n)]
 answer = int(1e9)
 
-def count_dots(sx, ex, sy, ey):
-    result = 0
-    for row in range(sx, ex):
-        for col in range(sy, ey):
-            if arr[row][col]:
-                result += 1
-    return result
-
-for x in range(1, 101):
-    if x%2 == 0 :
-        for y in range(1, 101):
-            if y%2 == 0:
-                a = count_dots(0, x, 0, y)
-                b = count_dots(0, x, y, 101)
-                c = count_dots(x, 101, 0, y)
-                d = count_dots(x, 101, y, 101)
-                max_value = max([a,b,c,d])
-                answer = min(answer, max_value)
+for i in range(0, 101, 2):
+    for j in range(0, 101, 2):
+        segment = [0]*5
+        for x, y in points:
+            if x > i and y > j:
+                segment[1] += 1
+            elif x < i and y > j:
+                segment[2] += 1
+            elif x > i and y < j:
+                segment[3] += 1
+            else:
+                segment[4] += 1
+        min_val = max(segment)
+        answer = min(answer, min_val)
 print(answer)
