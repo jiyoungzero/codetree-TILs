@@ -5,7 +5,7 @@ from collections import deque
 n, m = map(int, input().split())
 arr = [list(map(int, input().split())) for _ in range(n)]
 max_k = 0
-comfort_zone = 0
+comfort_zone = -1
 dxs, dys = [0, 0, 1, -1], [1, -1, 0, 0]
 def in_range(x, y):
     return 0 <= x < n and 0 <= y < m
@@ -34,7 +34,7 @@ for rain_h in range(100, 0, -1):
             if not visited[i][j] and arr[i][j] > rain_h:
                 bfs(rain_h, i, j)
                 tmp_comfort_zone += 1
-    if comfort_zone < tmp_comfort_zone:
+    if comfort_zone <= tmp_comfort_zone:
         comfort_zone = tmp_comfort_zone
         max_k = rain_h
         # print("rain_h", rain_h, tmp_comfort_zone)
