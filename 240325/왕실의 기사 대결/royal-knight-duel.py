@@ -42,7 +42,7 @@ def get_move_pos(warrier, d):
     while que:
         x, y = que.popleft()
         nx, ny = x + dxs[d], y + dys[d]
-        if board[nx][ny] == WALL: continue
+        if in_range(nx, ny) and board[nx][ny] == WALL: continue
         if in_range(nx, ny) and not visited[nx][ny] and w_board[nx][ny] != idx and w_board[nx][ny] > 0:
             other_warrier_idx = w_board[nx][ny]
             idx, r, c, h, w, k, survive = warriers[other_warrier_idx]
