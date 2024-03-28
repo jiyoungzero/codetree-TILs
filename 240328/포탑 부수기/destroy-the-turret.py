@@ -22,7 +22,7 @@ def bfs(attacker, victim):
     while que:
         x, y = que.popleft()
         if (x, y) == victim:
-            laser_path = visited[x][y][1:-1]
+            laser_path = visited[x][y]
             break
 
         for dir in range(4):
@@ -46,6 +46,7 @@ def laser():
 
     for p in laser_path:
         x, y = p
+        if (x, y) == victim or (x, y) == attacker: continue
         arr[x][y] = max(0, arr[x][y] - attack//2)
     arr[v_x][v_y] = max(0, arr[v_x][v_y] - attack)
     
@@ -61,7 +62,7 @@ def potan():
     
     for p in potan_path:
         x, y = p
-        if (x, y) == attacker:continue
+        if (x, y) == attacker or (x, y) == victim :continue
         arr[x][y] = max(0, arr[x][y] - attack//2)
     arr[v_x][v_y] = max(0, arr[v_x][v_y] - attack)
 
@@ -74,19 +75,14 @@ def extra_plus():
                     arr[i][j] += 1
 
     
-def pick(subject):
+def pick():
     lst = [] # (공격력, 최근 공격 경험 -, 행+열 -, 열 -)
     for i in range(n):
         for j in range(m):
             if arr[i][j] > 0:
                 lst.append((arr[i][j], attack_record[i][j][-1], i+j, j, i))
     lst.sort(key = lambda x : (x[0], -x[1], -x[2], -x[3]))
-    if subject == 'attacker':
-        tmp = (lst[0][-1], lst[0][-2])
-        return tmp
-    else:
-        tmp = (lst[-1][-1], lst[-1][-2])
-        return tmp
+    return lst
 
 def game_over():
     cnt = 0
@@ -111,18 +107,18 @@ for time in range(1, k+1):
     if game_over():
         break
 
-    attacker = pick('attacker') # (x, y, 공격력)
+    lst = pick() # (x, y, 공격력)
+    attacker = (lst[0][-1], lst[0][-2])
+    victim = (lst[-1][-1], lst[-1][-2])
     attack_record[attacker[0]][attacker[1]].append(time)
-    victim = pick('victim') # pick_attacker의 반대
     arr[attacker[0]][attacker[1]] += (n+m)
 
     if bfs(attacker, victim): # 경로가 있다면
         laser()
     else:
         potan() # 경로가 없다면
-
+    # print('attacker =', attacker, 'victim =', victim, laser_path if len(laser_path) else potan_path)
     # printarr()
-    # 포탄 부서짐
     extra_plus() # 관계없는 포탑은 +1 공격력 
     # printarr()
 
