@@ -28,7 +28,7 @@ def bfs(attacker, victim):
         for dir in range(4):
             nx, ny = x + dxs[dir], y + dys[dir]
             if not in_range(nx, ny):
-                continue 
+                nx, ny = nx%n, ny%m
             if len(visited[nx][ny]) ==0 and arr[nx][ny] > 0:
                 tmp = visited[x][y] + [(nx, ny)]
                 visited[nx][ny] = tmp
@@ -61,6 +61,7 @@ def potan():
     
     for p in potan_path:
         x, y = p
+        if (x, y) == attacker:continue
         arr[x][y] = max(0, arr[x][y] - attack//2)
     arr[v_x][v_y] = max(0, arr[v_x][v_y] - attack)
 
@@ -112,16 +113,18 @@ for time in range(1, k+1):
 
     attacker = pick('attacker') # (x, y, 공격력)
     attack_record[attacker[0]][attacker[1]].append(time)
-    arr[attacker[0]][attacker[1]] += (n+m)
-
     victim = pick('victim') # pick_attacker의 반대
+    arr[attacker[0]][attacker[1]] += (n+m)
 
     if bfs(attacker, victim): # 경로가 있다면
         laser()
     else:
         potan() # 경로가 없다면
+
+    # printarr()
     # 포탄 부서짐
     extra_plus() # 관계없는 포탑은 +1 공격력 
+    # printarr()
 
 for row in arr:
     answer = max(answer, max(row))
