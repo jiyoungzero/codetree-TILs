@@ -42,4 +42,4 @@ def backtracking(cur_idx, cnt, selected):
     backtracking(cur_idx+1, cnt, selected)
 
 backtracking(0, 0, [])
-print(answer)
+print(answer if answer < int(1e9) else -1)
