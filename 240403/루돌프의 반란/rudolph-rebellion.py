@@ -15,6 +15,7 @@ scores = [0]*(P+1)
 is_dead = [False]*(P+1) 
 is_passout = [0]*(P+1) 
 dxs, dys = [-1, 0, 1, 0], [0, 1, 0, -1] # 상우하좌
+arr[rudolf[0]][rudolf[1]] = -1
 
 def in_range(x, y):
     return 0 <= x < N and 0 <= y < N
@@ -43,11 +44,12 @@ def move_rudolf(time):
 
     # 루돌프 이동방향 
     dx, dy = dist[0][3], dist[0][4]
+    arr[rudolf[0]][rudolf[1]] = 0
     rudolf = (rudolf[0] + dx, rudolf[1] + dy)
 
     if arr[rudolf[0]][rudolf[1]] > 0: # 루돌프가 이동한 곳에 산타가 있다면 
         target_santa_idx = arr[rudolf[0]][rudolf[1]]
-        arr[rudolf[0]][rudolf[1]] = 0
+        
 
         scores[target_santa_idx] += C 
         is_passout[target_santa_idx] = time + 1
@@ -76,6 +78,7 @@ def move_rudolf(time):
             arr[first_x][first_y] = target_santa_idx
 
     update_santas_pos()
+    arr[rudolf[0]][rudolf[1]] = -1
     # print(santas, rudolf)
     return 
 
@@ -108,8 +111,7 @@ def all_move_santa(time):
                 dx, dy = dxs[dir], dys[dir]
                 min_dist = dist
         # 루돌프와 충돌하는 경우
-        if rudolf == (x+dx, y+dy):
-            target_santa_idx = arr[x][y]
+        if arr[x+dx][y+dy] == -1 :
             arr[x][y] = 0
             is_passout[i] = time + 1
             scores[i] += D 
@@ -117,7 +119,7 @@ def all_move_santa(time):
             r_dx = dx *(-1)
             r_dy = dy *(-1)
 
-            first_x, first_y = x+dx + r_dx * D, y+dy+r_dy*D  # 루돌프와 충돌로 밀려난 곳
+            first_x, first_y = x+dx + (r_dx*D), y+dy+(r_dy*D)  # 루돌프와 충돌로 밀려난 곳
             last_x, last_y = first_x, first_y
 
             while in_range(last_x, last_y) and arr[last_x][last_y] > 0: # 다른 산타와의 상호작용
@@ -137,14 +139,15 @@ def all_move_santa(time):
                 
             
             if not in_range(first_x, first_y):
-                is_dead[target_santa_idx] = True
+                is_dead[i] = True
             else:
-                arr[first_x][first_y] = target_santa_idx
+                arr[first_x][first_y] = i
         else:
+            arr[x][y] = 0
             first_x = x + dx
             first_y = y + dy
             arr[first_x][first_y] = i 
-            arr[x][y] = 0
+            
 
     update_santas_pos()
     # for i in range(1, P+1):
