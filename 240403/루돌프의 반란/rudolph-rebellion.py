@@ -70,25 +70,26 @@ def move_rudolf(time):
                 is_dead[idx] = True
             else:        
                 arr[last_x][last_y] = arr[prev_x][prev_y]
+                santas[arr[prev_x][prev_y]] = (last_x, last_y)
                 last_x, last_y = prev_x, prev_y 
 
         if not in_range(first_x, first_y):
             is_dead[target_santa_idx] = True
         else:
             arr[first_x][first_y] = target_santa_idx
+            santas[target_santa_idx] = (first_x, first_y)
 
-    update_santas_pos()
     arr[rudolf[0]][rudolf[1]] = -1
     # print(santas, rudolf)
     return 
 
-def update_santas_pos():
-    global santas
-    for i in range(N):
-        for j in range(N):
-            if arr[i][j] > 0 and not is_dead[arr[i][j]]:
-                santas[arr[i][j]] = [i, j]
-    return 
+# def update_santas_pos():
+#     global santas
+#     for i in range(N):
+#         for j in range(N):
+#             if arr[i][j] > 0 and not is_dead[arr[i][j]]:
+#                 santas[arr[i][j]] = [i, j]
+#     return 
 
 
 def all_move_santa(time):
@@ -135,6 +136,7 @@ def all_move_santa(time):
                     is_dead[idx] = True
                 else:
                     arr[last_x][last_y] = idx
+                    santas[idx] = (last_x, last_y)
                 last_x, last_y = prev_x, prev_y
                 
             
@@ -142,14 +144,16 @@ def all_move_santa(time):
                 is_dead[i] = True
             else:
                 arr[first_x][first_y] = i
+                santas[i] = (first_x, first_y)
         else:
             arr[x][y] = 0
             first_x = x + dx
             first_y = y + dy
             arr[first_x][first_y] = i 
-            
+            santas[i] = (first_x, first_y)
 
-    update_santas_pos()
+
+    # update_santas_pos()
     # for i in range(1, P+1):
     #     if not is_dead[i]:
     #         print(santas[i])
