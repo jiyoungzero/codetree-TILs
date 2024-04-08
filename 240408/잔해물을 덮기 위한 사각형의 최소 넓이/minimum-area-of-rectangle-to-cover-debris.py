@@ -22,4 +22,7 @@ for i in range(2001):
             max_x = max(i, max_x)
             max_y = max(j, max_y)
 # print(min_x, min_y, max_x, max_y)
-print((max_x-min_x+1)*(max_y-min_y+1))
+if min_x == 2001 or min_y == 2001 or max_x == -2001 or max_y == -2001:
+    print(0)
+else:
+    print((max_x-min_x+1)*(max_y-min_y+1))
