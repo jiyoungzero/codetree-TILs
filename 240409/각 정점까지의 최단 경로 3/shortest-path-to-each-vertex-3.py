@@ -29,4 +29,4 @@ def dijk(start):
 
 dijk(1)
 for i in range(2, n+1):
-    print(distance[i])
+    print(distance[i] if distance[i] < MAX_VALUE else -1)
