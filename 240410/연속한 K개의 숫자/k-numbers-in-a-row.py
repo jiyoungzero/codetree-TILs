@@ -20,10 +20,14 @@ nums = [i for i in range(n+1)]
 
 for i in range(1, n+1):
     p_prefix[i] = p_prefix[i-1] + arr[i]
-# print(*p_prefix)
+
 
 prefix = [0]*(n-k+1)
 for i in range(n-k+1):
-    prefix[i] = p_prefix[i+k] - arr[i]
+    cnt = 0
+    for j in range(i, i+k):
+        if arr[j]:
+            cnt += 1
+    prefix[i] = cnt
 
 print(k - max(prefix))
