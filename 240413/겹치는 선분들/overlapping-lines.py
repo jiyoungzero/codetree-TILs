@@ -2,30 +2,33 @@ import sys
 input = sys.stdin.readline 
 
 n, k = map(int, input().split())
+cmds = []
 answer = 0
-start = 0
 
-segments = []
 for _ in range(n):
-    m, d = map(str, input().split())
-    if d == 'R':
-        segments.append((start, start+int(m)))
-        start += int(m)
+    cnt, dir = input().split()
+    if dir == 'R':
+        cmds.append((int(cnt), 1))
     else:
-        segments.append((start-int(m), start))
-        start -= int(m)
+        cmds.append((int(cnt), -1))
 
-points = []
-for idx, segment in enumerate(segments):
-    s, e = segment
-    points.append((idx, s, 1))
-    points.append((idx, e, -1))
+checked = [0]*2*int(1e6)
+x = int(1e6)
+for cmd in cmds:
+    s, e = x, x+(cmd[0]*cmd[1])
+    if s < e:
+        checked[s] += 1
+        checked[e] -= 1
+        x = e
+    else:
+        checked[e] += 1
+        checked[s] -= 1
+        x = e
 
-points.sort(key = lambda x:(x[0], x[1]))
 
-tmp = 1
-for i, x, v in points:
-    tmp += v
-    if tmp >= k:
+sum_value = 0
+for c in checked:
+    sum_value += c 
+    if sum_value >= k:
         answer += 1
 print(answer)
