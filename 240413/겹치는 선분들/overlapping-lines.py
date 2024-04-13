@@ -12,8 +12,8 @@ for _ in range(n):
     else:
         cmds.append((int(cnt), -1))
 
-checked = [0]*2*int(1e6)
-x = int(1e6)
+checked = [0]*2*10**7
+x = 10**7
 for cmd in cmds:
     s, e = x, x+(cmd[0]*cmd[1])
     if s < e:
