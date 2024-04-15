@@ -5,8 +5,10 @@ n, q = map(int ,input().split())
 dot_pos = list(map(int, input().split()))
 MAX_N = 1000001
 prefix = [0]*MAX_N
+for i in dot_pos:
+    prefix[i] = 1
 for i in range(1, MAX_N):
-    if i in dot_pos:
+    if prefix[i] == 1:
         prefix[i] = prefix[i-1]+1
     else:
         prefix[i] = prefix[i-1]
