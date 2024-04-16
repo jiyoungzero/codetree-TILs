@@ -9,7 +9,7 @@ def lower_bound(target): # dots에서 target보다 같거나 작은 최소 인�
     s, e = 0, n-1
     while s <= e:
         mid = (s+e)//2
-        if dots[mid] <= target:
+        if dots[mid] < target:
             s = mid+1
         else:
             e = mid - 1
