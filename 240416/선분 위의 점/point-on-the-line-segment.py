@@ -3,6 +3,7 @@ input = sys.stdin.readline
 
 n, m = map(int, input().split())
 dots = list(map(int, input().split()))
+dots.sort()
 
 def lower_bound(target): # dots에서 target보다 같거나 작은 최소 인덱스
     max_idx = n
