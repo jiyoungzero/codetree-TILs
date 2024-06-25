@@ -9,7 +9,8 @@ K, M = map(int, input().split())
 
 # arr = 유물 배열(유물 종류 : 1~7)
 arr = [list(map(int, input().split())) for _ in range(5)]
-fragments = deque(map(int, input().split()))
+original_fragments = list(map(int, input().split()))
+fragments = deque()
 answer = 0
 dxs, dys = [0,0,1,-1],[1,-1,0,0]
 
@@ -46,20 +47,21 @@ def find_largest():
             for r_cnt in range(3):
                 c_arr = fake_rotate_90(i, j, 3)
                 tmp = bfs(c_arr)
+                tmp_cnt = 0
+                for row in tmp:
+                    tmp_cnt += len(row)
                 if len(tmp) > 0:
-                    lst.append((len(tmp), r_cnt, y, x, tmp))
+                    lst.append((tmp_cnt, r_cnt, y, x))
     if len(lst) > 0:
         lst.sort(key = lambda x:(-x[0], x[1], x[2], x[3]))
         final_rotate = lst[0]
         r_cnt, x, y = final_rotate[1], final_rotate[3], final_rotate[2]
-        # print("-->", lst[0][-1])
+
 
         for _ in range(r_cnt+1):
             real_rotate_90(x-1, y-1, 3)  
 
-        # print()
-        # for row in arr:
-        #     print(*row)
+
     else:
         return -1
 
@@ -116,6 +118,7 @@ def process(): # 유물 획득과정
 
 
 for _ in range(K):
+    fragments = deque(original_fragments)
     if find_largest() == -1:
         break
     answer = process()
