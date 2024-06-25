@@ -94,30 +94,32 @@ def bfs(matrix): # 3개 이상 연결된 유물의 위치를 리턴 (행, 열)
 def delete_fill_places(targets):
     global arr, answer,fragments
     # 유물의 위치를 (-x[0], x[1]) sort하고 fragsments.popleft로 채우기
-
+    result = 0
 
     for target in targets:
         target.sort(key = lambda x:(x[1], -x[0]))
-        answer += len(target)
+        result += len(target)
 
         for x, y in target:
             arr[x][y] = fragments.popleft()
 
-    return 
+    return result
 
 def process(): # 유물 획득과정
+    result = 0
     while True:
         targets = bfs(arr)
         if len(targets) == 0:
             break
-        delete_fill_places(targets)
-    return 
+        result += delete_fill_places(targets)
+    return result
 
 
 for _ in range(K):
     if find_largest() == -1:
         break
-    process()
-
-
-print(answer)
+    answer = process()
+    if answer > 0:
+        print(answer, end = " ")
+    else:
+        break
