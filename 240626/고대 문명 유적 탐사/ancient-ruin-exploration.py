@@ -42,22 +42,34 @@ def find_largest():
     for i in range(3):
         for j in range(3): 
             x, y = i + 1, j + 1 # 회전중심x, 회전중심y
-
+            # print("(sx, sy) = ", (i, j))
             # 90도 회전한 결과
             c_arr1 = fake_rotate_90(i,j,arr)
+            # print("첫 회전")
+            # for row in c_arr1:
+            #     print(*row)
+            # print()
             tmp1 = bfs(c_arr1)
             tmp1_value = len(tmp1)
             if len(tmp1) > 0:lst.append((tmp1_value, 1, y, x))
             
             # 180도 회전한 결과
             c_arr2 = fake_rotate_90(i, j, c_arr1)
+            # print("두번째 회전")
+            # for row in c_arr2:
+            #     print(*row)
+            # print()
             tmp2 = bfs(c_arr2)
             tmp2_value = len(tmp2)
             if len(tmp2) > 0:lst.append((tmp2_value, 2, y, x))
 
             # 270도 회전한 결과 
             c_arr3 = fake_rotate_90(i, j, c_arr2)
-            tmp3 = bfs(c_arr2)
+            # print("세 회전")
+            # for row in c_arr3:
+            #     print(*row)
+            # print()
+            tmp3 = bfs(c_arr3)
             tmp3_value = len(tmp3)
             if len(tmp3) > 0: lst.append((tmp3_value, 3, y, x))
 
@@ -96,14 +108,26 @@ def bfs(matrix): # 3개 이상 연결된 유물의 위치를 리턴 (행, 열)
                 values += pos
     return values # 행, 열
 
+
 def delete_fill_places(targets):
     global arr, fragments
     result = len(targets)
     targets.sort(key=lambda x:(x[1], -x[0]))
-    
+    # print("최종 회전")
+    # for i in range(5):
+    #     for j in range(5):
+    #         if (i,j) in targets:
+    #             print('0', end = " ")
+    #         else:print(arr[i][j], end = " ")
+    #     print()
+
     for target in targets:
         x, y = target
         arr[x][y] = fragments.popleft()
+
+    # print("새로운 유물을 채우기")
+    # for row in arr:
+    #     print(*row)
     return result
 
 def process(): # 유물 획득과정
@@ -124,3 +148,9 @@ for _ in range(K):
         print(answer, end = " ")
     else:
         break
+
+# arr = [[2,3,2,6,2],[4,6,7,3,1],[7,1,1,3,1],[1,4,3,5,4],[1,5,4,1,4]]
+# find_largest()
+
+# # targets = bfs(arr)
+# # print(targets)
