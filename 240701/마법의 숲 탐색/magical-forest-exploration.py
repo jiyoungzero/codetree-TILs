@@ -16,7 +16,7 @@ d_check = [(1, -1), (2, 0), (1, 1)]
 def in_range(x, y):
     return 0 <= x < R+3 and 0 <= y < C
 
-def is_fairy_out(x, y):
+def is_galam_out(x, y):
     return x < 3
 
 def rotate_out(rotate, dir, x, y): # (왼쪽인지 오른쪽인지, 출구방향, 현재출구위치)
@@ -92,7 +92,8 @@ def move_golam(f_idx):
             out_dir = (out_dir+1)%4
         else:
             break
-    return (x, y, ox, oy)
+    return (x, y, ox, oy)  
+
 
 def move_fairy(f_idx, fx, fy, ox, oy):
     que = deque()
@@ -100,7 +101,6 @@ def move_fairy(f_idx, fx, fy, ox, oy):
     que.append((ox, oy))
     visited = [(fx, fy), (ox, oy)]
 
-    # 갔던 모든 곳들 중 x의 값이 가장 큰 곳
     while que:
         x, y = que.popleft()
         for dir in range(4):
@@ -122,11 +122,11 @@ def move_fairy(f_idx, fx, fy, ox, oy):
 for f_idx in range(K):
     fx, fy, out_x, out_y = move_golam(f_idx)
 
-    if is_fairy_out(fx, fy):
+    if is_galam_out(fx-1, fy):
         arr = [[0]*C for _ in range(R+3)]
         continue
 
-    # 이동한 골렘 위치에 대한 arr 표시 (골렘 : f_idx + 1, 출구 : -1)
+    # 이동한 골렘 위치에 대한 arr 표시 (골렘 : f_idx + 1, 출구 : -(f_idx + 1))
     arr[fx][fy] = f_idx + 1
     arr[out_x][out_y] = -(f_idx+1)
     for dir in range(4):
@@ -137,8 +137,8 @@ for f_idx in range(K):
         
     fx, fy = move_fairy(f_idx, fx, fy, out_x, out_y)
 
-    # print("---", f_idx+1, '행번호', fx-2)
-    # for row in arr:
+    # print(f_idx+1, '-> 행번호', fx-2)
+    # for row in arr[3:]:
     #     print(*row)
     answer += (fx-2)
 print(answer)
