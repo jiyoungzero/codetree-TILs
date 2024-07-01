@@ -99,25 +99,26 @@ def move_fairy(f_idx, fx, fy, ox, oy):
     que = deque()
     que.append((fx, fy))
     que.append((ox, oy))
-    visited = [(fx, fy), (ox, oy)]
+    visited = [[False]*C for _ in range(R+3)]
+    visited[fx][fy] = True
+    visited[ox][oy] = True
 
+    result = fx
     while que:
         x, y = que.popleft()
         for dir in range(4):
             nx, ny = x + dxs[dir], y + dys[dir]
             if not in_range(nx,ny):continue
-            if (nx, ny) not in visited:
+            if not visited[nx][ny]:
                 if arr[x][y] < 0 and arr[nx][ny] != 0: # 현재 출구일 경우
                     que.append((nx, ny))
-                    visited.append((nx, ny))
+                    visited[nx][ny] = True
+                    result = max(result, nx)
                 elif (arr[x][y] == abs(arr[nx][ny])): # 출구는 아니지만 같은 골렘인 경우
                     que.append((nx,ny))
-                    visited.append((nx, ny))
-
-    # print('visited = ', visited)    
-    visited.sort(key = lambda x:(-x[0]))
-    
-    return visited[0]
+                    visited[nx][ny] = True
+                    result = max(result, nx)
+    return result
 
 for f_idx in range(K):
     fx, fy, out_x, out_y = move_golam(f_idx)
@@ -126,7 +127,6 @@ for f_idx in range(K):
         arr = [[0]*C for _ in range(R+3)]
         continue
 
-    # 이동한 골렘 위치에 대한 arr 표시 (골렘 : f_idx + 1, 출구 : -(f_idx + 1))
     arr[fx][fy] = f_idx + 1
     arr[out_x][out_y] = -(f_idx+1)
     for dir in range(4):
@@ -135,10 +135,6 @@ for f_idx in range(K):
         if (n_fx, n_fy) != (out_x, out_y):
             arr[n_fx][n_fy] = f_idx + 1
         
-    fx, fy = move_fairy(f_idx, fx, fy, out_x, out_y)
-
-    # print(f_idx+1, '-> 행번호', fx-2)
-    # for row in arr[3:]:
-    #     print(*row)
+    fx = move_fairy(f_idx, fx, fy, out_x, out_y)
     answer += (fx-2)
 print(answer)
