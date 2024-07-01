@@ -103,7 +103,7 @@ def move_fairy(f_idx, fx, fy, ox, oy):
     visited[fx][fy] = True
     visited[ox][oy] = True
 
-    result = fx
+    result = max(fx, ox)
     while que:
         x, y = que.popleft()
         for dir in range(4):
