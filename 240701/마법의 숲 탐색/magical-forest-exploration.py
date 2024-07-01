@@ -11,19 +11,10 @@ answer = 0 # 행의 누적합
 l_check = [(-1, -1), (0, -2), (1, -1), (1,-2),(2,-1)]
 r_check = [(-1, 1),(0,2),(1,1),(1,2),(2,1)]
 d_check = [(1, -1), (2, 0), (1, 1)]
-# 1) 골렘 이동 우선순위
-# : 아래 -> 왼쪽 + 아래 (골렘 반시계방향으로 회전, 출구도 반시계 방향으로 회전) 
-# : -> 오른쪽 + 아래 (골렘 시계방향으로 회전, 출구도 시계방향으로 회전)
 
-# 2) 정령 아래로 이동 
-# 가장 아래로 이동 (출구 + 다른 골렘 인접이라면, 다른 골렘 쪽으로 내려감)
-
-# 3) 정령 위치 판단
-# 3-1) 정령의 위치가 배열 밖이라면, arr 모두 비우기 -> 다음 골렘이 새롭게 탐색
-# 3-2) 정령의 위치가 배열 안이라면 answer += 정령.행 
 
 def in_range(x, y):
-    return 0 <= x < R and 0 <= y < C
+    return 0 <= x < R+3 and 0 <= y < C
 
 def is_fairy_out(x, y):
     return x < 3
@@ -81,6 +72,7 @@ def move_golam(f_idx):
     # 현재 정령의 정보
     x = 1
     y, out_dir = fairies[f_idx]
+    y -= 1
     ox, oy = x + dxs[out_dir], y + dys[out_dir]
     while True:
         if can_go_down(x, y):
@@ -102,10 +94,11 @@ def move_golam(f_idx):
             break
     return (x, y, ox, oy)
 
-def move_fairy(fx, fy, ox, oy):
+def move_fairy(f_idx, fx, fy, ox, oy):
     que = deque()
     que.append((fx, fy))
-    visited = [(fx, fy)]
+    que.append((ox, oy))
+    visited = [(fx, fy), (ox, oy)]
 
     # 갔던 모든 곳들 중 x의 값이 가장 큰 곳
     while que:
@@ -113,31 +106,39 @@ def move_fairy(fx, fy, ox, oy):
         for dir in range(4):
             nx, ny = x + dxs[dir], y + dys[dir]
             if not in_range(nx,ny):continue
-            if arr[x][y] == -1 and arr[nx][ny] != 0: # 출구이므로 nx,ny가 0만 아니라면 이동가능
-                que.append((nx, ny))
-                visited.append((nx, ny))
-            elif arr[nx][ny] == -1 or arr[x][y] == arr[nx][ny]:
-                que.append((nx, ny))
-                visited.append((nx,ny))
+            if (nx, ny) not in visited:
+                if arr[x][y] < 0 and arr[nx][ny] != 0: # 현재 출구일 경우
+                    que.append((nx, ny))
+                    visited.append((nx, ny))
+                elif (arr[x][y] == abs(arr[nx][ny])): # 출구는 아니지만 같은 골렘인 경우
+                    que.append((nx,ny))
+                    visited.append((nx, ny))
 
+    # print('visited = ', visited)    
     visited.sort(key = lambda x:(-x[0]))
+    
     return visited[0]
 
 for f_idx in range(K):
     fx, fy, out_x, out_y = move_golam(f_idx)
 
+    if is_fairy_out(fx, fy):
+        arr = [[0]*C for _ in range(R+3)]
+        continue
+
     # 이동한 골렘 위치에 대한 arr 표시 (골렘 : f_idx + 1, 출구 : -1)
     arr[fx][fy] = f_idx + 1
-    arr[out_x][out_y] = -1
+    arr[out_x][out_y] = -(f_idx+1)
     for dir in range(4):
         n_fx, n_fy = fx + dxs[dir], fy + dys[dir]
+        if not in_range(n_fx, n_fy):continue
         if (n_fx, n_fy) != (out_x, out_y):
             arr[n_fx][n_fy] = f_idx + 1
         
-    fx, fy = move_fairy(fx, fy, out_x, out_y)
-    
-    if is_fairy_out(fx, fy):
-        arr = [[0]*C for _ in range(R+3)]
-    
-    else: answer += fx
+    fx, fy = move_fairy(f_idx, fx, fy, out_x, out_y)
+
+    # print("---", f_idx+1, '행번호', fx-2)
+    # for row in arr:
+    #     print(*row)
+    answer += (fx-2)
 print(answer)
