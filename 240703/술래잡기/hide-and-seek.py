@@ -1,15 +1,5 @@
 import sys
 input = sys.stdin.readline 
-# k번 반복
-# 1. 도망자가 동시에 움직임(술래와의 거리가 3 이하인 사람만 움직임  -> 행 차 + 열 차)
-# 2. 술래 움직임
-
-# 1. 도망자의 움직임
-# 1-1. 술래와의 거리 재기
-# 1-2. 술래와의 거리 <= 3 이면 움직임
-# 1-3. 현재 방향으로 1칸 이동 : 격자 안 +  (nx, ny)가 술래가 아닐 때
-# 1-4.  격자 밖인 경우 : 방향 반대로 + (nx, ny)가 술래가 아닐 때 1칸 이동
-
 
 n, m, h, k = map(int ,input().split())
 tmp = [tuple(map(int ,input().split())) for _ in range(m)] # (x, y, d)
@@ -47,7 +37,8 @@ def move_runners():
             else:
                 runners[key] = (x, y, d, d_idx, catched)
         else:
-            runners[key] = (nx, ny, d, d_idx, catched)
+            if [nx, ny] == catcher:continue
+            else: runners[key] = (nx, ny, d, d_idx, catched)
 
 def catcher_path(): # 달팽이 모양
     dxs, dys = [-1, 0, 1, 0], [0, 1, 0, -1] # 상, 좌, 하, 우
@@ -82,10 +73,9 @@ def catcher_path(): # 달팽이 모양
             
             # 마지막에는 방향을 틀은 상태로 저장
             path.append((cur_x, cur_y, (dir + 1)%4))
-    for i in range(n-1, 0, -1):
+    for i in range(n-2, 0, -1):
         path.append((i, 0, 0))
     path.append((0,0,2))
-
     
     prev_d = path[0][2]
     reverse_path = []
@@ -128,8 +118,8 @@ catch_idx = 0
 answer = 0
 catcher = [n//2, n//2]
 for t in range(1, k+1):
-    # print(t, "턴 ", "술래 위치 및 방향 = ", catcher)
-
+    # print(t, "턴 ", "이동 전 술래 위치 = ", catcher)
+    arr = [[0]*n for _ in range(n)]
     move_runners()
 
     cx, cy, cd = path[catch_idx]
@@ -141,7 +131,11 @@ for t in range(1, k+1):
 
     catch_idx += 1
     catch_idx %= len(path)
-    # print(t, catch_cnt)
+    # print(t, "턴 -> 이동 후 술래 위치", catcher)
     # print(runners)
+    # print()
 
+
+# for i, p in enumerate(path):
+#     print(i+1, p)
 print(answer)
