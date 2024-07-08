@@ -48,24 +48,34 @@ def move_p(key):
     x, y = ppl[key]
     target = stores[key]
 
-    if target[0] < x:
-        x -= 1
-    elif target[1] < y:
-        y -= 1
-    elif target[1] > y:
-        y += 1
-    else:
-        x += 1
+    visited = [[False]*n for _ in range(n)]
+    que = deque()
+    que.append((x, y, []))
+    visited[x][y] = True
+    nx, ny = 0, 0
 
-    if target == (x, y):
+    while que:
+        cx, cy, path = que.popleft()
+        if target == (cx, cy):
+            nx, ny = path[0]
+            break
+        for dir in range(4):
+            nx, ny = cx + dxs[dir], cy + dys[dir]
+            if not in_range(nx, ny):continue
+            if not visited[nx][ny] and arr[nx][ny] != -1:
+                visited[nx][ny] = True
+                que.append((nx, ny,path+[(nx, ny)]))
+
+    if target == (nx, ny):
         arrived[key] = True
         new_arrived.append(target)
     # 새로운 이동 위치 업데이트
-    ppl[key] = [x, y]
+    ppl[key] = [nx, ny]
     return 
 
 new_arrived = []
 while True:
+    new_arrived = []
     for key, p in ppl.items():
         if arrived[key]:continue
         if len(p):
