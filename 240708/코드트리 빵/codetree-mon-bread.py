@@ -1,6 +1,7 @@
 import sys
 input = sys.stdin.readline 
 from collections import deque
+import heapq
 
 
 n, m = map(int, input().split())
@@ -24,23 +25,23 @@ def in_range(x, y):
 
 # 해당 위치까지 가는데 최소거리 계산 
 def bfs(store):
-    que = deque()
-    que.append(store)
-    visited = [[-1]*n for _ in range(n)]
-    visited[store[0]][store[1]] = 0
+    que = []
+    heapq.heappush(que, (0, store[0], store[1]))
+    visited = [[False]*n for _ in range(n)]
+    visited[store[0]][store[1]] = True
 
     result = []
     while que:
-        x, y = que.popleft()
+        dist, x, y = heapq.heappop(que)
         if arr[x][y] == 1:
             result = [x, y]
             break
         for dir in range(4):
             nx, ny = x + dxs[dir], y + dys[dir]
             if not in_range(nx, ny):continue
-            if visited[nx][ny] == -1 and arr[nx][ny] != -1: # arr[x][y] == -1 : 갈 수 없는 곳
-                visited[nx][ny] = visited[x][y] + 1
-                que.append((nx, ny))
+            if not visited[nx][ny] and arr[nx][ny] != -1: # arr[x][y] == -1 : 갈 수 없는 곳
+                visited[nx][ny] = True
+                heapq.heappush(que, (dist+1, nx, ny))
     return result
 
 def move_p(key):
@@ -88,9 +89,9 @@ while True:
         base_pos = bfs(stores[answer-1]) # t분 일 때, t번째 사람이 가고자 하는 편의점과 가까운 베이스캠프 위치
         arr[base_pos[0]][base_pos[1]] = -1
         ppl[answer-1] = [base_pos[0], base_pos[1]]
-
+    # print(answer, "초 대 ppl =>", ppl)
     if all(arrived):break    
-    # print(answer, ppl)
+    
     answer += 1
 
 print(answer)
