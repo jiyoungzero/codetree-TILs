@@ -33,8 +33,8 @@ def can_go(nx, ny):
     if not in_range(nx, ny):return False
     if [nx, ny] == pecman: return False
     for d in dead:
-        x, y, _ = d
-        if (x, y) == (nx, ny):
+        deadx, deady, _ = d
+        if nx == deadx and ny == deady:
             return False
     return True
 
@@ -48,13 +48,20 @@ def move_monsters():
     global monsters
     for idx, monster in enumerate(monsters):
         x, y, d = monster
+        go = False
+        original_d = d
+        nx, ny = x + dxs[d], y + dys[d]
         for _ in range(8):
-            nx, ny = x + dxs[d], y + dys[d]
             if can_go(nx, ny):
-                x, y = nx, ny
-                break
-            d = (d+1)%8
-        monsters[idx] = [x, y, d]
+                go = True
+                monsters[idx] = [nx, ny, d]
+                break            
+            d = (d + 1)%8
+            nx, ny = x + dxs[d], y + dys[d]
+
+        if not go and d == original_d:
+            continue
+                
 
 def count_monster(paths):
     result = 0
@@ -68,7 +75,7 @@ def count_monster(paths):
 
 def move_pecman(time):
     global monsters, dead, pecman
-    eat = [0]*64
+    eat = [-1]*64
     
     for i, route in enumerate(routes):
         x, y = pecman
@@ -85,8 +92,8 @@ def move_pecman(time):
         if flag:
             eat[i] = count_monster(paths)
     
-    max_cnt, max_idx = eat[0], 0
-    for i in range(1, 64):
+    max_cnt, max_idx = -1, -1
+    for i in range(64):
         if eat[i] > max_cnt:
             max_cnt = eat[i]
             max_idx = i
@@ -108,7 +115,7 @@ def move_pecman(time):
             n_monsters.append(monsters[idx])
     
     # 몬스터 정보 업데이트
-    monsters = n_monsters
+    monsters = copy.deepcopy(n_monsters)
 
     # 팩맨 위치 업데이트
     pecman = [x, y]
@@ -142,7 +149,7 @@ for time in range(t):
     for i in range(len(dead)):
         if i not in erase:
             n_dead.append(dead[i])
-    dead = n_dead
+    dead = copy.deepcopy(n_dead)
 
     # print("dead :", dead)
     # print() 
