@@ -134,6 +134,8 @@ for time in range(m):
     lst = arr2line()
 
     while True:
+        # print(lst)
+        lst.append(0)
         nxt_lst, flag = popping(lst)
         if not flag:
             break
