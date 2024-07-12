@@ -19,7 +19,6 @@ def attack_monster(d, p):
         nx, ny = x + dxs[d], y + dys[d]
         if not in_range(nx, ny):break
         answer += arr[nx][ny]
-        # print("초반 공격 점수 = ", arr[nx][ny])
         arr[nx][ny] = 0
         x, y = nx, ny
 
@@ -32,27 +31,25 @@ def in_pop_lst(idx, pop_lst):
 
 def arr2line():
     m_dxs, m_dys = [0, 1, 0, -1], [-1, 0, 1, 0]
-    sx, sy = n//2, n//2
+    cur_x, cur_y = n//2, n//2
+    move_dir, move_num = 0, 1
     lst = []
-    
-    cnt = 0
-    visited = [[False]*n for _ in range(n)]
-    visited[sx][sy] = True
-    while True:
-        if (sx, sy) == (0,0):break
-        for dir in range(4):
-            if dir == 0 or dir == 2:
-                cnt += 1
-            for _ in range(cnt):
-                nx, ny = sx + m_dxs[dir], sy + m_dys[dir]
-                if not in_range(nx, ny):break
-                if visited[nx][ny]:break
-                visited[nx][ny] = True
-                if arr[nx][ny] > 0:
-                    lst.append(arr[nx][ny])
-                sx, sy = nx, ny
-            if (sx, sy) == (0, 0):break
+
+    while cur_x or cur_y:
+        for _ in range(move_num):
+            cur_x += m_dxs[move_dir]
+            cur_y += m_dys[move_dir]
+            if arr[cur_x][cur_y] != 0:
+                lst.append(arr[cur_x][cur_y])
+
+            # 이동 중에 (0, 0)으로 오게 된다면 종료
+            if (cur_x, cur_y) == (0, 0):
+                break
+        move_dir = (move_dir+1)%4
+        if move_dir == 0 or move_dir == 2:
+            move_num += 1
     return lst
+
 
 def popping(lst):
     global arr, answer
@@ -70,7 +67,6 @@ def popping(lst):
                 pop_flag = True
                 pop_lst.append((i-dup+1, min(len(lst), i+1)))
                 answer += (prefix*dup)
-                # print("중복 폭탄 점수 = ", prefix*dup)
             dup = 1
         prefix = ele
 
@@ -85,31 +81,25 @@ def popping(lst):
 def line2arr(final_lst): 
     global arr
     n_arr = [[0]*n for _ in range(n)]
-    sx, sy = n//2, n//2
     que = deque(final_lst)
 
     m_dxs, m_dys = [0, 1, 0, -1], [-1, 0, 1, 0]
-    visited = [[False]*n for _ in range(n)]
-    visited[sx][sy] = True
-    cnt = 0
-    while True:
-        if (sx, sy) == (0, -1):break
-        if not que:break
-        
-        for dir in range(4):
-            if not que: break
-            if dir == 0 or dir == 2:
-                cnt += 1
+    cur_x, cur_y = n//2, n//2
+    move_dir, move_num = 0, 1
 
-            for _ in range(cnt):
-                if not que: break
-                ele = que.popleft()
-                nx, ny = sx + m_dxs[dir], sy + m_dys[dir]
-                if not in_range(nx, ny):break
-                if visited[nx][ny]:break
-                visited[nx][ny] = True
-                n_arr[nx][ny] = ele
-                sx, sy = nx, ny
+    while cur_x or cur_y:
+        for _ in range(move_num):
+            if cur_x == 0 and cur_y == 0:break
+            if not que:break
+            
+            cur_x += m_dxs[move_dir]
+            cur_y += m_dys[move_dir]
+
+            ele = que.popleft()
+            n_arr[cur_x][cur_y] = ele
+        move_dir = (move_dir + 1)%4
+        if move_dir%2 == 0: move_num += 1
+        if not que:break
 
     # arr 업데이트
     arr = copy.deepcopy(n_arr)
@@ -119,8 +109,6 @@ def get_input_arr(lst):
     nxt_lst = []
     if lst[-1] != 0:
         lst.append(0)
-
-    # print(lst)
     cnt = 1
     prefix = lst[0]
     for i, ele in enumerate(lst[1:]):
@@ -131,7 +119,6 @@ def get_input_arr(lst):
             nxt_lst.append(prefix)
             cnt = 1
         prefix = ele 
-    # print("nxt_lst ", nxt_lst)
     return nxt_lst
 
 
@@ -142,25 +129,12 @@ for time in range(m):
 
     while True:
         lst.append(0)
-        # print(lst)
         nxt_lst, flag = popping(lst)
         if not flag:
             break
         lst = nxt_lst
     
     line2arr(get_input_arr(lst))
-    # for row in arr:
-    #     print(*row)
-    # print(time, "번째 = ", answer)
-    # print()
-
 
 
 print(answer)
-# for row in arr:
-#     print(*row)
-# print()
-# attack_monster(attacks[0][0], attacks[0][1]+4)
-
-# for row in arr:
-#     print(*row)
