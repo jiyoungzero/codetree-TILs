@@ -89,6 +89,8 @@ def line2arr(final_lst):
     que = deque(final_lst)
 
     m_dxs, m_dys = [0, 1, 0, -1], [-1, 0, 1, 0]
+    visited = [[False]*n for _ in range(n)]
+    visited[sx][sy] = True
     cnt = 0
     while True:
         if (sx, sy) == (0, -1):break
@@ -104,7 +106,8 @@ def line2arr(final_lst):
                 ele = que.popleft()
                 nx, ny = sx + m_dxs[dir], sy + m_dys[dir]
                 if not in_range(nx, ny):break
-
+                if visited[nx][ny]:break
+                visited[nx][ny] = True
                 n_arr[nx][ny] = ele
                 sx, sy = nx, ny
 
@@ -114,17 +117,21 @@ def line2arr(final_lst):
 
 def get_input_arr(lst):
     nxt_lst = []
-    lst.append(0)
+    if lst[-1] != 0:
+        lst.append(0)
 
+    # print(lst)
     cnt = 1
     prefix = lst[0]
     for i, ele in enumerate(lst[1:]):
         if ele == prefix:
             cnt += 1
         else:
-            nxt_lst += [cnt, prefix]
+            nxt_lst.append(cnt)
+            nxt_lst.append(prefix)
             cnt = 1
         prefix = ele 
+    # print("nxt_lst ", nxt_lst)
     return nxt_lst
 
 
@@ -134,17 +141,17 @@ for time in range(m):
     lst = arr2line()
 
     while True:
-        # print(lst)
         lst.append(0)
+        # print(lst)
         nxt_lst, flag = popping(lst)
         if not flag:
             break
         lst = nxt_lst
     
-    # print("--",get_input_arr(lst))
     line2arr(get_input_arr(lst))
     # for row in arr:
     #     print(*row)
+    # print(time, "번째 = ", answer)
     # print()
 
 
