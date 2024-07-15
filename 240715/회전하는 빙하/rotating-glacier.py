@@ -15,7 +15,6 @@ def in_range(x, y):
 def rotate_glaciers(level):
     global arr
     side = 2**level
-    outer_size = side * side
     nxt_arr = copy.deepcopy(arr)
 
     for i in range(0, 2**n, side):
@@ -30,22 +29,22 @@ def rotate_glaciers(level):
             # 1) 좌측 아래 -> 좌측 위
             for ii in range(down_left[0], down_left[2]):
                 for jj in range(down_left[1], down_left[3]):
-                    nxt_arr[ii-level][jj] = arr[ii][jj] 
+                    nxt_arr[ii-inner_side][jj] = arr[ii][jj] 
             # 2) 우측 아래 -> 좌측 아래
             for ii in range(down_right[0], down_right[2]):
                 for jj in range(down_right[1], down_right[3]):
-                    nxt_arr[ii][jj-level] = arr[ii][jj]
+                    nxt_arr[ii][jj-inner_side] = arr[ii][jj]
 
             # 3) 우측 위 -> 우측 아래
             for ii in range(up_right[0], up_right[2]):
                 for jj in range(up_right[1], up_right[3]):
                     # print((ii, jj), "->", (ii+2, jj))
-                    nxt_arr[ii+level][jj] = arr[ii][jj]
+                    nxt_arr[ii+inner_side][jj] = arr[ii][jj]
 
             # 4) 좌측 위 -> 우측 위
             for ii in range(up_left[0], up_left[2]):
                 for jj in range(up_left[1], up_left[3]):
-                    nxt_arr[ii][jj+level] = arr[ii][jj]
+                    nxt_arr[ii][jj+inner_side] = arr[ii][jj]
     arr = copy.deepcopy(nxt_arr)
 
 
@@ -103,6 +102,8 @@ def get_largest_glacier():
 
 for level in cmds:
     rotate_glaciers(level)
+    # for row in arr:
+    #     print(*row)
     melting()
 # for row in arr:
 #     print(*row)
