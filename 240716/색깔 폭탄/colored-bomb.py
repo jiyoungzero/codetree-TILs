@@ -32,7 +32,6 @@ def bfs(sx, sy, target): # [크기, 빨간색 개수, 기준점 x, 기준점 y, 
     result = [1, 0, sx, sy, pos]
     if arr[sx][sy] == RED:
         result[1] += 1
-        visited[sx][sy] = False
     while que:
         x, y = que.popleft()
         for dir in range(4):
@@ -47,10 +46,12 @@ def bfs(sx, sy, target): # [크기, 빨간색 개수, 기준점 x, 기준점 y, 
                 visited[nx][ny] = True
                 if arr[nx][ny] == RED:
                     result[1] += 1
-                    visited[nx][ny] = False
                 result[0] += 1
                 pos.append((nx, ny))
                 que.append((nx, ny))
+    for i in range(n):
+        for j in range(n):
+            if arr[i][j] == RED:visited[i][j] = False
     if result[0] >= 2 and result[0] != result[1]: return result
     else: return False
 
@@ -110,7 +111,7 @@ while True:
 
     find_all_bombs()
     if not bombs: break
-    
+    # print(bombs)
     del_bomb(find_largest_bomb())
     gravity()
     for _ in range(3):
