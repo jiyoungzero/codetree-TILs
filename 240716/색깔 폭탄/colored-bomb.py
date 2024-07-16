@@ -38,10 +38,11 @@ def bfs(sx, sy, target): # [크기, 빨간색 개수, 기준점 x, 기준점 y, 
             nx, ny = x + dxs[dir], y + dys[dir]
             if not in_range(nx, ny):continue
             if not visited[nx][ny] and (arr[nx][ny] == target or arr[nx][ny] == RED):
-                if nx > result[2]:
-                    result[2],result[3] = nx, ny
-                elif nx == result[2] and ny < result[3]:
-                    result[2],result[3] = nx, ny
+                if arr[nx][ny] != RED:
+                    if nx > result[2]:
+                        result[2],result[3] = nx, ny
+                    elif nx == result[2] and ny < result[3]:
+                        result[2],result[3] = nx, ny
 
                 visited[nx][ny] = True
                 if arr[nx][ny] == RED:
