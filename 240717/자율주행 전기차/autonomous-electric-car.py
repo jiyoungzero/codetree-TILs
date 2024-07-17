@@ -34,6 +34,7 @@ def bfs(idx, target_x, target_y):
             if visited[nx][ny] == -1 and arr[nx][ny] == 0:
                 que.append((nx, ny))
                 visited[nx][ny] = visited[x][y] + 1
+    return False
     
 
 
@@ -42,9 +43,10 @@ def get_closest_passenger():
     for idx in range(m):
         if not arrived[idx]:
             sx, sy, _, _ = passengers[idx]
-            result.append(bfs(idx, sx, sy))
+            tmp = bfs(idx, sx, sy)
+            if tmp != False: result.append(tmp)
+    if not result: return False
     result.sort(key = lambda x:(x[0], x[1], x[2]))
-    # print(result[0][-1])
     return result[0]
 
 def move2passenger(passenger):
@@ -60,7 +62,9 @@ def move2passenger(passenger):
 def move2goal_fill(passenger):
     global fuel, cx, cy
     _, _, _, idx = passenger
-    dist, ex, ey, idx = bfs(idx, passengers[idx][2], passengers[idx][3])
+    tmp = bfs(idx, passengers[idx][2], passengers[idx][3])
+    if not tmp : return False
+    dist, ex, ey, idx =  tmp 
     # move
     cx, cy = ex, ey
     arrived[idx] = True
@@ -76,9 +80,14 @@ def move2goal_fill(passenger):
 while True:
     if all(arrived) or fuel <= 0: break
     closest_passenger = get_closest_passenger()
-    # print(closest_passenger)
-    if move2passenger(closest_passenger): break
+    if closest_passenger == False: 
+        fuel = -1
+        break
+    if move2passenger(closest_passenger): 
+        fuel = -1
+        break
     if move2goal_fill(closest_passenger) == False:
+        fuel = -1
         break
 
 if fuel >= 0:
