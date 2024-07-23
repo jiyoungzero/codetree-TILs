@@ -35,8 +35,7 @@ def meet(x, y, idx):
     return -1
 
 def get_chains(idx, d):
-    chains = set()
-    chains.add(idx) # 연쇄적으로 밀리는 기사들
+    chains = set() # 연쇄적으로 밀리는 기사들
 
     que = deque()
     que.append(idx)
@@ -49,39 +48,44 @@ def get_chains(idx, d):
         for x in range(sx, sx + h):
             for y in range(sy, sy + w):
                 nx, ny = x + dxs[d], y + dys[d]
-                if not outter_wall(nx, ny):
-                    push_lst.append((nx, ny))
+                push_lst.append((nx, ny))
+
         # 현재 기사가 벽을 마주하지 않고 다른 기사를 미는지
         wall_flag = False
         mt_set = set()
         for x, y in push_lst:
             mt =  meet(x, y, now)
-            if arr[x][y] == WALL:
+            if outter_wall(x, y) or arr[x][y] == WALL :
                 wall_flag = True
                 break
             elif mt >= 0:
                 mt_set.add(mt)
-        if not wall_flag:
+        if wall_flag: # 중간에 벽을 만나면 전체가 움직이지 못함
+            chains = set() 
+            break
+
+        else:
+            chains.add(now)
             for m_idx in list(mt_set):
                 que.append(m_idx)
                 chains.add(m_idx)
 
 
     # 맨 마지막 체인이 밀렷을 때, 벽과 만나는지 체크 -> 만나면 move안하고 return 
-    last = list(chains)[-1]
-    # print(chains, last)
-    
-    lx, ly = warriers[last][1], warriers[last][2]
-    h, w =  warriers[last][3],  warriers[last][4]
-    for xx in range(lx, lx+h):
-        for yy in range(ly, ly+w):
-            nxx, nyy = xx + dxs[d], yy + dys[d]
-            # print(xx, yy, "-> ", nxx, nyy, arr[nxx][nyy])
-            
-            if  outter_wall(nxx, nyy) or arr[nxx][nyy] == WALL:
-                # print("?", [nxx, nyy])
-                return -1
-    return chains
+    if len(chains) > 0:
+        last = list(chains)[-1]
+        # print(chains, last)
+        
+        lx, ly = warriers[last][1], warriers[last][2]
+        h, w =  warriers[last][3],  warriers[last][4]
+        for xx in range(lx, lx+h):
+            for yy in range(ly, ly+w):
+                nxx, nyy = xx + dxs[d], yy + dys[d]
+                # print(xx, yy, "-> ", nxx, nyy, arr[nxx][nyy])
+                if  outter_wall(nxx, nyy) or arr[nxx][nyy] == WALL:
+                    return []
+        return list(chains)
+    return list(chains)
 
 def get_damage(idx):
     sx, sy = warriers[idx][1], warriers[idx][2]
@@ -117,7 +121,7 @@ def warriers_move(targets, d, start):
 
 for i, d in cmds:
     lst = get_chains(i-1, d)
-    if lst != -1:
+    if len(lst):
         # print("chains", lst)
         warriers_move(lst, d, i-1)
     # print(warriers)
