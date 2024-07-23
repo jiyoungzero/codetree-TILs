@@ -70,21 +70,6 @@ def get_chains(idx, d):
                 que.append(m_idx)
                 chains.add(m_idx)
 
-
-    # 맨 마지막 체인이 밀렷을 때, 벽과 만나는지 체크 -> 만나면 move안하고 return 
-    if len(chains) > 0:
-        last = list(chains)[-1]
-        # print(chains, last)
-        
-        lx, ly = warriers[last][1], warriers[last][2]
-        h, w =  warriers[last][3],  warriers[last][4]
-        for xx in range(lx, lx+h):
-            for yy in range(ly, ly+w):
-                nxx, nyy = xx + dxs[d], yy + dys[d]
-                # print(xx, yy, "-> ", nxx, nyy, arr[nxx][nyy])
-                if  outter_wall(nxx, nyy) or arr[nxx][nyy] == WALL:
-                    return []
-        return list(chains)
     return list(chains)
 
 def get_damage(idx):
@@ -119,11 +104,13 @@ def warriers_move(targets, d, start):
     
     
 
-for i, d in cmds:
+for t, (i, d) in enumerate(cmds):
+    if not warriers[i-1][0]:continue
     lst = get_chains(i-1, d)
     if len(lst):
         # print("chains", lst)
         warriers_move(lst, d, i-1)
+
     # print(warriers)
     # print()
     
