@@ -179,9 +179,7 @@ def santas_move():
             if meet(nx, ny, k): continue
             d = get_dist(nx, ny, rudolf[0], rudolf[1])
             if now_d > d:
-                # print(k, "루돌프와 충돌 ", rudolf, nx, ny)
                 if d == 0: # 루돌프와 충돌하는 경우
-                    # print(k, "루돌프와 충돌 ", rudolf, nx, ny)
                     crush2rudolf(k, (dir+2)%4) 
                     crushed = True
                 else: # 충돌안하는 경우 위치 업데이트
@@ -193,27 +191,17 @@ def santas_move():
 
 for k in range(1, m+1):
     now_k = k
-    # passed_out 관리
     for i in range(1, 1+p):
         if is_passed_out[i] == k:
             is_passed_out[i] = 0
     if all(is_dead[1:]):break
 
     rudolf_move()
-    # if k > 1:
-    #     print(k, "턴")
-    #     print("rudolf 이동 후 = ", rudolf )
     santas_move()  
-    # if k > 1:
-    #     print("santas 이동 후 = ", santas)
-    #     print("탈락 했는지 =", is_dead)
 
     # 탈락하지 않은 산타 1점씩 추가 부여
     for k in santas.keys():
         if not is_dead[k]:
             answer[k] += 1
-    # print("scores = ", *answer[1:])
-    # print()
-        
 
 print(*answer[1:])
