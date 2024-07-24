@@ -57,6 +57,8 @@ def push_santa(idx, dir):
     while que:
         cur_idx = que.popleft()
         cur_sr, cur_sc = santas[cur_idx][0], santas[cur_idx][1]
+        if cur_idx != idx:
+            cur_sr += r_dxs[dir]; cur_sc += r_dys[dir]
         for k, santa in santas.items():
             if is_dead[k]: continue
             if k in chains: continue
@@ -138,6 +140,8 @@ def crush2rudolf(idx, dir):
     while que:
         cur_idx = que.popleft()
         cur_sr, cur_sc = santas[cur_idx][0], santas[cur_idx][1]
+        if cur_idx != idx:
+            cur_sr += r_dxs[dir]; cur_sc += r_dys[dir]
         for k, santa in santas.items():
             if is_dead[k]: continue
             if k in chains: continue
