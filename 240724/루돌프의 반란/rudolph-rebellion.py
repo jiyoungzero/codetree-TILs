@@ -141,7 +141,7 @@ def crush2rudolf(idx, dir):
         cur_idx = que.popleft()
         cur_sr, cur_sc = santas[cur_idx][0], santas[cur_idx][1]
         if cur_idx != idx:
-            cur_sr += r_dxs[dir]; cur_sc += r_dys[dir]
+            cur_sr += dxs[dir]; cur_sc += dys[dir]
         for k, santa in santas.items():
             if is_dead[k]: continue
             if k in chains: continue
@@ -200,11 +200,13 @@ for k in range(1, m+1):
     if all(is_dead[1:]):break
 
     rudolf_move()
-    # print(k, "턴")
-    # print("rudolf 이동 후 = ", rudolf )
+    # if k > 1:
+    #     print(k, "턴")
+    #     print("rudolf 이동 후 = ", rudolf )
     santas_move()  
-    # print("santas 이동 후 = ", santas)
-    # print("탈락 했는지 =", is_dead)
+    # if k > 1:
+    #     print("santas 이동 후 = ", santas)
+    #     print("탈락 했는지 =", is_dead)
 
     # 탈락하지 않은 산타 1점씩 추가 부여
     for k in santas.keys():
