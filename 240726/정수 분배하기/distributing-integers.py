@@ -15,7 +15,7 @@ def is_possible(target):
 
 
 l, r = 1, min(nums)
-max_idx = -1
+max_idx = 0
 while l <= r:
     mid = (l+r)//2
     if is_possible(mid):
