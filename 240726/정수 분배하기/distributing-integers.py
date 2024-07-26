@@ -14,7 +14,7 @@ def is_possible(target):
     return total_cnt >= m
 
 
-l, r = 1, min(nums)
+l, r = 1, max(nums)
 max_idx = 0
 while l <= r:
     mid = (l+r)//2
