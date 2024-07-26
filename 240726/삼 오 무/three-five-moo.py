@@ -8,7 +8,7 @@ def get_under_nums(mid):
     cnt = mid//3 + mid //5 - mid//15
     return mid - cnt
 
-l, r = 1, 10**9
+l, r = 1, 10**18
 min_idx = r
 while l <= r:
     mid = (l+r)//2
