@@ -76,7 +76,7 @@ def find_max_part(): # sx, sy, r_cnt return
                 # 1차 획득 가치 구하기
                 lst.append((get_values(test_arr), r_cnt, col+1, row+1))
     lst.sort(key = lambda x: (-x[0], x[1], x[2], x[3]))
-    find = (lst[0][3]-1, lst[0][2]-1, lst[0][1])
+    find = (lst[0][3]-1, lst[0][2]-1, lst[0][1], lst[0][0])
     return find # sx, sy, r_cnt    
 
 def fill_frags(cnt):
@@ -88,16 +88,17 @@ def fill_frags(cnt):
     return cnt
 
 for _ in range(k):
-    sx, sy, r_cnt = find_max_part()
-    # print(sx, sy, r_cnt)
+    sx, sy, r_cnt, values = find_max_part()
+    if values == 0:
+        break
     for _ in range(r_cnt):
         arr = rotate_90(arr, sx, sy)
-
     cnt = 0
     while True:
-        if get_values(arr):
+        if get_values(arr) > 0:
             cnt = fill_frags(cnt)
         else:
             break
+        
     if cnt: answer.append(cnt)
 print(*answer)
