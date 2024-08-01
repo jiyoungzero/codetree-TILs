@@ -5,29 +5,21 @@ n, m = map(int, input().split())
 lines = [tuple(map(int, input().split())) for _ in range(m)]
 lines.sort()
 
-l, r = 0, lines[-1][1] - lines[0][0]
+l, r = 1, lines[-1][1] - lines[0][0] 
 maxDist = -1
 
 def is_possible(dist):
     cnt = 1
-    last = 0
-    for i, line in enumerate(lines):
-        # print(i, line)
-        a, b = line
-        now = a
-        if i > 0 and now - last < dist:
-            now = last + dist 
-            if now <= b:
-                cnt += 1
-        elif i > 0 and now - last >= dist:
-            cnt += 1
+    last = lines[0][0]
 
-        while now <= b:
-            now += dist 
-            if now <= b: 
-                last = now
-                # print("now =", now, "cnt+1 =", cnt+1)
-                cnt += 1
+    for i, line in enumerate(lines):
+        a, b = line
+        while last + dist <= b:
+            last = max(a, last+dist)
+            cnt += 1
+            if cnt >= n:break
+
+    # print(cnt, dist)
     return cnt >= n
         
 
