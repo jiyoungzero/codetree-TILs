@@ -7,26 +7,18 @@ lines.sort()
 
 def is_possible(dist):
     s, e = lines[0]
-    for start in range(s, e + 1):
-        flag = True
-        dots = [start]*len(lines)
-        for i in range(1, len(lines)):
-            dots[i] = dots[i-1]+dist 
-        # print(dist, "->", dots)
-        for dot, (ns, ne) in zip(dots, lines):
-            if dot <= ne:
-                # print(dot, ne)
-                continue
-            else:
-                flag = False
-                break
-        if flag:return True
-        else:return False
-    return False
+
+    last = s
+    for a, b in lines[1:]:
+        # print(dist, last, (a, b))
+        if last + dist > b:
+            return False
+        last = max(a, last+dist)
+
+    return True
 
 
-
-l, r = 1, lines[-1][1] - lines[0][0]
+l, r = 0, int(1e9)
 maxDist = -1
 while l <= r:
     mid = (l+r) // 2
