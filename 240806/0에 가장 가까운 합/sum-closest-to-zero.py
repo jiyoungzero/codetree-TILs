@@ -15,7 +15,7 @@ for s in range(n-1):
         answer = min(answer, abs(tmp))
 
     while True:
-        if s >= e or (arr[s] + arr[e] < 0):break
+        if s >= e-1 or (arr[s] + arr[e-1] < 0):break
         e -= 1
         answer = min(answer, abs(arr[s] + arr[e]))
 print(answer)
