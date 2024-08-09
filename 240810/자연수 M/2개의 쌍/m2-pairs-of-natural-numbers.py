@@ -10,21 +10,21 @@ for _ in range(n):
 nums.sort()
 answer = 0
 
-while len(nums) > 2:
-    if len(nums) == 1:
-        answer = nums[0][0]*2
-        break
-    if len(nums) == 0:break
-    min_val, min_cnt = nums[0]
-    max_val, max_cnt = nums[-1]
-    answer = max(answer, min_val+max_val)
-    rmv = min(min_cnt, max_cnt)
-    nums[0][1] -= rmv
-    if nums[0][1] <= 0:
-        del nums[0]
-    nums[-1][1] -= rmv
-    if nums[-1][1] <= 0:
-        del nums[-1]
- 
+l, r = 0, n-1
+while l <= r:
+    min_val, min_cnt = nums[l]
+    max_val, max_cnt = nums[r]
+
+    answer = max(answer, min_val + max_val)
+
+    if min_cnt < max_cnt:
+        l += 1
+        nums[r][1] -= min_cnt
+    elif min_cnt > max_cnt:
+        r -= 1
+        nums[l][1] -= max_cnt
+    else:
+        l += 1
+        r -= 1
     
 print(answer)
