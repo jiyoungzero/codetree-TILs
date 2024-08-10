@@ -5,6 +5,10 @@ from bisect import bisect_left, bisect_right
 
 c, n = map(int, input().split())
 reds = [int(input()) for _ in range(c)]
+reds_heap = []
+for i, t in enumerate(reds):
+    heapq.heappush(reds_heap, (t, i))
+
 blacks = [tuple(map(int, input().split())) for _ in range(n)]
 answer = 0
 
@@ -16,17 +20,10 @@ blacks.sort(key = lambda x : (x[1])) # b가 작은 값부터 보면서 a <= 를 
 
 for a, b in blacks:
     idx = bisect_left(reds, a)
-    heap = []
     
-    while idx < len(reds) and a <= reds[idx] <= b:
-        # print(a, b, idx)
-        heapq.heappush(heap, (reds[idx], idx))
-        idx += 1
-
-    if heap:
-        answer += 1
-        del_idx = heap[0][1]
-        del reds[del_idx]
-        heapq.heappop(heap)
+    if idx < len(reds):
+        if reds[idx] <= b:
+            del reds[idx]
+            answer += 1
 
 print(answer)
