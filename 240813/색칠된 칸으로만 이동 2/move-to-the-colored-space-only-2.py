@@ -5,24 +5,26 @@ from collections import deque
 m, n = map(int, input().split())
 arr = [list(map(int, input().split())) for _ in range(m)]
 painted = [list(map(int, input().split())) for _ in range(m)]
-# starts = 0
+sx, sy = 0, 0
 
-# for i in range(m):
-#     for j in range(n):
-#         if painted[i][j]:starts += 1
+for i in range(m):
+    for j in range(n):
+        if painted[i][j]:
+            sx, sy = i, j
+            break
 
 visited = [[False]*n for _ in range(m)]
 l, r = 0, 10**9
 answer = r 
 dxs, dys = [0, 0, 1, -1], [1, -1, 0, 0]
 
-def is_connected(x, y):
+def is_connected():
     for i in range(m):
         for j in range(n):
-            if (i, j) != (x, y) and painted[i][j] and not visited[i][j]: return False
+            if painted[i][j] and not visited[i][j]: return False
     return True
 
-def bfs(sx, sy, mid):
+def bfs(mid):
     que = deque()
     que.append((sx, sy))
     visited[sx][sy] = True
@@ -40,19 +42,13 @@ def bfs(sx, sy, mid):
 
 def is_possible(target):
     # # init visited
-    # for i in range(m):
-    #     for j in range(n):
-    #         visited[i][j] = False 
-
     for i in range(m):
-        for ii in range(m):
-            for jj in range(n):
-                visited[ii][jj] = False 
         for j in range(n):
-            if painted[i][j]:
-                bfs(i, j, target)
-                if not is_connected(i, j): return False
-    return True
+            visited[i][j] = False 
+
+    bfs(target)
+                
+    return is_connected()
 
 
 while l <= r:
