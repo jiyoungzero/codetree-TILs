@@ -25,7 +25,7 @@ def is_possible(mid):
     return True
 
 
-l, r = 0, 10
+l, r = 0, 10**9
 answer = r
 while l <= r:
     mid = (l+r)//2
