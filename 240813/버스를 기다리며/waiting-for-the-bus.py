@@ -7,12 +7,15 @@ arr.sort()
 
 def is_possible(wait_limit):
     bus_cnt = 1
+    ppl_cnt = 1
     idx = 0
 
     for i in range(1, n):
-        if arr[i] - arr[idx] < wait_limit:
+        if arr[i] - arr[idx] <= wait_limit and ppl_cnt + 1 <= c:
+            ppl_cnt += 1
             continue 
         else:
+            ppl_cnt = 1
             idx = i 
             bus_cnt += 1
 
