@@ -2,18 +2,18 @@ import sys
 input = sys.stdin.readline 
 from collections import defaultdict
 
-string = input().rstrip()
+string = '#' + input().rstrip()
 
-num_cnt  = [-1]*26
-start = 0
+num_cnt  = defaultdict(int)
 answer = -1
-for i in range(len(string)):
-    if num_cnt[ord(string[i])-97] > -1:
-        for j in range(start, num_cnt[ord(string[i])-97]):
-            num_cnt[ord(string[j])-97] = -1
-        start = num_cnt[ord(string[i])-97]+1
 
-    num_cnt[ord(string[i])-97] = i
-    answer = max(answer, i-start+1)
-    # print(num_cnt)
+end = 0
+for start in range(1, len(string)):
+    while end + 1 < len(string) and num_cnt[string[end+1]] == 0:
+        num_cnt[string[end+1]] += 1
+        end += 1
+        
+    answer = max(answer, end-start+1)
+    num_cnt[string[start]] -= 1
+
 print(answer)
