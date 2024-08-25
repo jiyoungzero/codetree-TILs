@@ -9,8 +9,11 @@ start = 0
 answer = -1
 for i in range(len(string)):
     if num_cnt[ord(string[i])-97] > -1:
+        for j in range(start, num_cnt[ord(string[i])-97]):
+            num_cnt[ord(string[j])-97] = -1
         start = num_cnt[ord(string[i])-97]+1
 
     num_cnt[ord(string[i])-97] = i
     answer = max(answer, i-start+1)
+    # print(num_cnt)
 print(answer)
