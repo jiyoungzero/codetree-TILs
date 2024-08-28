@@ -60,7 +60,7 @@ def spreading_trees():
 
 def find_place():
     global answer
-    max_value = -1
+    max_value = 0
     place = [0, 0]
 
     for i in range(n-1, -1, -1):
