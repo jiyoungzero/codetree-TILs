@@ -22,7 +22,8 @@ def in_range(x, y):
 def santas_move(time):
     dxs, dys = [0, 1, 0, -1], [-1, 0, 1, 0] # 좌하우상 순으로 움직임 
     for i in range(1, p+1):
-        if 0 < time < passed[i] or dead[i]: continue 
+        # print(time, passed[i])
+        if 0 < time < passed[i] or dead[i]:continue 
         min_dir = -1 # 일단 움직이지 않는다 
 
         sr, sc = santas[i]
@@ -158,12 +159,13 @@ def give_score():
         if not dead[i]: scores[i] += 1
 
 
-for time in range(m):
+for time in range(1, m+1):
     if game_over(): break 
     rudolf_move(time)
     # print(rudolf)
     santas_move(time)
     # print(santas)
+    # print(passed)
     # print("dead = ", dead, "// passed = ", passed)
     give_score()
     # print()
