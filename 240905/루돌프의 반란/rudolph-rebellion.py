@@ -40,7 +40,6 @@ def santas_move(time):
         if min_dir == -1: continue # 움직이지 않음
         else:
             santas[i] = [sr + dxs[min_dir], sc + dys[min_dir]]
-            
             # 만약 루돌프와 충돌한다면
             # 1. 점수얻기 + 기절 
             # 2. 자신의 반대방향으로 D칸 밀림
@@ -49,7 +48,7 @@ def santas_move(time):
                 passed[i] = time + 2
 
                 now_dir = (min_dir+2)%4
-                fr, fc = santas[i][0] + dxs[now_dir]*D, santas[i][1] + dys[now_dir]*D 
+                fr, fc = santas[i][0] + dxs[now_dir]*(D), santas[i][1] + dys[now_dir]*(D) 
                 
                 # 밀려난 곳이 격자 밖이라면 
                 if not in_range(fr, fc): 
@@ -94,21 +93,22 @@ def rudolf_move(time):
     r_dxs, r_dys = [-1, -1, -1, 0, 0, 1, 1, 1], [-1, 0, 1, -1, 1, -1, 0, 1]
 
     # 가장 가까운 산타 찾기
+    dist = get_dist2santas()
+    dist.sort(key = lambda x:(x[0], -x[1], -x[2]))
 
     # 해당 산타쪽으로 한 칸 돌진 
+    cx, cy = dist[0][1], dist[0][2]
     closest_dir = 0
-    lst = []
+    min_dist = int(1e9)
     for dir in range(8):
         r_nx, r_ny = rudolf[0] + r_dxs[dir], rudolf[1] + r_dys[dir]
         if not in_range(r_nx, r_ny): continue 
-        for idx in range(1, p+1):
-            if dead[idx]: continue
-            sx, sy = santas[idx] 
-            tmp_dist = (r_nx - sx)**2 + (r_ny - sy)**2
-            lst.append((tmp_dist, sx, sy, dir))
-            
-    lst.sort(key = lambda x:(x[0], -x[1], -x[2]))
-    closest_dir = lst[0][3]
+
+        tmp_dist = (r_nx - cx)**2 + (r_ny - cy)**2
+        if min_dist > tmp_dist:
+            min_dist = tmp_dist
+            closest_dir = dir
+
     # 루돌프 위치 업데이트
     rudolf = [rudolf[0] + r_dxs[closest_dir], rudolf[1] + r_dys[closest_dir]]
 
