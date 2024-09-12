@@ -49,9 +49,9 @@ def bfs(sx, sy, goal):
 
 def move_to_stores(idx):
     x, y = ppl[idx]
-    if idx not in ppl2path.keys():
-        path = bfs(x, y, stores[idx])
-        ppl2path[idx] = path
+
+    path = bfs(x, y, stores[idx])
+    ppl2path[idx] = path
     now_path = ppl2path[idx]
 
     # 한 칸 이동 
