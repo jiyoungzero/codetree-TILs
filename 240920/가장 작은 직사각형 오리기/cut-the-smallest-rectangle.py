@@ -30,6 +30,7 @@ def in_range(x, y):
     return 0 <= x < 1000+1 and 0 <= y < 300+1
 
 def bfs(sx, sy):
+    global visited
     dxs, dys = [0,0,1,-1], [1, -1,0, 0]
     result = [(sx, sy)]
     que = deque()
@@ -54,13 +55,11 @@ for i in range(1000+1):
             # 제일 작은 행, 제일 큰 행 
             result.sort(key = lambda x : -x[0])
             max_r, min_r = result[0][0], result[-1][0]
-            # print(result)
             # 제일 작은 열, 제일 큰 열
             result.sort(key = lambda x : -x[1])
             max_c, min_c = result[0][1], result[-1][1]
 
             total = (max_r - min_r + 1) * (max_c - min_c + 1)
             answer += (total)
-# for row in arr[:15]:
-#     print(row[:18])
+
 print(answer)
