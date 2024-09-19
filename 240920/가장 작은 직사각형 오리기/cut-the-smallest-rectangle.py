@@ -7,8 +7,8 @@ cmds = [tuple(map(int, input().split())) for _ in range(n)]
 cmds.sort(key = lambda x : (x[0], -x[1]))
 max_row = n
 max_col = cmds[-1][1]
-arr = [[0 ]* (max_col+1) for _ in range(max_row+1)]
-visited = [[False]*(max_col+1) for _ in range(max_row+1)]
+arr = [[0 ]* (300+1) for _ in range(1000+1)]
+visited = [[False]*(300+1) for _ in range(1000+1)]
 answer = 0
 
 for cmd in cmds:
