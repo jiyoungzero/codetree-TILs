@@ -7,7 +7,7 @@ cmds = [tuple(map(int, input().split())) for _ in range(n)]
 cmds.sort(key = lambda x : (x[0], -x[1]))
 max_row = n
 max_col = cmds[-1][1]
-arr = [[0 ]* (300+1) for _ in range(1000+1)]
+arr = [[0]* (300+1) for _ in range(1000+1)]
 visited = [[False]*(300+1) for _ in range(1000+1)]
 answer = 0
 
@@ -27,7 +27,7 @@ for cmd in cmds:
             break
 
 def in_range(x, y):
-    return 0 <= x < max_row+1 and 0 <= y < max_col+1
+    return 0 <= x < 1000+1 and 0 <= y < 300+1
 
 def bfs(sx, sy):
     dxs, dys = [0,0,1,-1], [1, -1,0, 0]
@@ -47,19 +47,20 @@ def bfs(sx, sy):
                 que.append((nx, ny))
     return result
 
-for i in range(max_row+1):
-    for j in range(max_col+1):
+for i in range(1000+1):
+    for j in range(300+1):
         if arr[i][j] == 1 and not visited[i][j]:
             result = bfs(i, j)
             # 제일 작은 행, 제일 큰 행 
             result.sort(key = lambda x : -x[0])
             max_r, min_r = result[0][0], result[-1][0]
-
+            # print(result)
             # 제일 작은 열, 제일 큰 열
             result.sort(key = lambda x : -x[1])
             max_c, min_c = result[0][1], result[-1][1]
 
             total = (max_r - min_r + 1) * (max_c - min_c + 1)
             answer += (total)
-
+# for row in arr[:15]:
+#     print(row[:18])
 print(answer)
