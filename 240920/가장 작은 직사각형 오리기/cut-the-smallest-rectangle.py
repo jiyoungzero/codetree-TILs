@@ -51,8 +51,7 @@ for i in range(max_row+1):
     for j in range(max_col+1):
         if arr[i][j] == 1 and not visited[i][j]:
             result = bfs(i, j)
-            # 제일 작은 행 
-            # 제일 큰 행 
+            # 제일 작은 행, 제일 큰 행 
             result.sort(key = lambda x : -x[0])
             max_r, min_r = result[0][0], result[-1][0]
 
