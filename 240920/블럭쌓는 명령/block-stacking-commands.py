@@ -5,9 +5,10 @@ n, k = map(int, input().split())
 cmds = [tuple(map(int, input().split())) for _ in range(k)]
 arr = [0]*(n+1)
 for s, e in cmds:
-    for i in range(s, e+1):
-        arr[i] += 1
+    arr[s] += 1
+    arr[e+1] -= 1
+for i in range(1, n+1):
+    arr[i] += arr[i-1] 
 
-arr = arr[1:]
 arr.sort()
-print(arr[n//2])
+print(arr[len(arr)//2])
