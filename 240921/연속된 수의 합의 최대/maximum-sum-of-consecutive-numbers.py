@@ -1,15 +1,14 @@
-import sys
-input = sys.stdin.readline 
-
-
 n, k = map(int, input().split())
 arr = list(map(int, input().split()))
-answer = -int(1e9)
-for length in range(k, n+1):
-    dp = [-int(1e9)]*n
-    dp[0] = sum(arr[:length])
-    for i in range(length, n):
-        dp[i] = dp[i-1] - arr[i-length] + arr[i]
-    answer = max(answer, max(dp))
-        
-print(answer)
+
+
+max_sum = float('-inf')  # 초기 최대합을 매우 작은 값으로 설정
+
+# 모든 연속 부분 수열을 고려하여 합을 계산
+for start in range(n):
+    current_sum = 0
+    for end in range(start, n):
+        current_sum += arr[end]
+        if end - start + 1 >= k:  # 연속 부분 수열의 길이가 k 이상일 때
+            max_sum = max(max_sum, current_sum)
+print(max_sum)
