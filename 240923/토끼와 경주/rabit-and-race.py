@@ -1,5 +1,6 @@
 import sys
 input = sys.stdin.readline 
+import heapq
 
 
 n = int(input())
@@ -17,32 +18,34 @@ def pick_rabbit():
     for i, (cnts, ids) in enumerate(lst):
         values = rabbits[ids]
         lst[i] = ((cnts, values[1]+values[2], values[1], values[2], ids))
+    heap = []
+    for ele in lst:
+        heapq.heappush(heap, ele)
+    result = heapq.heappop(heap)
 
-    lst.sort(key = lambda x : (x[0], x[1], x[2], x[3], x[4]))
-
-
-    return lst[0][-1]
+    return result[-1]
 
 def in_range(x, y):
     return 0 <= x < N and 0 <= y < M
 
+def out_of_range(nx, ny):
+    nx %= 2*(N-1)
+    ny %= 2*(M-1)
+    return min(nx, 2*(N-1)-nx), min(ny, 2*(M-1)-ny)
+
 def simulate():
     dxs, dys = [-1, 0, 1, 0], [0, 1, 0, -1]
     i = pick_rabbit()
-    # print(i, "움직임")
-    move_cnt, origin_x, origin_y = rabbits[i]
+
+    move_cnt, x, y = rabbits[i]
     jump_cnts[i] += 1
 
     nxt_pos = []
     for dir in range(4):
-        x, y = origin_x, origin_y
-        for _ in range(move_cnt):
-            nx, ny = x + dxs[dir], y + dys[dir]
-            if not in_range(nx, ny):
-                dir = (dir + 2)%4
-                nx, ny = x + dxs[dir], y + dys[dir]
-            x, y = nx, ny
-        nxt_pos.append((x + y, x, y))
+        nx, ny = x + dxs[dir]*move_cnt, y + dys[dir]*move_cnt
+        if not in_range(nx, ny):
+            nx, ny = out_of_range(nx, ny)
+        nxt_pos.append((nx + ny, nx, ny))
     nxt_pos.sort(key = lambda x:(-x[0], -x[1], -x[2]))
 
     # 최종 위치로 이동
@@ -57,14 +60,17 @@ def simulate():
     
 
 def plus_S():
-    lst = []
+    heap = []
     for k, v in rabbits.items():
-        lst.append((v[1]+v[2], v[1], v[2], k))
-    lst.sort(key = lambda x:(-x[0], -x[1], -x[2],-x[3]))
-    for _, _, _, idx in lst:
-        if jump_cnts[idx] == 0:continue
-        scores[idx] += S 
-        break
+        heapq.heappush(heap, (-v[1]-v[2], -v[1], -v[2], -k))
+    
+    while heap:
+        cur = heapq.heappop(heap)
+        idx = -cur[-1]
+    
+        if jump_cnts[idx] != 0:
+            scores[idx] += S 
+            break
 
 
 for cmd in cmds:
