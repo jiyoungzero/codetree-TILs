@@ -11,9 +11,9 @@ K, S = 0, 0
 jump_cnts = {}
 scores = {}
 pick_heap = []
-answer = -1
+answer = 0
 minus_score = 0
-
+select_rabbit = []
 
 def in_range(x, y):
     return 0 <= x < N and 0 <= y < M
@@ -43,6 +43,7 @@ def simulate():
     # 최종 위치로 이동
     final_pos = (nxt_pos[0][1], nxt_pos[0][2])
     rabbits[i][1], rabbits[i][2] = final_pos 
+    heapq.heappush(select_rabbit, (-(final_pos[0]+final_pos[1]), -final_pos[0], -final_pos[1], -i))
     heapq.heappush(pick_heap, (jump, final_pos[0]+final_pos[1], final_pos[0], final_pos[1], i))
     
 
@@ -52,15 +53,15 @@ def simulate():
     scores[i] += minus
 
 
-def plus_S():
-    heap = []
-    for k, v in rabbits.items():
-        if jump_cnts[k] == 0:continue
-        heapq.heappush(heap, (-v[1]-v[2], -v[1], -v[2], -k))
-    cur = heapq.heappop(heap)
-    idx = -cur[-1]
+# def plus_S():
+#     heap = []
+#     for k, v in rabbits.items():
+#         if jump_cnts[k] == 0:continue
+#         heapq.heappush(heap, (-v[1]-v[2], -v[1], -v[2], -k))
+#     cur = heapq.heappop(heap)
+#     idx = -cur[-1]
 
-    scores[idx] += S 
+#     scores[idx] += S 
 
 
 for cmd in cmds:
@@ -74,16 +75,17 @@ for cmd in cmds:
 
     elif cmd[0] == 200:
         K, S = cmd[1], cmd[2]
+        select_rabbit = []
         for _ in range(K):
             simulate()
-        plus_S()
+        _, _, _, pid = heapq.heappop(select_rabbit)
+        scores[-pid] += S
 
     elif cmd[0] == 300:
         origin = rabbits[cmd[1]][0]
         rabbits[cmd[1]][0] = origin*cmd[2]
     
     else:
-        # print(scores, minu/s_score)
         for v in scores.values():
             answer = max(answer, v)
 print(answer - minus_score)
