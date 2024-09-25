@@ -13,11 +13,13 @@ def in_range(x, y):
     return 0 <= x < N and 0 <= y < M 
 
 def pick_attacker():
+
     for i in range(N):
         for j in range(M):
             if arr[i][j] == 0:continue
             attacker_list.append((arr[i][j], times[i][j], i+j, j))
     attacker_list.sort(key = lambda x:(x[0], -x[1], -x[2], -x[3]))
+   
     return attacker_list[0]
     
 def bfs(x, y, final_x, final_y):
@@ -91,6 +93,7 @@ def attack(attacker, t):
 
 def plus_survivor():
     global arr
+    # print("partitions ", partitions)
     for i in range(N):
         for j in range(M):
             if arr[i][j]:
@@ -98,6 +101,7 @@ def plus_survivor():
                     arr[i][j] += 1
 
 def simulate(t):
+    global attacker_list, partitions
     # 초기화
     attacker_list = []
     partitions = [] 
@@ -117,9 +121,7 @@ def game_over():
 for t in range(1, K+1):
     if game_over():break 
     simulate(t)
-    # for row in arr:
-    #     print(*row)
-    # print()
+
 
 
 for i in range(N):
