@@ -13,7 +13,7 @@ def in_range(x, y):
     return 0 <= x < N and 0 <= y < M 
 
 def pick_attacker():
-
+    global attacker_list
     for i in range(N):
         for j in range(M):
             if arr[i][j] == 0:continue
@@ -47,14 +47,18 @@ def bfs(x, y, final_x, final_y):
                 visited[nx][ny] = True    
     return False
 
-def potan(x, y, minus):
+def potan(attack, x, y, minus):
     global arr, partitions
     p_dxs, p_dys = [-1, -1, -1, 0, 0, 1, 1, 1], [-1, 0, 1, -1, 1, -1, 0, 1]
 
-    arr[x][y] = max(0, arr[x][y] - minus*2)
     partitions.append((x, y))
+    partitions.append(attack)
     for dir in range(8):
         nx, ny = x + p_dxs[dir], y + p_dys[dir]
+        if not in_range(nx, ny):
+            nx, ny = nx%N, ny%M 
+        if (nx, ny) == attack:
+            continue
         if not in_range(nx, ny):
             nx, ny = nx%N, ny%M 
         if arr[nx][ny]:
@@ -63,7 +67,7 @@ def potan(x, y, minus):
 
 
 def attack(attacker, t):
-    global arr, partitions
+    global arr, partitions, attacker_list
     # 공격자의 위치
     x, y = attacker[2]-attacker[3], attacker[3]
     # print("attcker = ", (x, y), t)
@@ -82,13 +86,16 @@ def attack(attacker, t):
     path = bfs(x, y, sx, sy)
     if path != False:
         arr[sx][sy] = max(0, arr[sx][sy]- arr[x][y])
+        # print("공격받은 후", arr[sx][sy])
         for px, py in path[1:-1]:
             arr[px][py] = max(0, arr[px][py] - arr[x][y]//2)
         partitions = path[:]
+        # print("raser")
   
     # 포탄 공격 시도    
     else:
-        potan(sx, sy, arr[x][y]//2)
+        arr[sx][sy] = max(0, arr[sx][sy]- arr[x][y])
+        potan((x, y), sx, sy, arr[x][y]//2)
     
 
 def plus_survivor():
@@ -121,6 +128,14 @@ def game_over():
 for t in range(1, K+1):
     if game_over():break 
     simulate(t)
+    # print("time arr")
+    # for row in times:
+    #     print(*row)
+    # print()
+    # for row in arr:
+    #     print(*row)
+    # print()
+    # print()
 
 
 
