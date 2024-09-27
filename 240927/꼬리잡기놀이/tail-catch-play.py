@@ -38,7 +38,7 @@ def go_forward(x, y):
             nx, ny = x + dxs[dir], y + dys[dir]
             if not in_range(nx, ny):continue 
             if not visited[nx][ny] and arr[nx][ny] != BLANK and arr[nx][ny] != ROAD:
-                if more_than_two and len(team) == 1 and arr[nx][ny] == 3:continue
+                if more_than_two and arr[x][y] == HEAD and arr[nx][ny] == 3:continue
                 visited[nx][ny] = True 
                 que.append((nx, ny))
                 team.append((nx, ny))
@@ -48,10 +48,11 @@ def go_forward(x, y):
     x, y = team[0]
     for dir in range(4):
         nx, ny = x + dxs[dir], y + dys[dir]
-        if in_range(nx, ny) and arr[nx][ny] == ROAD:
+        if in_range(nx, ny) and (arr[nx][ny] == ROAD or arr[nx][ny] == TAIL):
             next_team.append((nx, ny))
             break 
     next_team += team[:-1]
+    # print(team , "--->", next_team)
     return (team, next_team)
 
 
@@ -78,7 +79,7 @@ def all_go_forward():
         arr[next_team[-1][0]][next_team[-1][1]] = 3
         for i, j in next_team[1:-1]:
             arr[i][j] = 2
- 
+
     cur_team = nxt_team[:]
     # print("---new ! ---")
     # for row in arr:
@@ -96,6 +97,7 @@ def get_score(row, col):
                     t_pos = team[-1]
                     arr[t_pos[0]][t_pos[1]] = HEAD 
                     arr[h_pos[0]][h_pos[1]] = TAIL
+                    # print("---get~! : ", (i+1)**2, "final_score : ", answer)
                     # print("---switch ! ---")
                     # for row in arr:
                     #     print(*row)
@@ -105,21 +107,21 @@ def get_score(row, col):
 
 def throw_ball(time):
     ball_side, ball_pos = time//n, time%n
-    if ball_side%4 == 0: # 오른쪽으로
+    if ball_side == 0: # 오른쪽으로
         row = ball_pos 
         for col in range(n):
             if arr[row][col] != ROAD and arr[row][col] != BLANK:
                 get_score(row, col)
                 return 
 
-    elif (ball_side)%4 == 1: # 위로
+    elif ball_side == 1: # 위로
         col = ball_pos
         for row in range(n-1, -1, -1):
             if arr[row][col] != ROAD and arr[row][col] != BLANK:
                 get_score(row, col)
                 return 
 
-    elif (ball_side)%4 == 2: # 왼쪽으로 
+    elif ball_side == 2: # 왼쪽으로 
         row = n - 1 - ball_pos 
         for col in range(n-1, -1, -1):
             if arr[row][col] != ROAD and arr[row][col] != BLANK:
@@ -138,6 +140,7 @@ def throw_ball(time):
 # 2. 공 발사
 # 3. 점수 얻기 
 for time in range(k):
+    # print(time, "번 째")
     all_go_forward()
     throw_ball(time)
 
