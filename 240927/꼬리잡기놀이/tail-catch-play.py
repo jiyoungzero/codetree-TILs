@@ -107,21 +107,21 @@ def get_score(row, col):
 
 def throw_ball(time):
     ball_side, ball_pos = time//n, time%n
-    if ball_side == 0: # 오른쪽으로
+    if (ball_side%4) == 0: # 오른쪽으로
         row = ball_pos 
         for col in range(n):
             if arr[row][col] != ROAD and arr[row][col] != BLANK:
                 get_score(row, col)
                 return 
 
-    elif ball_side == 1: # 위로
+    elif (ball_side%4) == 1: # 위로
         col = ball_pos
         for row in range(n-1, -1, -1):
             if arr[row][col] != ROAD and arr[row][col] != BLANK:
                 get_score(row, col)
                 return 
 
-    elif ball_side == 2: # 왼쪽으로 
+    elif (ball_side%4) == 2: # 왼쪽으로 
         row = n - 1 - ball_pos 
         for col in range(n-1, -1, -1):
             if arr[row][col] != ROAD and arr[row][col] != BLANK:
