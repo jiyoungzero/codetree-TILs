@@ -2,23 +2,23 @@ q = int(input())
 n, m = 0, 0
 stocks = [] # (id, w)
 belts = {}
-broken = set()
+broken = []
 
 def establish_factory(cmd):
-    global stocks, n, m
+    global stocks, n, m, broken
 # 1. 공장 설립 : m개의 벨트, n개의 물건 (1개의 벨트 당 n/m개의 물건이 배치 됨.)
     n, m = cmd[0], cmd[1]
     for i in range(n):
         stocks.append((cmd[2+i], cmd[2+i+n]))
     
     stocks = stocks[::-1]
+    broken = [False]*(m+1)
 
     for i in range(1, m+1):
         lst = []
         for j in range(n//m):
             lst.append(stocks.pop())
         belts[i] = lst 
-    pass 
 
 def off_under_wmax(w_max):
     global n, m
@@ -26,7 +26,7 @@ def off_under_wmax(w_max):
     off_sum = 0
     # print(w_max, belts)
     for i in range(1, m+1):
-        if i in broken:continue
+        if broken[i]:continue
         nxt_lst = belts[i]
         if len(nxt_lst) == 0:continue
         idx, w = nxt_lst[0]
@@ -44,7 +44,7 @@ def remove_rid(r_id):
 # 3. 물건 제거 : r_id 를 가진 물건을 하차 + r_id뒤에 있던 물건 한칸씩 앞으로, r_id가 없으면 -1출력 
     find = False
     for i in range(1, m+1):
-        if i in broken:continue
+        if broken[i]:continue
         nxt_lst = belts[i]
         for j, (idx, w) in enumerate(belts[i]):
             if idx == r_id:
@@ -60,7 +60,7 @@ def check_fid(f_id):
     find = False
 
     for i in range(1, m+1):
-        if i in broken:continue
+        if broken[i]:continue
         nxt_lst = belts[i]
         for j, (idx, w) in enumerate(belts[i]):
             if f_id == idx:
@@ -78,11 +78,11 @@ def break_belt(b_num):
 # + 오론쪽으로 검사하면서 최초의 정상 벨트에 b_num 위의 상자들 옮기기
 # : 아래에서부터 순서대로 옮기기 
     # print(broken)
-    if b_num in broken: 
+    if broken[b_num]: 
         print(-1)
         return # 이미 망가져 있는 경우
 
-    broken.add(b_num)   
+    broken[b_num] = True   
     print(b_num)
     # 벨트가 3개
     # 고장 1번 
@@ -94,7 +94,7 @@ def break_belt(b_num):
         b_id = (b_num + plus)%m
         # print((b_num, plus, m+1), b_id)
 
-        if b_id in broken:continue 
+        if broken[b_id]:continue 
         else:
             nxt_lst = belts[b_id]
             nxt_lst += b_lst
