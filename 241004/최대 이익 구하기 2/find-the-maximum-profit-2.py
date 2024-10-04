@@ -16,9 +16,12 @@ def backtracking(idx, sum_value):
     t, p = arr[idx]
     if idx + t <= n:
         # 선택함 
-        backtracking(idx+t, sum_value+p)
+        # print(idx, idx+t, sum_value+p)
+        backtracking(idx+t, sum_value + p)
         # 안함
         backtracking(idx+1, sum_value)
+    
+    backtracking(idx+1, sum_value)
 
 backtracking(0, 0)
 print(answer)
