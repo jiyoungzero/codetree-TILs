@@ -54,7 +54,7 @@ def bfs(idx, dir):
             return -1
         if original_chase[nx][ny] == WALL:
             return -1 
-        if not visited[nx][ny] and (chase[nx][ny] >= 3 and chase[nx][ny] != idx and not dead[idx]):
+        if not visited[nx][ny] and (chase[nx][ny] >= 3 and chase[nx][ny] != idx):
             push_set.add(chase[nx][ny])
             visited[nx][ny] = True 
             que.append((nx, ny))
@@ -124,6 +124,9 @@ def move_knights(idx, dir):
         sum_damage[k_idx] += damage
         if knights[k_idx][-1] <= 0:
             dead[k_idx] = True 
+            for r in range(x, x + h):
+                for c in range(y, y + w):
+                    nxt_chase[r][c] = BLANK
 
     chase = deep_copy(nxt_chase)
 
@@ -139,12 +142,12 @@ for i, d in cmds:
     i += 2
     move_knights(i, d)
     # print("knights :", knights)
-    print(i-2, "번째 기사 이동 후")
+    # print(i-2, "번째 기사 이동 후")
     # print("sum_damage :", sum_damage)
     # print("dead: ", dead)
-    for row in chase:
-        print(*row)
-    print()
+    # for row in chase:
+    #     print(*row)
+    # print()
     
 
 answer = 0
