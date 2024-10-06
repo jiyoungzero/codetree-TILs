@@ -60,12 +60,6 @@ def bfs(idx, dir):
             que.append((nx, ny))
     return push_set
 
-def get_damage(idx, dir):
-    x, y = knights[idx][0], knights[idx][1]
-    for row in range(x, x + knights[idx][2]):
-        for col in range(y, y + knights[idx][3]):
-            que.append((row, col))
-            visited[row][col] = True
 
 def move_knights(idx, dir):
     global chase 
@@ -114,8 +108,10 @@ def move_knights(idx, dir):
     #     print(*row)
 
     # 데미지 계산 
+    # print("idx: ", idx, push_set, " push_set")
     for k_idx in list(push_set):
-        if k_idx == idx:continue 
+        if k_idx == idx or dead[k_idx]:continue 
+        # print("k_idx =", k_idx, 'pushing')
         x, y = knights[k_idx][0], knights[k_idx][1]
         h, w = knights[k_idx][2], knights[k_idx][3] 
         damage = 0
@@ -131,17 +127,28 @@ def move_knights(idx, dir):
 
     chase = deep_copy(nxt_chase)
 
+
+# print("*original_chase")
+# for row in original_chase:
+#     print(*row)
+# print()
+# for row in chase:
+#     print(*row)
+# print()
 for i, d in cmds:
     i += 2
     move_knights(i, d)
     # print("knights :", knights)
-    # print("*original_chase")
-    # for row in original_chase:
-    #     print(*row)
-    # print()
+    print(i-2, "번째 기사 이동 후")
+    # print("sum_damage :", sum_damage)
+    # print("dead: ", dead)
+    for row in chase:
+        print(*row)
+    print()
+    
 
 answer = 0
-for i in range(3, N+3):
+for i in range(N+3):
     if not dead[i]:
         answer += sum_damage[i]
 print(answer)
