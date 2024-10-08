@@ -56,8 +56,8 @@ for _ in range(q):
     cmd = tuple(map(int, input().split()))
     if cmd[0] == 100:
         n, m = cmd[1], cmd[2]
-        is_made = [False]*(n+1)
-        is_canceled = [False]*(n+1)
+        is_made = [False]*(30005+1)
+        is_canceled = [False]*(30005+1)
         distance = [int(1e9)]*(n+1)
         cities = [[] for _ in range(n+1)]
         for i in range(3, len(cmd), 3):
@@ -67,6 +67,7 @@ for _ in range(q):
             cities[v2].append((v1, w))
     elif cmd[0] == 200:
         idx, revenue, to_ = cmd[1], cmd[2], cmd[3]
+        # print("---", idx)
         is_made[idx] = True
         dijkstra(start)
         heapq.heappush(s_heap, Stock(idx, revenue, to_, revenue-distance[to_]))
