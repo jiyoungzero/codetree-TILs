@@ -23,16 +23,17 @@ def can_right_down(sx, sy):
 def down(ci, di):
     global arr, answer
     sx, sy = 1, ci
-
+    # print(sx, sy, "start")
     while True:
+        # print(sx, sy)
         if not (can_down(sx, sy) or can_left_down(sx, sy) or can_right_down(sx, sy)):
             break
     # 최대한 아래로 하강 
-        if can_down(sx, sy):
+        while can_down(sx, sy):
             sx += 1
         
         # 서쪽 방향으로 하강 
-        if can_left_down(sx, sy) :
+        while can_left_down(sx, sy) :
             sx += 1
             sy -= 1
             # 출구 반시계방향으로 회전 
@@ -41,7 +42,7 @@ def down(ci, di):
                 di = 3
         
         # 남쪽 방향으로 하강 
-        if can_right_down(sx, sy):
+        while can_right_down(sx, sy):
             sx += 1
             sy += 1
             # 출구 시계방향 회전
