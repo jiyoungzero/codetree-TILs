@@ -11,30 +11,41 @@ for _ in range(K):
 arr = [[0]*C for _ in range(R+3)]
 answer = 0
 g_idx = 1 
+def can_down(sx, sy):
+    return sx + 2 < R+3 and arr[sx+2][sy] == 0 and arr[sx+1][sy-1] == 0 and arr[sx+1][sy+1] == 0
+
+def can_left_down(sx, sy):
+    return 0 <= sy - 2 and sx + 2 < R+3 and arr[sx-1][sy-1] == 0 and arr[sx][sy-2] == 0 and arr[sx+1][sy-1] == 0 and arr[sx+1][sy-2] == 0 and arr[sx+2][sy-1] == 0
+
+def can_right_down(sx, sy):
+    return sx + 2 < R+3 and sy + 2 < C and arr[sx-1][sy+1] == 0 and arr[sx][sy+2] == 0 and arr[sx+1][sy+1] == 0 and arr[sx+1][sy+2] == 0 and arr[sx+2][sy+1] == 0
 
 def down(ci, di):
     global arr, answer
     sx, sy = 1, ci
 
-    # 최대한 아래로 하강  
-    while sx + 2 < R+3 and arr[sx+2][sy] == 0 and arr[sx+1][sy-1] == 0 and arr[sx+1][sy+1] == 0:
-        sx += 1
-    
-    # 서쪽 방향으로 하강 
-    while 0 <= sy - 2 and sx + 2 < R+3 and arr[sx-1][sy-1] == 0 and arr[sx][sy-2] == 0 and arr[sx+1][sy-1] == 0 and arr[sx+1][sy-2] == 0 and arr[sx+2][sy-1] == 0:
-        sx += 1
-        sy -= 1
-        # 출구 반시계방향으로 회전 
-        di -= 1
-        if di < 0:
-            di = 3
-    
-    # 남쪽 방향으로 하강 
-    while sx + 2 < R+3 and sy + 2 < C and arr[sx-1][sy+1] == 0 and arr[sx][sy+2] == 0 and arr[sx+1][sy+1] == 0 and arr[sx+1][sy+2] == 0 and arr[sx+2][sy+1] == 0:
-        sx += 1
-        sy += 1
-        # 출구 시계방향 회전
-        di = (di+1)%4 
+    while True:
+        if not (can_down(sx, sy) or can_left_down(sx, sy) or can_right_down(sx, sy)):
+            break
+    # 최대한 아래로 하강 
+        if can_down(sx, sy):
+            sx += 1
+        
+        # 서쪽 방향으로 하강 
+        if can_left_down(sx, sy) :
+            sx += 1
+            sy -= 1
+            # 출구 반시계방향으로 회전 
+            di -= 1
+            if di == -1:
+                di = 3
+        
+        # 남쪽 방향으로 하강 
+        if can_right_down(sx, sy):
+            sx += 1
+            sy += 1
+            # 출구 시계방향 회전
+            di = (di+1)%4 
     
     # 해당 위치에 골렘 위치 시키기
     dxs, dys = [-1, 0, 1, 0], [0, 1, 0, -1]
@@ -77,7 +88,7 @@ def down(ci, di):
         for col in range(C):
             if arr[row][col] != 0 and visited[row][col]:
                 answer += (row - 2)
-                # print(answer)
+                # print(row-2)
                 return 
             
     
