@@ -6,6 +6,9 @@ def in_range(x, y):
 
 def right_one(ele): # 굉장히 올바른 문자열인지 
     flag = False # ')'가 나왔는지
+    if ele.count(')') != ele.count('('):
+        return False 
+        
     for i in range(len(ele)):
         if i != len(ele)-1 and ele[i] == ')':
             flag = True 
