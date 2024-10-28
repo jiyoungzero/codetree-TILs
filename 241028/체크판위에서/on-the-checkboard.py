@@ -10,9 +10,11 @@ def backtracking(cur):
     if cur == (r-1, c-1):
         answer += 1
         return 
+    
 
     
     x, y = cur
+    if x == r-1 or y == c-1:return
     for i in range(1, r):
         for j in range(1, c):
             nx = x + dxs[0]*i
