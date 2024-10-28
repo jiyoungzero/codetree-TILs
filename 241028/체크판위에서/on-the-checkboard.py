@@ -11,17 +11,14 @@ def backtracking(cur):
         answer += 1
         return 
     
-
-    
     x, y = cur
     if x == r-1 or y == c-1:return
-    for i in range(1, r):
-        for j in range(1, c):
-            nx = x + dxs[0]*i
-            ny = y + dys[1]*j
-            if nx < r and ny < c and not visited[nx][ny]  and arr[x][y] != arr[nx][ny]:
+
+    for nx in range(x+1, r):
+        for ny in range(y+1, c):
+            if not visited[nx][ny]  and arr[x][y] != arr[nx][ny]:
                 visited[nx][ny] = True
-                backtracking((x + dxs[0]*i,  y+ dys[1]*j))
+                backtracking((nx, ny))
                 visited[nx][ny] = False
 
 visited[0][0] = True
