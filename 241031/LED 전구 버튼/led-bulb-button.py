@@ -6,7 +6,7 @@ def toggle_lights(n, b, lights):
         if current_state in seen_states:
             # 주기를 발견
             cycle_length = step - seen_states[current_state]
-            remaining_steps = b % cycle_length
+            remaining_steps = (b-step) % cycle_length
             
             for _ in range(remaining_steps):
                 new_state = []
