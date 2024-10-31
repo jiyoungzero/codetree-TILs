@@ -1,7 +1,8 @@
 n, b = map(int, input().split())
 lights = [int(input()) for _ in range(n)]
 # 왼쪽 : 인덱스 - 1 (if (idx - 1) < 0 : check_idx = -1)
-for _ in range(b):
+max_b = 2**n
+for _ in range(b%max_b):
     nxt_lights = []
     for i in range(n):
         check_idx = i - 1
