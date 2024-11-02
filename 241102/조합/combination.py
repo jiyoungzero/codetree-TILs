@@ -1,8 +1,15 @@
 n, m = map(int, input().split())
 
-def factorial(num):
-    if num == 1:
-        return 1
-    return factorial(num-1) * num
+dp = [[0]*(m+1) for _ in range(n+1)]
+for i in range(1, n+1):
+    dp[i][1] = i 
 
-print(int(factorial(n)/factorial(m)*factorial(n-m)))
+for i in range(1, m+1):
+    dp[i][i] = 1
+
+for i in range(3, n+1):
+    for j in range(2, m+1):
+        dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
+
+
+print(dp[n][m])
