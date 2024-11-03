@@ -11,4 +11,5 @@ for i in range(1, n+1):
         while cnt * mul <= i:
             dp[i] = min(dp[i], dp[i-cnt*mul] + mul * price)
             mul += 1
+        dp[i] = min(mul*price, dp[i])
 print(dp[n])
