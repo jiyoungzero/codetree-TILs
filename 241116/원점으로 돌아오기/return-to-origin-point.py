@@ -2,15 +2,38 @@ n = int(input())
 dots = [tuple(map(int, input().split())) for _ in range(n)]
 
 answer = 0
+def is_hori_or_verti(x, y, px, py):
+    if x == px and y != py:
+        if y < py:
+            return 'down_vertical'
+        else:
+            return 'up_vertical'
+    else:
+        if x < px:
+            return 'right_horizon'
+        else:
+            return 'left_horizon'
 
 def is_valid(sel):
     prev_x, prev_y = 0, 0 
-    for x, y in sel:
+    prev_dir = 'None'
+    for idx, (x, y) in enumerate(sel):
         if x == prev_x or y == prev_y:
-            prev_x, prev_y = x, y
-            continue 
+            if prev_dir == 'None':
+                prev_dir = is_hori_or_verti(x, y, prev_x, prev_y)
+                prev_x, prev_y = x, y
+                continue
+            else:
+                cur_dir = is_hori_or_verti(x, y, prev_x, prev_y)
+                if prev_dir == cur_dir:
+                    return False
+                else:
+                    prev_dir = cur_dir
+                    prev_x, prev_y = x, y
+                    continue 
         else:
             return False 
+
     if prev_x == 0 or prev_y == 0:
         return True
     else:
