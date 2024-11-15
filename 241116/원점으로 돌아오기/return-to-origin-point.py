@@ -33,8 +33,10 @@ def is_valid(sel):
                     continue 
         else:
             return False 
-
-    if prev_x == 0 or prev_y == 0:
+    cur_dir = is_hori_or_verti(0, 0, sel[-1][0], sel[-1][1])
+    if (prev_x == 0 or prev_y == 0) and (prev_dir != cur_dir):
+        # print(prev_dir)
+        # print(sel)
         return True
     else:
         return False
